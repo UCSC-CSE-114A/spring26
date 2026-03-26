@@ -4,7 +4,7 @@ course_description: "Problem solving emphasizing recursion, data abstraction, an
 
 course_semester: "Spring 2026"
 
-baseurl: "/spring25" # the subpath of your site, e.g. /blog/
+baseurl: "/spring26-01" # the subpath of your site, e.g. /blog/
 url: "http://ucsc-cse-114a.github.io/" # the base hostname & protocol for your site
 
 schoolname: "UC Santa Cruz, Baskin School of Engineering"
