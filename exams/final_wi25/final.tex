@@ -1,0 +1,862 @@
+\documentclass[addpoints]{exam}
+\usepackage[utf8]{inputenc}
+
+\usepackage[12pt]{extsizes}
+\usepackage[margin=1in]{geometry}
+
+\usepackage{times}
+\usepackage{color}
+
+\title{CSE114A, Winter 2025: Final Exam}
+\author{Instructor: Lindsey Kuper}
+\date{March 17, 2025}
+
+\renewcommand{\thechoice}{\alph{choice}}
+\renewcommand{\choicelabel}{(\thechoice)}
+
+\renewcommand{\thepartno}{\alph{partno}}
+\renewcommand{\partlabel}{\thepartno.}
+
+\setlength\fillinlinelength{2in}
+\setlength\answerclearance{0.3ex}
+
+\CorrectChoiceEmphasis{\color{red}}
+\shadedsolutions
+
+\begin{document}
+
+\maketitle
+
+\begin{coverpages}
+
+\bigskip  
+
+\noindent Student name: \hrulefill
+
+\bigskip
+\bigskip
+
+\noindent CruzID: \hrulefill @ucsc.edu
+
+\bigskip
+\bigskip
+
+\noindent This exam has \numquestions~questions and \numpoints~total points.
+
+\bigskip
+\bigskip
+
+\noindent \textbf{Instructions}
+
+\begin{itemize}
+\item Please write directly on the exam.
+\item For short answer questions, please write your answer in the provided boxes.  You can use space outside of the boxes as scratch space, but we won't see or grade it.
+\item For multiple choice questions, please circle the correct choice.
+\item \textbf{You have 180 minutes to complete this exam.} You may leave when you are finished.
+\item This exam is \textbf{closed book}.  You may use one double-sided page of notes, but no other materials.
+\item Avoid seeing anyone else's work or allowing yours to be seen.
+\item Please, no talking.  No notes, books, laptops, phones, or other electronic devices. Do not communicate with anyone but an exam proctor.
+\item To ensure fairness (and the appearance thereof),
+  \textbf{proctors will not answer questions about the content of the exam}. If you are unsure 
+  of how to interpret a problem description, state your interpretation clearly and concisely. 
+  \textit{Reasonable interpretations} will be taken into account by graders.
+\item \textbf{We will give partial credit for partially correct answers when it makes sense to do so.} A partially correct answer is better than leaving an answer blank.
+\end{itemize}
+
+\bigskip
+
+\noindent Good luck!
+
+\newpage
+
+This page is for your use as scratch space. Anything you write here will be ungraded.
+
+\newpage
+
+\end{coverpages}
+
+\begin{questions}
+
+\subsection*{\textbf{Part 1: Lambda Calculus}}
+
+\question[3] A lambda calculus expression is in \emph{normal form} if it cannot be further reduced.  Evaluate the following lambda calculus expression to normal form using a series of $\beta$-reduction steps (and only $\beta$-reduction steps -- you shouldn't need anything else).  Start each line with \texttt{=b>}, as if you were using Elsa, and do just one $\beta$-reduction step per line.
+
+\begin{verbatim}
+(\x y -> y x y) (\q r -> q) (\f z -> f (f z))
+\end{verbatim}
+\begin{solutionorbox}[4.75in]
+Here is one possible solution:
+\begin{verbatim}
+  (\x y -> y x y) (\q r -> q) (\f z -> f (f z))
+  =b> (\y -> y (\q r -> q) y) (\f z -> f (f z))
+  =b> (\f z -> f (f z)) (\q r -> q) (\f z -> f (f z))
+  =b> (\z -> (\q r -> q) ((\q r -> q) z)) (\f z -> f (f z))
+  =b> (\q r -> q) ((\q r -> q) (\f z -> f (f z)))
+  =b> \r -> ((\q r -> q) (\f z -> f (f z)))
+  =b> \r -> (\r -> (\f z -> f (f z)))
+\end{verbatim}
+And here's another:
+\begin{verbatim}
+  (\x y -> y x y) (\q r -> q) (\f z -> f (f z))
+  =b> (\y -> y (\q r -> q) y) (\f z -> f (f z))
+  =b> (\f z -> f (f z)) (\q r -> q) (\f z -> f (f z))
+  =b> (\z -> (\q r -> q) ((\q r -> q) z)) (\f z -> f (f z))
+  =b> (\z -> (\q r -> q) (\r -> z)) (\f z -> f (f z))
+  =b> (\q r -> q) (\r -> (\f z -> f (f z)))
+  =b> \r -> (\r -> (\f z -> f (f z)))
+\end{verbatim}
+Any correct reduction sequence will end in \verb|\r -> (\r -> (\f z -> f (f z)))|.
+\end{solutionorbox}
+
+\question[3] Which of the following is true?
+
+\begin{checkboxes}
+  \choice There \emph{may} be \textbf{more than one} sequence of reduction steps that reduces a given lambda calculus expression to normal form, \textbf{but for the particular expression from question 1}, there is \textbf{exactly one}.
+  \CorrectChoice There \emph{may} be \textbf{more than one} sequence of reduction steps that reduces a given lambda calculus expression to normal form, \textbf{and for the particular expression from question 1}, there is \textbf{more than one}.
+  \choice There is \emph{always} \textbf{exactly one} sequence of reduction steps that reduces a given lambda calculus expression to normal form.
+  \choice There is \emph{always} \textbf{more than one} sequence of reduction steps that reduces a given lambda calculus expression to normal form.
+\end{checkboxes}
+
+\newpage
+
+For the next two questions, you may use any of the helper functions defined in the provided lambda calculus reference at the end of the exam.
+
+Recall from the midterm that we can encode \emph{lists} in lambda calculus using pairs, as follows:
+
+\begin{verbatim}
+let NIL   = \x -> TRUE
+let CONS  = PAIR
+let HEAD  = FST
+let TAIL  = SND
+let ISNIL = \lst -> lst (\h t -> FALSE)
+\end{verbatim}
+
+The list constructors are \texttt{NIL} and \texttt{CONS}.  \texttt{NIL} is the empty list, and a non-empty list consists of a pair of a list element and a list.
+
+For instance, \texttt{(CONS ONE (CONS TWO (CONS THREE NIL)))} is analogous to the Haskell list \texttt{[1, 2, 3]}, which is just syntactic sugar for \texttt{1 : (2 : (3 : []))}.
+
+The \texttt{ISNIL} function takes a list and returns \texttt{TRUE} if the list is \texttt{NIL} and \texttt{FALSE} otherwise.
+
+(Note: Unlike in Haskell, elements of these lists don't all have to be of the same type!  It's fine to have a list like \texttt{CONS FALSE (CONS ONE NIL)}, for example.)
+
+\question[2]
+
+Define a lambda calculus function \texttt{PREPENDFALSE} that takes a list and returns a new list that has \texttt{FALSE} as its first element, followed by all the elements of the original list.  The resulting list is therefore one element longer than the original list was.
+
+You may assume that \texttt{PREPENDFALSE} is called with a list constructed with \texttt{NIL} or \texttt{CONS}.  Here are some example calls to \texttt{PREPENDFALSE}:
+
+\begin{verbatim}
+PREPENDFALSE NIL =*> CONS FALSE NIL
+PREPENDFALSE (CONS TRUE NIL) =*> CONS FALSE (CONS TRUE NIL)
+PREPENDFALSE (CONS ONE NIL) =*> CONS FALSE (CONS ONE NIL)
+\end{verbatim}
+
+\begin{verbatim}
+let PREPENDFALSE = 
+\end{verbatim}
+\begin{solutionorbox}[1.5in]
+One simple correct answer is:
+\begin{verbatim}
+\lst -> CONS FALSE lst
+\end{verbatim}
+\end{solutionorbox}
+
+\newpage
+
+\question Define a lambda calculus function \texttt{SUMLIST} that takes a list of Church numerals and returns the sum of its elements as a Church numeral.
+
+Here are some example calls to \texttt{SUMLIST}:
+
+\begin{verbatim}
+SUMLIST NIL =~> ZERO
+SUMLIST (CONS TWO NIL) =~> TWO
+SUMLIST (CONS TWO (CONS ONE NIL)) =~> THREE
+SUMLIST (CONS ZERO (CONS THREE (CONS ZERO NIL))) =~> THREE
+\end{verbatim}
+
+You may assume that \texttt{SUMLIST} is called with a list constructed with \texttt{NIL} or \texttt{CONS}, and that all of the list's elements are Church numerals.  You must use recursion for full credit.
+
+\begin{verbatim}
+let SUMLIST1 = \rec -> \lst -> ITE _____(part 4(a))_______
+                                   _____(part 4(b))_______
+                                   _____(part 4(c))_______
+                      
+let SUMLIST = ______(part 4(d))_______
+\end{verbatim}
+
+\begin{parts} 
+  \part[3] 4(a):
+  \begin{solutionorbox}[\stretch{4}]
+    This is where we check a condition to know whether we are in the base case or not.
+    \texttt{(ISNIL lst)} is a correct answer.
+  \end{solutionorbox}
+
+  \part[3] 4(b):
+  \begin{solutionorbox}[\stretch{4}]
+This is the base case.  \texttt{ZERO} is a correct answer.
+  \end{solutionorbox}
+
+  \part[3] 4(c):
+  \begin{solutionorbox}[\stretch{4}]
+This is the recursive case.  \texttt{(ADD (HEAD lst) (rec (TAIL lst)))} is a correct answer.
+  \end{solutionorbox}
+
+  \part[3] 4(d):
+  \begin{solutionorbox}[\stretch{4}]
+\begin{verbatim}
+Y SUMLIST1
+\end{verbatim}
+  \end{solutionorbox}
+\end{parts}
+
+\newpage
+
+\subsection*{\textbf{Part 2: Haskell}}
+
+\noindent The Haskell reference at the end of the exam has information about library functions used in this section.
+
+\question[3] What is the \textbf{type} of the following Haskell expression?
+
+\begin{verbatim}
+\q r s -> [q, r] 
+\end{verbatim}
+
+\begin{checkboxes}
+  \choice Type error
+  \choice \texttt{a -> a -> a -> [b]}
+  \choice \texttt{a -> a -> b -> [b]}
+  \choice \texttt{a -> a -> a -> [a]}
+  \CorrectChoice \texttt{a -> a -> b -> [a]}
+\end{checkboxes}
+
+\question[3] What is the \textbf{type} of the following Haskell expression?
+\begin{verbatim}
+\q r s -> [q, r, r == s]
+\end{verbatim}
+\begin{checkboxes}
+  \choice Type error
+  \CorrectChoice \texttt{Bool -> Bool -> Bool -> [Bool]}
+  \choice \texttt{Eq a => Bool -> a -> a -> [Bool]}
+  \choice \texttt{Eq a => a -> a -> a -> [a]}
+  \choice \texttt{(Eq a, b) => a -> b -> b -> [a]}
+\end{checkboxes}
+
+\question[3] What is the \textbf{type} of the following Haskell expression?
+\begin{verbatim}
+\x y -> (x, y, "batman", "catman", "wingman")
+\end{verbatim}
+\begin{checkboxes}
+  \choice Type error
+  \choice \texttt{a -> a -> (a, a, String, String, String)}
+  \CorrectChoice \texttt{a -> b -> (a, b, String, String, String)}
+  \choice \texttt{a -> a -> [String]}
+  \choice \texttt{a -> b -> [String]}
+\end{checkboxes}
+
+\question[3] What is the \textbf{type} of the following Haskell expression?
+\begin{verbatim}
+\y z -> map (\x -> "kona" ++ x) [y, z]
+\end{verbatim}
+\begin{checkboxes}
+  \choice Type error
+  \choice \texttt{[String] -> [String] -> String}
+  \choice \texttt{[String] -> [String] -> [String]}
+  \CorrectChoice \texttt{String -> String -> [String]}
+  \choice \texttt{[String] -> [String] -> [String]}
+\end{checkboxes}
+
+\newpage
+
+\question For this problem, you can use any library functions from the Haskell reference at the end of the exam, but no other library functions.
+
+Consider a Haskell function \verb|andList :: [Bool] -> Bool| that takes a list of expressions of \verb|Bool| type and returns \verb|True| if all elements of the list evaluate to \verb|True|, and \verb|False| otherwise.  Here are some example calls to \verb|andList|:
+
+\begin{verbatim}
+ghci> andList []
+True
+ghci> andList [True, False, True, True]
+False
+ghci> andList [True, 3 == 3, True && True]
+True
+\end{verbatim}
+
+\begin{parts}
+
+\part[3] Define \verb|andList| in the box below.  The type signature is provided for you.  Your definition should use pattern matching, and should \emph{not} be tail-recursive.
+
+\verb|andList :: [Bool] -> Bool|
+\begin{solutionorbox}[1.25in]
+One simple correct solution is:
+\begin{verbatim}
+andList []     = True
+andList (x:xs) = x && andList xs
+\end{verbatim}
+Since the question calls for a definition that uses pattern matching, a definition that uses \verb|head| and \verb|tail| would not be correct.  (Those functions aren't in the allowed library functions.)
+\end{solutionorbox}
+
+\part[3] Now define \verb|andList'|, which has the same type signature and behavior as \verb|andList|, but is written using \verb|foldr|.  (Hint: You can do this in one line of code.)
+
+\verb|andList' :: [Bool] -> Bool|
+\begin{solutionorbox}[0.75in]
+\begin{verbatim}
+andList' l = foldr (&&) True l
+\end{verbatim}
+It's also OK to eta reduce:
+\begin{verbatim}
+andList' = foldr (&&) True
+\end{verbatim}
+\end{solutionorbox}
+
+\part[4] Finally, define \verb|andListTR|, which has the same type signature and behavior as \verb|andList|, but is tail-recursive.
+
+\verb|andListTR :: [Bool] -> Bool|
+\begin{solutionorbox}[1.85in]
+One approach is to use a helper function:
+\begin{verbatim}
+andListTR l = helper l True
+  where helper :: [Bool] -> Bool -> Bool
+        helper []     b = b
+        helper (x:xs) b = helper xs (x && b)
+\end{verbatim}
+You do not have to give a type signature to the helper function, though it might make it easier to read.  (It's also possible to do this with \verb|foldl|, but \verb|foldl| is not one of the allowed library functions.)
+\end{solutionorbox}
+
+\end{parts}
+
+\newpage
+
+\subsection*{\textbf{Part 3: Working with Abstract Syntax Trees}}
+
+\noindent In this section and the next section, we'll use the following \verb|Expr| data type, which defines a grammar of abstract syntax trees (ASTs) for \emph{SmolHaskell}, a language with variables, integer literals, \verb|let|-expressions, addition, function definitions, and function calls:
+
+\begin{verbatim}
+data Expr = Var String           -- Variable
+          | Num Int              -- Integer literal
+          | Let String Expr Expr -- let-expression: `let x = e1 in e2`
+          | Add Expr Expr        -- Addition: `e1 + e2`
+          | Lam String Expr      -- Function definition
+          | App Expr Expr        -- Function call
+\end{verbatim}
+
+For example, the program \verb|let f = \z -> z + 5 in f 3| has the following AST:
+
+\begin{verbatim}
+Let "f" (Lam "z" (Add (Var "z") (Num 5))) (App (Var "f") (Num 3))
+\end{verbatim}
+
+\question[2] Be the parser: translate the following SmolHaskell program into its corresponding \verb|Expr|.
+
+\begin{verbatim}
+(let x = 4 in x + 5) + ((\x -> x) 7)
+\end{verbatim}
+
+\begin{solutionorbox}[1.75in]
+
+\begin{verbatim}  
+Add (Let "x" (Num 4) (Add (Var "x") (Num 5)))
+    (App (Lam "x" (Var "x")) (Num 7))
+\end{verbatim}
+\end{solutionorbox}
+
+\newpage
+
+\question[5] Let us define the \emph{depth} of a SmolHaskell expression as follows:
+
+\begin{itemize}
+\item The depth of a variable or an integer literal is 1.
+\item The depth of a lambda abstraction \verb|\x -> e| is 1 + the depth of \verb|e|.  
+\item The depth of a \verb|let|-expression \verb|let x = e1 in e2|, an addition expression \verb|e1 + e2|, or an application \verb|e1 e2| is 1 + the maximum of the depth of \verb|e1| and the depth of \verb|e2|.
+\end{itemize}
+
+Define a Haskell function \verb|depth| that takes an \verb|Expr| and returns its depth as an \verb|Int|.  You can use the library functions in the Haskell reference at the end of the exam, but no other library functions. The type signature of \verb|depth| is provided for you below; fill in the rest of the definition.  Here are some sample calls to \verb|depth|:
+
+\begin{verbatim}
+> depth (Var "x")
+1
+> depth (Add (Var "x") (Num 4))
+2
+> depth (Add (Add (Var "x") (Num 1)) (Num 2))
+3
+> depth (Lam "x" (Add (Add (Var "x") (Num 1)) (Num 2)))
+4
+> depth (App (Lam "x" (Var "x")) (Lam "x" (Var "x")))
+3
+> depth (Let "x" (Num 5) (Add (Var "x") (Num 3)))
+3
+\end{verbatim}
+
+\verb|depth :: Expr -> Int|
+\begin{solutionorbox}[\stretch{1}]
+A simple implementation is:
+  
+\begin{verbatim}
+depth :: Expr -> Int
+depth (Var s) = 1
+depth (Num n) = 1
+depth (Let s e1 e2) = 1 + max (depth e1) (depth e2)
+depth (Add e1 e2) = 1 + max (depth e1) (depth e2)
+depth (Lam s e) = 1 + depth e
+depth (App e1 e2) = 1 + max (depth e1) (depth e2)
+\end{verbatim}
+\end{solutionorbox}
+
+\newpage
+
+\question[10] An occurrence of a variable in a SmolHaskell expression is \emph{free} if it is not bound by an enclosing lambda abstraction or \verb|let| binding.
+
+For example, in the expression \verb|let x = 5 in x + 3|, there are no free occurrences of variables; in the expression \verb|let x = 5 in x + y|, there is a free occurrence of \verb|y|; and in \verb|(\x -> y) x|, both \verb|y| and \verb|x| occur free.
+
+Define a Haskell function \verb|freeVars| that takes an \verb|Expr| and returns a list of variables that occur free in it (in any order).  You can use the library functions in the Haskell reference at the end of the exam, but no other library functions. The type signature of \verb|freeVars| is provided for you below; fill in the rest of the definition.
+
+Here are some sample calls to \verb|freeVars|:
+
+\begin{verbatim}
+-- x + y
+> freeVars (Add (Var "x") (Var "y"))
+["x","y"]
+-- \y -> x + x
+> freeVars (Lam "y" (Add (Var "x") (Var "x")))
+["x"]
+-- (let x = 5 in x) + (let y = 5 in x)
+> freeVars (Add (Let "x" (Num 5) (Var "x")) (Let "y" (Num 5) (Var "x")))
+["x"]
+\end{verbatim}
+
+For full credit, a variable that occurs free more than once in an expression should only appear once in the list returned by \texttt{freeVars}.  Hint: Use the \verb|nub| and \verb|(\\)| list operations.
+
+\verb|freeVars :: Expr -> [String]|
+\begin{solutionorbox}[\stretch{1}]
+In a \verb|let|-expression \verb|let x = e1 in e2|, if the language supports recursive \verb|let|, then occurrences of \verb|x| in \verb|e1| \textbf{are not} considered free.  In that case, this is a correct solution:
+\begin{verbatim}
+freeVars :: Expr -> [String]
+freeVars (Var s) = [s]
+freeVars (Num _) = []
+freeVars (Let s e1 e2) = nub (freeVars e1 ++ freeVars e2) \\ [s]
+freeVars (Add e1 e2) = nub (freeVars e1 ++ freeVars e2)
+freeVars (Lam s e) = freeVars e \\ [s]
+freeVars (App e1 e2) = nub (freeVars e1 ++ freeVars e2)
+\end{verbatim}
+
+On the other hand, if the language does \textbf{not} support recursive \verb|let|, then occurrences of \verb|x| in \verb|e1| \textbf{are} considered free. In that case, the \verb|Let| case of \verb|freeVars| would change to:
+\begin{verbatim}
+freeVars (Let s e1 e2) = nub (freeVars e1 ++ (freeVars e2 \\ [s]))
+\end{verbatim}
+We'll accept either answer for this problem.
+\end{solutionorbox}
+
+\newpage
+
+\subsection*{\textbf{Part 4: Interpreters and Environments}}
+
+\question[20] Next, we'll be writing an environment-passing interpreter for \verb|Expr|s, so let's set up some machinery for doing that.  Ideally, an \verb|Expr| will evaluate to a \verb|Value|, as defined by the following data type:
+
+\begin{verbatim}
+data Value = ValNum Int | ValClos String Expr ListEnv
+\end{verbatim}
+
+where \verb|ListEnv| is a simple list representation of an environment, which maps program variables (represented as \verb|String|s) to their \verb|Value|s:
+
+\begin{verbatim}
+type ListEnv = [(String, Value)]
+\end{verbatim}
+
+Here is the function that we'll use for looking up the values of program variables in an environment:
+
+\begin{verbatim}
+lookupInEnv :: ListEnv -> String -> Maybe Value
+lookupInEnv [] k = Nothing
+lookupInEnv ((k',v):env') k =
+  if k == k' then Just v else lookupInEnv env' k
+\end{verbatim}
+
+The type signature of our interpreter will be:
+
+\begin{verbatim}
+eval :: ListEnv -> Expr -> Maybe Value
+\end{verbatim}
+
+The \verb|Maybe| type is there because things can go wrong during the evaluation of an \verb|Expr|.  In particular, it could contain an unbound variable, like \verb|Add (Var "x") (Num 5)|, or it could be ill-typed, like \verb|App (Num 3) (Num 5)| or \verb|Add (Lam "x" (Var "x")) (Num 5)|.  If either of those things happen, we want our interpreter to return \verb|Nothing|.  If nothing goes wrong, our interpreter should return a \verb|Value| wrapped in the \verb|Just| constructor.
+
+\newpage
+
+We are now ready to implement \verb|eval|.  The type signature and the cases for \verb|Var| and \verb|Add| expressions are provided for you; your job is to implement the \verb|Num|, \verb|Lam|, \verb|App|, and \verb|Let| cases.
+
+Hints:
+
+\begin{itemize}
+\item Functions should evaluate to closure values.
+\item In a \verb|let|-expression \verb|let x = e1 in e2|, you will want to evaluate \verb|e1|, then evaluate \verb|e2| in an extended environment.  Your interpreter does \emph{not} need to support recursive functions.
+\item In an application expression \verb|e1 e2|, you will want to evaluate \verb|e1| to a closure, and then evaluate the closure body in an extended environment.
+\item Because we're using a list representation of environments, you can use \verb|(:)| to add things to an environment.  
+\item You can use \verb|case| expressions to pattern match on the result of recursive calls.  Look at how the \verb|Add| case is written for an example.
+\end{itemize}
+
+\begin{verbatim}
+eval :: ListEnv -> Expr -> Maybe Value
+eval env (Var x) = lookupInEnv env x
+eval env (Add e1 e2) = case (eval env e1, eval env e2) of
+    (Just (ValNum v1), Just (ValNum v2)) -> Just (ValNum (v1 + v2))
+    _                                    -> Nothing
+\end{verbatim}
+\begin{solutionorbox}[\stretch{1}]
+\begin{verbatim}
+eval _   (Num n) = Just (ValNum n)
+eval env (Lam s body) = Just (ValClos s body env)
+eval env (Let s e1 e2) = case eval env e1 of
+    Just v -> eval ((s,v):env) e2
+    _      -> Nothing
+eval env (App e1 e2) = case (eval env e1, eval env e2) of
+    (Just (ValClos s b e), Just a) -> eval ((s,a):e) b
+    _                              -> Nothing
+\end{verbatim}
+There is no need to write an \verb|extendEnv| helper function for this question (since it would just call \verb|(:)|), but it is OK to do so.
+\end{solutionorbox}
+
+\newpage
+  
+\subsection*{\textbf{Part 5: Unification and Type Inference}}
+
+In the context of unification and type inference, we've discussed the concept of \emph{substitutions}.  A substitution is a mapping from \emph{type variables} to \emph{types}, where the types may themselves contain type variables (or be type variables).  For example,
+\begin{verbatim}
+[(a, Bool), (b, Int -> c), (d, e)]
+\end{verbatim}
+is a substitution that maps the type variable \verb|a| to the type \verb|Bool|, the type variable \verb|b| to the type \verb|Int -> c|, and the type variable \verb|d| to the type \verb|e|.
+
+\question[2] If possible, write down a substitution that is \emph{a unifier} \\ for the types \texttt{Int -> a} and \texttt{a -> b}.  If these types do not unify, write ``Cannot unify''.
+
+\begin{solutionorbox}[1in]
+One simple correct solution is:
+\begin{verbatim}
+[(a, Int), (b, Int)]
+\end{verbatim}
+Other solutions are also possible.
+\end{solutionorbox}
+
+\question[2] If possible, write down a substitution that is \emph{a unifier} \\ for the types \texttt{Int -> a} and \texttt{a}.  If these types do not unify, write ``Cannot unify''.
+
+\begin{solutionorbox}[1in]
+Cannot unify
+\end{solutionorbox}
+
+\question[2] If possible, write down a substitution that is \emph{a unifier} \\ for the types \texttt{a -> b} and \texttt{c -> Int -> d}.   If these types do not unify, write ``Cannot unify''.
+
+\begin{solutionorbox}[1in]
+One correct solution is:
+\begin{verbatim}
+[(a, c), (b, Int -> d)]
+\end{verbatim}
+Here, \verb|c -> Int -> d| is syntactic sugar for \verb|c -> (Int -> d)|, \\
+so \verb|[(a, c -> Int), (b, d)]| would be an incorrect answer. However, other solutions are possible.
+\end{solutionorbox}
+
+\question[2] If possible, write down a substitution that is \emph{a unifier} \\ for the types \texttt{Bool} and \texttt{a -> b}.   If these types do not unify, write ``Cannot unify''.
+\begin{solutionorbox}[1in]
+Cannot unify
+\end{solutionorbox}
+
+\newpage
+
+\question[2] If possible, write down a substitution that is \emph{a unifier} \\ for the types \texttt{a -> b} and \texttt{a -> c}.   If these types do not unify, write ``Cannot unify''.
+\begin{solutionorbox}[1in]
+One correct solution is:
+\begin{verbatim}
+[(b, c)]
+\end{verbatim}
+Other solutions are possible. For instance, \verb|[(c, b)]| is also correct.
+\end{solutionorbox}
+
+\question In section 4 of this exam, we wrote an interpreter for SmolHaskell.  Here's what should happen if you tried to evaluate the expression \verb|(\x -> x) + 3|:
+
+\begin{verbatim}
+> eval [] (Add (Lam "x" (Var "x")) (Num 3))
+Nothing
+\end{verbatim}
+
+To catch these kinds of errors prior to run time, we can define a \emph{type system} for SmolHaskell and then implement a \emph{type checker}.  Below are the typing rules we'll use, all of which are standard:
+
+{\small
+\begin{verbatim}
+            (x,T1):G |- e :: T2                (x,T) in G                
+[T-Lam] --------------------------     [T-Var] -----------
+        G |- (\x -> e) :: T1 -> T2             G |- x :: T
+
+
+        G |- e1 :: Int       G |- e2 :: Int
+[T-Add] -----------------------------------
+                 G |- e1 + e2 :: Int
+
+
+        G |- e1 :: T1 -> T2       G |- e2 :: T1  
+[T-App] ---------------------------------------
+                 G |- (e1 e2) :: T2
+                             
+        G |- e1 :: T1    (x,T1):G |- e2 :: T2
+[T-Let] -------------------------------------    [T-Int] -------------
+             G |- let x = e1 in e2 :: T2                 G |- n :: Int
+\end{verbatim}
+}
+
+\newpage
+
+Let's use our typing rules to make sure that an expression in SmolHaskell is well-typed.  The expression we'll consider is \verb|let f = \x -> x + 1 in f 2|.
+
+For each blank below, fill in a type or the name of a typing rule to complete the typing derivation.
+
+We are using the following abbreviations for type environments:
+\begin{verbatim}
+G1 = [(x,Int)]
+G2 = [(f,Int -> Int)]
+\end{verbatim}
+
+\begin{figure*}[h]
+\advance\leftskip-20cm
+{\small
+\begin{verbatim}
+     (x,Int) in G1                                
+[19a]------------- [19b]-----------
+     G1 |- x::Int       G1 |- 1::Int      (f,Int->Int) in G2
+[19c]------------------------------- [19d]------------------  [19e]--------------
+              G1 |- x+1 :: [19f]          G2 |- f :: Int->Int      G2 |- 2 :: Int
+       [19g]------------------------ [19h]---------------------------------------
+            [] |- \x -> x+1 :: [19i]                 G2 |- f 2 :: [19j]
+       [19k]-----------------------------------------------------------
+                  [] |- let f = \x -> x + 1 in f 2 :: Int
+\end{verbatim}
+}
+\end{figure*}
+
+\begin{parts} 
+  \part[1] 19(a):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+T-Var
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 19(b):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+T-Int
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 19(c):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+T-Add
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 19(d):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+T-Var
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 19(e):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+T-Int
+\end{verbatim}
+  \end{solutionorbox}
+
+\newpage
+
+  \part[1] 19(f):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+Int
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 19(g):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+T-Lam
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 19(h):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+T-App
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 19(i):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+Int -> Int
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 19(j):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+Int
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 19(k):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+T-Let
+\end{verbatim}
+  \end{solutionorbox}
+\end{parts}
+
+\end{questions}
+
+\newpage
+
+\subsection*{Lambda Calculus Reference}
+
+\begin{verbatim}
+-- Church numerals
+let ZERO  = \f x -> x
+let ONE   = \f x -> f x
+let TWO   = \f x -> f (f x)
+let THREE = \f x -> f (f (f x))
+
+-- Booleans
+let TRUE  = \x y -> x
+let FALSE = \x y -> y
+let ITE   = \b x y -> b x y
+let AND   = \b1 b2 -> ITE b1 b2 FALSE
+
+-- Pairs
+let PAIR   = \x y -> (\b -> ITE b x y)
+let FST    = \p -> p TRUE
+let SND    = \p -> p FALSE
+
+-- Lists
+let NIL   = \x -> TRUE
+let CONS  = PAIR
+let HEAD  = FST
+let TAIL  = SND
+let ISNIL = \lst -> lst (\h t -> FALSE)
+
+-- Arithmetic
+let SUC   = \n f x -> f (n f x)
+let ADD   = \n m -> n SUC m
+
+-- The definitions of DECR, SUB, ISZ, and EQL are elided
+-- but you can still use them:
+let DECR  = \n ->   -- (decrement n by one)
+let SUB   = \n m -> -- (subtract m from n)
+let ISZ   = \n ->   -- (return TRUE if n == 0 and FALSE otherwise)
+let EQL   = \n m -> -- (return TRUE if n == m and FALSE otherwise)
+
+-- Note: Since ZERO is the smallest Church numeral,
+-- calls to DECR and SUB bottom out at ZERO.
+-- For example, DECR ZERO evaluates to ZERO,
+-- and SUB TWO THREE evaluates to ZERO.
+
+-- The Y combinator
+let Y = \step -> (\x -> step (x x)) (\x -> step (x x))
+\end{verbatim}
+
+\newpage
+
+\subsection*{Haskell Reference}
+
+\begin{itemize}
+
+\item
+\begin{verbatim}
+map :: (a -> b) -> [a] -> [b]
+map f []     = []
+map f (x:xs) = f x : map f xs
+\end{verbatim}
+
+\item
+\begin{verbatim}
+foldr :: (a -> b -> b) -> b -> [a] -> b
+foldr f b []     = b
+foldr f b (x:xs) = f x (foldr f b xs)
+\end{verbatim}
+
+\item
+\begin{verbatim}
+(+) :: Num a => a -> a -> a
+\end{verbatim}
+Returns the sum of its two arguments, e.g.,
+\begin{verbatim}
+> 3 + 4
+7
+\end{verbatim}
+
+\item
+\begin{verbatim}
+max :: Ord a => a -> a -> a
+\end{verbatim}
+Returns the maximum of its two arguments, e.g.,
+\begin{verbatim}
+> max 3 4
+4
+\end{verbatim}
+
+\item
+\begin{verbatim}
+(&&) :: Bool -> Bool -> Bool
+\end{verbatim}
+The logical `and' operation.
+\begin{verbatim}
+> True && False
+False
+> True && True
+True
+\end{verbatim}
+
+\item
+\begin{verbatim}
+(++) :: [a] -> [a] -> [a]
+\end{verbatim}
+Append two lists, e.g.,
+\begin{verbatim}
+> [1,2,3] ++ [4,5]
+[1,2,3,4,5]
+> "apple" ++ "orange"
+"appleorange"
+\end{verbatim}
+
+\item 
+\begin{verbatim}
+nub :: [a] -> [a]
+\end{verbatim}
+Remove duplicate elements from a list, e.g.,
+\begin{verbatim}
+> nub [1,2,3,4,3,2,1,2,4,3,5]
+[1,2,3,4,5]
+\end{verbatim}
+
+\newpage
+
+\item
+\begin{verbatim}
+(\\) :: [a] -> [a] -> [a]
+\end{verbatim}
+Compute the difference of two lists. In the result of \verb|xs \\ ys|, the first occurrence of each element of \texttt{ys} in turn (if any) has been removed from \texttt{xs}.  Thus \verb|((xs ++ ys) \\ xs) == ys|, e.g.,
+\begin{verbatim}
+> ["a","b","c"] \\ ["a"]
+["b","c"]
+> ["a","b","c","a"] \\ ["a","c"]
+["b","a"]
+\end{verbatim}
+
+\item
+\begin{verbatim}
+(==) :: Eq a => a -> a -> Bool
+\end{verbatim}
+Compare arguments for equality, e.g., 
+\begin{verbatim}
+> False == True
+False
+> "apple" == "apple"
+True
+\end{verbatim}
+
+\end{itemize}
+
+\end{document}

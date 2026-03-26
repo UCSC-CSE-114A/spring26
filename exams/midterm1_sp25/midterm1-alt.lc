@@ -1,0 +1,189 @@
+-- Elsa code for spring 2025 midterm 1 (alternate version)
+
+-- Church numerals
+let ZERO  = \f x -> x
+let ONE   = \f x -> f x
+let TWO   = \f x -> f (f x)
+let THREE = \f x -> f (f (f x))
+let FOUR  = \f x -> f (f (f (f x)))
+
+-- Booleans
+let TRUE  = \x y -> x
+let FALSE = \x y -> y
+let ITE   = \b x y -> b x y
+let AND   = \b1 b2 -> ITE b1 b2 FALSE
+
+-- Pairs
+let PAIR   = \x y -> (\b -> ITE b x y)
+let FST    = \p -> p TRUE
+let SND    = \p -> p FALSE
+
+-- Lists
+let NIL   = \x -> TRUE
+let CONS  = PAIR
+let HEAD  = FST
+let TAIL  = SND
+let ISNIL = \lst -> lst (\h t -> FALSE)
+
+-- Arithmetic
+let INCR  = \n f x -> f (n f x)
+let ADD   = \n m -> n INCR m
+let SKIP1 = \f p -> PAIR TRUE (ITE (FST p)
+                                   (f (SND p))
+                                   (SND p))
+let DECR  = \n -> SND (n (SKIP1 INCR) (PAIR FALSE ZERO))
+let SUB   = \n m -> m DECR n
+let ISZ   = \n -> n (\z -> FALSE) TRUE
+let EQL   = \n m -> AND (ISZ (SUB n m)) (ISZ (SUB m n))
+
+-- Problem 6
+let PAIRSUMINCR = \p -> INCR (ADD (FST p) (SND p))
+
+-- Problem 7
+let INCRSECOND = \lst -> INCR (HEAD (TAIL lst))
+
+-- The Y combinator
+let Y = \step -> (\x -> step (x x)) (\x -> step (x x))
+
+-- Problem 8
+let DOUBLEALL1 = \rec -> \lst -> ITE (ISNIL lst)
+                                     NIL
+				     (CONS (ADD (HEAD lst) (HEAD lst)) (rec (TAIL lst)))
+
+let DOUBLEALL = Y DOUBLEALL1
+
+-- Problem 1
+eval problem_1 :
+  -- Original expression (you don't have to rewrite this line)
+  \y -> (\x z -> z x) (\r q -> r q) (\s q -> s q) y
+  -- Reduce the redex `(\x z -> z x) (\r q -> r q)`
+  -- (this is the only redex at this step)
+  =b> \y -> (\z -> z (\r q -> r q)) (\s q -> s q) y
+  -- Reduce the redex `(\z -> z (\r q -> r q)) (\s q -> s q)`
+  -- (this is the only redex at this step)
+  =b> \y -> (\s q -> s q) (\r q -> r q) y
+  -- Reduce the redex `(\s q -> s q) (\r q -> r q)`
+  -- (this is the only redex at this step)
+  =b> \y -> (\q -> (\r q -> r q) q) y
+  -- Rename `q` to `p` so we can take a beta-step on `(\r q -> r q) q`
+  =a> \y -> (\q -> (\r p -> r p) q) y
+  -- Reduce the redex `(\r p -> r p) q`
+  -- (this is one of two possible redexes here)
+  =b> \y -> (\q -> (\p -> q p)) y
+  -- Reduce the redex `(\q -> (\p -> q p)) y`
+  -- (this is the only redex at this step)
+  =b> \y -> (\p -> y p)
+  -- We now have a value; no more beta-steps are possible
+
+-- In the above renaming (`=a>`) step, any unused variable is fine; it doesn’t have to be `p`.
+
+eval problem_1_alt :
+  -- Original expression (you don't have to rewrite this line)
+  \y -> (\x z -> z x) (\r q -> r q) (\s q -> s q) y
+  -- Reduce the redex `(\x z -> z x) (\r q -> r q)`
+  -- (this is the only redex at this step)
+  =b> \y -> (\z -> z (\r q -> r q)) (\s q -> s q) y
+  -- Reduce the redex `(\z -> z (\r q -> r q)) (\s q -> s q)`
+  -- (this is the only redex at this step)
+  =b> \y -> (\s q -> s q) (\r q -> r q) y
+  -- Reduce the redex `(\s q -> s q) (\r q -> r q)`
+  -- (this is the only redex at this step)
+  =b> \y -> (\q -> (\r q -> r q) q) y
+  -- Reduce the redex `(\q -> (\r q -> r q) q) y`
+  -- (this is one of two possible redexes here)
+  =b> \y -> (\r q -> r q) y
+  -- Reduce the redex `(\r q -> r q) y`
+  -- (this is the only redex at this step)
+  =b> \y -> (\q -> y q)
+  -- We now have a value; no more beta-steps are possible
+
+-- Notice that the expressions `\y -> (\p -> y p)` and `\y -> (\q -> y q)` are alpha-equivalent.
+
+-- Problem 2
+eval problem_2 :
+  --(\x -> x) y
+  --\z -> (\x -> x) (\y -> y)
+  --\z -> (\y -> y) z
+  \z -> (\y -> y)
+  --(\z -> z z) (\z -> z z)
+
+-- Problem 3
+eval problem_3 :
+  --FALSE FALSE TRUE =~> FALSE
+  --FALSE FALSE =~> FALSE
+  --ITE FALSE FALSE =~> FALSE
+  --ITE FALSE FALSE TRUE =~> FALSE
+  FALSE TRUE FALSE =~> FALSE
+
+-- Problem 4
+eval problem_4 :
+  SND (PAIR (PAIR ONE ZERO) ZERO) =~> ZERO
+  --TRUE ZERO =~> ZERO
+  --TRUE ONE ZERO =~> ZERO
+  --FALSE ZERO ONE =~> ZERO
+  --FALSE ZERO =~> ZERO
+
+-- Problem 5
+eval problem_5 :
+  (\x y -> y) z (\y -> x z y) =~> \y -> x z y
+
+-- Problem 6
+eval problem6_test_1 :
+  PAIRSUMINCR (PAIR ZERO ZERO) =~> ONE
+
+eval problem6_test_2 :
+  PAIRSUMINCR (PAIR ONE ZERO) =~> TWO
+
+eval problem6_test_3 :
+  PAIRSUMINCR (PAIR TWO ZERO) =~> THREE
+
+eval problem6_test_4 :
+  PAIRSUMINCR (PAIR ONE (DECR (DECR TWO))) =~> TWO
+  
+-- Problem 7
+eval problem7_test_1 :
+  INCRSECOND (CONS TWO (CONS TWO NIL)) =~> THREE
+
+eval problem7_test_2 :
+  INCRSECOND (CONS ZERO (CONS TWO NIL)) =~> THREE
+
+eval problem7_test_3 :
+  INCRSECOND (CONS ZERO (CONS ONE (CONS TWO NIL))) =~> TWO
+
+eval problem7_test_4 :
+  INCRSECOND (CONS ZERO (CONS ZERO (CONS THREE NIL))) =~> ONE
+
+eval problem7_test_5 :
+  INCRSECOND (CONS THREE (CONS ONE (CONS ZERO NIL))) =~> TWO
+
+-- Problem 8
+eval isnil_test_1 :
+  ISNIL NIL
+  =~> TRUE
+
+eval isnil_test_2 :
+  ISNIL (CONS ONE NIL)
+  =~> FALSE
+
+eval isnil_test_3 :
+  ISNIL (CONS TWO (CONS ONE NIL))
+  =~> FALSE
+
+eval isnil_test_4 :
+  ISNIL (CONS ONE (CONS TWO (CONS THREE NIL)))
+  =~> FALSE
+
+eval doubleall_test_1 :
+  DOUBLEALL NIL =~> NIL
+
+eval doubleall_test_2 :
+  -- CONS TWO NIL
+  DOUBLEALL (CONS ONE NIL) =~> \b -> b TWO NIL 
+
+eval doubleall_test_3 :
+  -- CONS TWO (CONS FOUR NIL)
+  DOUBLEALL (CONS ONE (CONS TWO NIL)) =~> \b -> b TWO (\b -> b FOUR NIL)
+
+eval doubleall_test_4 :
+  -- CONS FOUR (CONS ZERO (CONS TWO NIL))
+  DOUBLEALL (CONS TWO (CONS ZERO (CONS ONE NIL))) =~> \b -> b FOUR (\b -> b ZERO (\b -> b TWO NIL))

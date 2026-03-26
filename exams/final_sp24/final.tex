@@ -1,0 +1,833 @@
+\documentclass[addpoints]{exam}
+\usepackage[utf8]{inputenc}
+\usepackage{mathpartir}
+
+\usepackage[12pt]{extsizes}
+\usepackage[margin=1in]{geometry}
+
+\usepackage{times}
+\usepackage{color}
+\usepackage{graphicx}
+
+\title{CSE114A, Spring 2024: Final Exam}
+\author{Instructor: Lindsey Kuper}
+\date{June 10, 2024}
+
+\renewcommand{\thechoice}{\alph{choice}}
+\renewcommand{\choicelabel}{(\thechoice)}
+
+\renewcommand{\thepartno}{\alph{partno}}
+\renewcommand{\partlabel}{\thepartno.}
+
+\setlength\fillinlinelength{2in}
+\setlength\answerclearance{0.3ex}
+
+\CorrectChoiceEmphasis{\color{red}}
+\shadedsolutions
+
+%%     Tail recursion (lectures 7-8; assignment 3)
+%%     The Maybe type (lecture 8; assignment 3)
+%%     What is a type system? What does it mean for an expression to be well-typed or ill-typed? (lectures 15-17; assignment 5)
+%%     Typing rules; type derivations; type environments (lectures 15-17; assignment 5)
+%%     Polymorphism (lecture 16; assignment 5)
+%%     Type inference (lectures 16-17; assignment 5)
+
+
+\begin{document}
+
+\maketitle
+
+\begin{coverpages}
+
+\bigskip  
+
+\noindent Student name: \hrulefill
+
+\bigskip
+\bigskip
+
+\noindent CruzID: \hrulefill @ucsc.edu
+
+\bigskip
+\bigskip
+
+\noindent This exam has \numquestions~questions and \numpoints~total points.
+
+\bigskip
+\bigskip
+
+\noindent \textbf{Instructions}
+
+\begin{itemize}
+\item Please write directly on the exam.
+\item For short answer questions, please write your answer in the provided boxes.  You can use space outside of the boxes as scratch space, but we won't see or grade it.
+\item For multiple choice questions, please circle the correct choice.
+\item \textbf{You have 180 minutes to complete this exam.} You may leave when you are finished.
+\item This exam is \textbf{closed book}.  You may use one double-sided page of notes, but no other materials.
+\item Avoid seeing anyone else's work or allowing yours to be seen.
+\item Please, no talking.  No notes, books, laptops, phones, or other electronic devices. Do not communicate with anyone but an exam proctor.
+\item To ensure fairness (and the appearance thereof),
+  \textbf{proctors will not answer questions about the content of the exam}. If you are unsure 
+  of how to interpret a problem description, state your interpretation clearly and concisely. 
+  \textit{Reasonable interpretations} will be taken into account by graders.
+\item \textbf{We will give partial credit for partially correct answers when it makes sense to do so.} A partially correct answer is better than leaving an answer blank.
+\end{itemize}
+
+\bigskip
+
+\noindent Good luck!
+
+\newpage
+
+This page is for your use as scratch space. Anything you write here will be ungraded.
+
+\newpage  
+
+\end{coverpages}
+
+\begin{questions}
+
+\subsection*{\textbf{Part 1: Lambda Calculus}}
+
+\question[4] A lambda calculus expression is in \emph{normal form} if it cannot be further reduced.  Evaluate the following lambda calculus expression to normal form using a series of $\beta$-reduction steps (and only $\beta$-reduction steps -- you shouldn't need anything else).  Start each line with \texttt{=b>}, as if you were using Elsa, and do just one $\beta$-reduction step per line.
+
+Note: There may be multiple correct ways to reduce the expression.  A correct solution is any solution that Elsa will accept as correct.
+
+\begin{verbatim}
+(\f -> f (\y -> y)) (\x -> x x) (\x -> x x)
+\end{verbatim}
+\begin{solutionorbox}[5in]
+\begin{verbatim}
+(\f -> f (\y -> y)) (\x -> x x) (\x -> x x)
+=b> ((\x -> x x) (\y -> y)) (\x -> x x)
+=b> ((\y -> y) (\y -> y)) (\x -> x x)
+=b> (\y -> y) (\x -> x x)
+=b> (\x -> x x)
+\end{verbatim}
+\end{solutionorbox}
+
+\newpage
+
+\question
+
+We've seen how the \verb|PAIR| lambda calculus function takes two arguments and creates a data structure with two elements that can be accessed via the \verb|FST| and \verb|SND| accessor functions:
+
+\begin{verbatim}
+let PAIR   = \x y -> (\b -> ITE b x y)
+let FST    = \p -> p TRUE
+let SND    = \p -> p FALSE
+\end{verbatim}
+
+Suppose we want to create a data structure with \emph{three} elements.  Here's one way to define such a data structure, which we'll call a \emph{triple}, using \verb|PAIR|:
+
+\begin{verbatim}
+let TRIPLE = \x y z -> PAIR x (PAIR y z)
+\end{verbatim}
+
+So, \verb|TRIPLE x y z| is a \verb|PAIR| where the first element is \verb|x| and the second element is another \verb|PAIR| containing \verb|y| and \verb|z|.
+
+We can write accessor functions \verb|TFST|, \verb|TSND|, and \verb|TTHD| for accessing the first, second, and third elements of a triple, respectively.  For example, in Elsa:
+
+\begin{verbatim}
+TFST (TRIPLE ONE TWO THREE) =~> ONE
+TSND (TRIPLE ONE TWO THREE) =~> TWO
+TTHD (TRIPLE THREE TWO ONE) =~> ONE
+TTHD (TFST (TRIPLE (TRIPLE FALSE FALSE TRUE) FALSE FALSE)) =~> TRUE
+\end{verbatim}
+
+\verb|TFST| is simple; its implementation is just like \verb|FST|:
+
+\begin{verbatim}
+let TFST = \t -> t TRUE
+\end{verbatim}
+
+Now it's your turn to implement \verb|TSND| and \verb|TTHD|.  Feel free to use anything from the lambda calculus reference at the end of the exam.
+
+\begin{parts}
+
+\part[3]
+
+\begin{verbatim}
+let TSND = 
+\end{verbatim}
+\begin{solutionorbox}[1.5in]
+There are multiple correct answers.
+\begin{verbatim}
+\t -> (t FALSE) TRUE
+\end{verbatim}
+or 
+\begin{verbatim}
+\t -> FST (SND t)
+\end{verbatim}
+both work.
+\end{solutionorbox}
+
+\part[3]
+
+\begin{verbatim}
+let TTHD = 
+\end{verbatim}
+\begin{solutionorbox}[1.5in]
+There are multiple correct answers.
+\begin{verbatim}
+\t -> (t FALSE) FALSE
+\end{verbatim}
+or 
+\begin{verbatim}
+\t -> SND (SND t)
+\end{verbatim}
+both work.
+\end{solutionorbox}
+
+\end{parts}
+
+\newpage
+
+\question The factorial of a positive integer $n$ is the product of all positive integers less than or equal to $n$.  For this question, you will fill in the blanks in the program below to define a function \verb|FACT| where \verb|FACT n| returns the factorial of \verb|n|.  (You can assume that \verb|FACT| is only called with positive integers.)
+
+You may use any of the functions defined in the lambda calculus reference at the end of the exam.  Any other helper functions you must define yourself.  You must use recursion for full credit.
+
+\begin{verbatim}
+let FACT1 = \rec -> \n -> ITE _____(3(a))_______
+                              _____(3(b))_______
+                              _____(3(c))_______
+                      
+let FACT = ______(3(d))_______
+\end{verbatim}
+
+\begin{parts} 
+  \part[3] 3(a):
+  \begin{solutionorbox}[1in]
+\begin{verbatim}
+(ISZ n)
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[3] 3(b):
+  \begin{solutionorbox}[1in]
+\begin{verbatim}
+ONE
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[4] 3(c):
+  \begin{solutionorbox}[1in]
+\begin{verbatim}
+(MUL n (rec (DECR n)))
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[3] 3(d):
+  \begin{solutionorbox}[1in]
+\begin{verbatim}
+Y FACT1
+\end{verbatim}
+  \end{solutionorbox}
+\end{parts}
+
+\newpage
+
+\subsection*{\textbf{Part 2: Haskell}}
+
+For this section, you may wish to use the Haskell reference at the end of the exam.
+
+\question[4] Consider the following Haskell expression:
+
+\begin{verbatim}
+let f = \x -> x in
+  let y = f "sylveon" in
+    let z = f True in
+      [y, z]
+\end{verbatim}
+
+Which of the following statements is true?
+
+\begin{choices}
+  \choice The expression is ill-typed in Haskell, because the function \verb|f| is being applied to arguments of two different types.
+  \choice The expression is ill-typed in Haskell, since \verb|y| has type \verb|(a -> a) -> String| and \verb|z| has type \verb|(a -> a) -> Bool|, so they can't be in a list together.
+  \CorrectChoice The expression is ill-typed in Haskell, since \verb|y| has type \verb|String| and \verb|z| has type \verb|Bool|, so they can't be in a list together.
+  \choice The expression is well-typed in Haskell and has the polymorphic type \verb|[a]|, because \verb|f| is polymorphic and can be applied to arguments of arbitrary type.
+\end{choices}
+
+\question[3] What is the \textbf{type} of the following Haskell expression?
+
+\begin{verbatim}
+\y -> (y : map (\x -> True) "charmander")
+\end{verbatim}
+
+\begin{choices}
+  \choice Type error
+  \CorrectChoice \verb|Bool -> [Bool]|
+  \choice \verb|a -> [Bool]|
+  \choice \verb|Bool -> String|
+  \choice \verb|a -> [String]|
+\end{choices}
+
+\question[3] What is the \textbf{type} of the following Haskell expression?
+
+\begin{verbatim}
+foldr (\x y -> x ++ y) "" ["xatu", "mew", "pineco"]
+\end{verbatim}
+
+\begin{choices}
+  \choice Type error
+  \CorrectChoice \verb|String|
+  \choice \verb|[String]|
+  \choice \verb|String -> String|
+  \choice \verb|[String] -> String|
+\end{choices}
+
+\newpage
+
+\question[3] What is the \textbf{type} of the following Haskell expression?
+
+\begin{verbatim}
+\s t -> (s, t, s == t)
+\end{verbatim}
+
+\begin{choices}
+  \choice Type error
+  \choice \verb|a -> a -> (a, a, Bool)|
+  \choice \verb|a -> b -> (a, b, Bool)|
+  \CorrectChoice \verb|Eq a => a -> a -> (a, a, Bool)|
+  \choice \verb|(Eq a, Eq b) => a -> b -> (a, b, Bool)|
+\end{choices}
+
+\question[3] Consider the following Haskell expression:
+
+\verb|map (\x -> True)|
+
+Which of the following statements is true about this expression?
+
+\begin{choices}
+  \choice The expression is ill-typed in Haskell, because \verb|map| takes two arguments, but here it's only being applied to one argument.
+  \choice The expression is ill-typed in Haskell, because \verb|map| takes a function of type \verb|a -> b| as its first argument, but the function \verb|\x -> True| has type \verb|a -> Bool|.
+  \choice It evaluates to a function that takes a list of elements of type \verb|a| and returns a \verb|Bool|.
+  \CorrectChoice It evaluates to a function that takes a list of elements of type \verb|a| and returns a \textbf{list} of \verb|Bool|s.
+\end{choices}
+
+\question[4] Consider the following Haskell expression:
+
+\verb|map (==) ["pikachu", "togepi", ["fletchling", "charizard"]]|
+
+Which of the following statements is true about this expression?
+
+\begin{choices}
+  \CorrectChoice The expression is ill-typed in Haskell, because a list cannot contain both elements of type \verb|String| and elements of type \verb|[String]|.
+  \choice The expression is ill-typed in Haskell, because \verb|map| takes a one-argument function as its first argument, but \verb|(==)| takes two arguments.
+  \choice The expression has type \verb|[Eq a => a -> Bool]|.  It evaluates to a list of functions that all take arguments comparable with \verb|(==)| and return values of \verb|Bool| type.
+  \choice The expression has type \verb|[Bool]|.  It evaluates to a list of \verb|False| values.
+  \choice (a) and (b)
+\end{choices}
+
+\newpage
+
+\subsection*{\textbf{Part 3: Abstract Syntax Trees, Interpreters, Environments, and Scope}}
+
+\noindent For the questions in this section, we will use the following \verb|Expr| data type.  It defines the grammar of abstract syntax trees for a language with: Booleans, integers, variables, a couple binary operators, lambda (function definition) expressions, application (function call) expressions, and \verb|let|-expressions.
+
+\begin{verbatim}
+data Expr = EBool Bool | EInt Int | EVar Id | EBin BinOp Expr Expr
+          | ELam Id Expr | EApp Expr Expr | ELet Id Expr Expr
+
+data BinOp = And | Plus
+
+type Id = String
+\end{verbatim}
+
+For example, we would represent the expression
+
+\begin{verbatim}
+let f = \x -> True && False in f (3 + 4)
+\end{verbatim}
+
+with the \verb|Expr|
+
+\begin{verbatim}
+ELet "f" (ELam "x" (EBin And (EBool True) (EBool False)))
+         (EApp (EVar "f") (EBin Plus (EInt 3) (EInt 4)))
+\end{verbatim}
+
+\question Be the parser! Translate the following expressions into their corresponding \verb|Expr|s.
+
+\begin{parts}
+
+\part[4]
+\begin{verbatim}
+
+let n = True in
+  let m = \x -> n && x in
+    m True
+\end{verbatim}
+\begin{solutionorbox}[1.5in]
+\begin{verbatim}
+ELet "n" (EBool True)
+         (ELet "m" (ELam "x" (EBin And (EVar "n") (EVar "x")))
+                   (EApp (EVar "m") (EBool True)))
+\end{verbatim}
+\end{solutionorbox}
+
+\part[4]
+\begin{verbatim}
+
+(\x -> (\y -> x + y) 3) 4
+\end{verbatim}
+\begin{solutionorbox}[1.5in]
+\begin{verbatim}
+(EApp (ELam "x" (EApp (ELam "y" (EBin Plus (EVar "x") (EVar "y")))
+                                (EInt 3)))
+      (EInt 4)
+\end{verbatim}
+\end{solutionorbox}
+\end{parts}
+
+\newpage
+
+This page is for your use as scratch space. Anything you write here will be ungraded.
+
+\newpage
+
+Next, we will be writing an interpreter for \verb|Expr|s, but first we need to set up some machinery.
+We'll be making use of the following Haskell definitions:
+
+\begin{verbatim}
+data Val a = VClos a Id Expr | VBool Bool | VInt Int
+  deriving Show
+
+class Env a where
+  emptyEnv :: a
+  extendEnv :: Id -> Val a -> a -> a
+  lookupInEnv :: Id -> a -> Val a
+
+data ListEnv = ListEnv [(Id, Val ListEnv)]
+  deriving Show
+
+instance Env ListEnv where
+  emptyEnv :: ListEnv
+  emptyEnv = ListEnv []
+
+  extendEnv :: Id -> Val ListEnv -> ListEnv -> ListEnv
+  extendEnv id val (ListEnv env) =
+    ListEnv ((id, val) : env)
+
+  lookupInEnv :: Id -> ListEnv -> Val ListEnv
+  lookupInEnv id (ListEnv []) =
+    error ("unbound variable: " ++ id)
+  lookupInEnv id (ListEnv ((x,v):xs))
+    | id == x   = v
+    | otherwise = lookupInEnv id (ListEnv xs)
+\end{verbatim}
+
+The code above defines (among other things) an \verb|Env| \emph{type class} that defines the interface that an environment should implement: an \verb|emptyEnv| value, and \verb|extendEnv| and \verb|lookupInEnv| operations.  One way to implement the environment interface is with \verb|ListEnv|, which represents an environment as a list of pairs that map identifiers to values.  For example, here is an environment represented with \verb|ListEnv| that maps the variable \verb|a| to the value \verb|3| and maps the variable \verb|b| to a closure.
+
+\begin{verbatim}
+ListEnv [("a",VInt 3),("b",VClos emptyEnv "x" (EVar "x"))]
+\end{verbatim}
+
+The interpreter you write ought to work with any environment representation that correctly implements the \verb|Env| interface.  In other words, the \textbf{\texttt{eval} function you write for the next question should call \texttt{lookupInEnv} and \texttt{extendEnv}}, rather than doing something that would depend on the environment representation.
+
+\newpage
+
+\question Fill in the blanks in the following definitions to implement an interpreter for our language.
+Note: Your interpreter does \emph{not} need to support recursive functions.
+
+\begin{verbatim}
+eval :: Env a => a -> Expr -> Val a
+eval _   (EBool b)       = VBool b
+eval _   (EInt n)        = ____(11(a))____
+eval env (EVar id)       = ____(11(b))____
+eval env (EBin op e1 e2) = binHelper op (eval env e1) (eval env e2)
+eval env (ELam id e)     = VClos env id e
+eval env (EApp e1 e2)    = appHelper (eval env e1) (eval env e2)
+eval env (ELet id e1 e2) = eval extendedEnv e2
+  where extendedEnv = extendEnv id (____(11(c))____) env
+
+appHelper :: Env a => Val a -> Val a -> Val a
+appHelper (VClos cEnv id e) argVal = eval (____(11(d))____) e
+appHelper _                 _      = error "type error!"
+
+binHelper :: Env a => BinOp -> Val a -> Val a -> Val a
+binHelper And  (VBool b1) (VBool b2) = VBool (b1 && b2)
+binHelper Plus (VInt n1)  (VInt n2)  = ____(11(e))____
+binHelper _    _          _          = error "type error!"
+\end{verbatim}
+
+\begin{parts} 
+
+  \part[4] 11(a):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+VInt n
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[4] 11(b):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+lookupInEnv id env
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[4] 11(c):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+eval env e1
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[4] 11(d):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+extendEnv id argVal cEnv
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[4] 11(e):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+VInt (n1 + n2)
+\end{verbatim}
+  \end{solutionorbox}
+
+\end{parts}
+
+\subsection*{\textbf{Part 4: Unification and Type Inference}}
+
+\question[3] Which of the following substitutions is \emph{a unifier} \\ for the types \texttt{Int -> a} and \texttt{b -> Int}?
+
+\begin{choices}
+  \choice \texttt{[(a, Int), (b, Int)]}
+  \choice \texttt{[(a, b)]}
+  \choice \texttt{[(a, Int), (b, Int), (c, Int)]}
+  \choice (a) and (b)
+  \CorrectChoice (a) and (c)
+  \choice Cannot unify
+\end{choices}
+
+\question[3] Which of the following substitutions is \emph{a unifier} \\ for the types \texttt{(Int -> Int) -> a} and \texttt{b -> c}?
+
+\begin{choices}
+  \CorrectChoice \texttt{[(c, a), (b, Int -> Int)]}
+  \choice \texttt{[(Int -> Int, b), (c, a)]}
+  \choice \texttt{[(a, Int), (b, Int), (c, Int -> Int)]}
+  \choice (a) and (b)
+  \choice (a), (b), and (c)
+  \choice Cannot unify
+\end{choices}
+
+\question[3] Which of the following substitutions is \emph{a unifier} \\ for the types \texttt{a} and \texttt{b -> Bool -> a}?
+
+\begin{choices}
+  \choice \texttt{[(b -> Bool -> a, a)]}
+  \choice \texttt{[(b, c), (a, c -> Bool -> a)]}
+  \choice \texttt{[(a, b -> Bool -> a)]}
+  \choice (a) and (b)
+  \choice (a), (b), and (c)
+  \CorrectChoice Cannot unify
+\end{choices}
+
+\question[3] Which of the following substitutions is \emph{a unifier} \\ for the types \texttt{a -> c} and \texttt{b -> Bool -> a}?
+
+\begin{choices}
+  \choice \texttt{[(a, b), (c, Bool -> b)]}
+  \choice \texttt{[(b, a), (c, Bool -> a)]}
+  \choice \texttt{[(a, Bool), (c, Bool -> a)]}
+  \CorrectChoice (a) and (b)
+  \choice (a), (b), and (c)
+  \choice Cannot unify
+\end{choices}
+
+\newpage
+
+\question In section 3 of this exam, we wrote an interpreter for a small language, but under some circumstances this interpreter will throw a type error at run time.  For example, here's what would happen if you tried to evaluate the expression \verb|False + 3|:
+
+\begin{verbatim}
+> eval (emptyEnv::ListEnv) (EBin Plus (EBool False) (EInt 3))
+*** Exception: type error!
+\end{verbatim}
+
+To catch these kinds of errors prior to run time, we can define a \emph{type system} for our language and then implement a \emph{type checker}.
+
+Below are some of the typing rules we'd like to use, with a couple of blanks left for you to fill in.  Fill in the blanks to complete the typing rules.
+
+{\small
+\begin{verbatim}
+            G,(x,T1) |- e :: T2                (x,T) in G                
+[T-Lam] --------------------------     [T-Var] -----------
+        G |- (\x -> e) :: T1 -> T2             G |- x :: T
+
+
+        G |- e1 :: Int       G |- e2 :: Int
+[T-Add] -----------------------------------
+          G |- e1 + e2 :: ____(16(a))____
+
+
+        G |- e1 :: T1 -> T2       G |- e2 :: T1  
+[T-App] ---------------------------------------
+            G |- (e1 e2) :: ____(16(b))____
+                             
+        G |- e1 :: T1    G,(x,T1) |- e2 :: T2
+[T-Let] ----------------------------------------    [T-Int] -------------
+        G |- let x = e1 in e2 :: ____(16(c))____            G |- n :: Int
+\end{verbatim}
+}
+
+\begin{parts} 
+
+  \part[2] 16(a):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+Int
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[2] 16(b):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+T2
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[2] 16(c):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+T2
+\end{verbatim}
+  \end{solutionorbox}
+
+\end{parts}
+
+\newpage
+
+\question
+
+Finally, let's use our typing rules to make sure that an expression in our little language is well-typed.  The expression we'll consider is \verb|let f = \x -> x + 1 in f 2|.
+
+For each blank below, fill in a type or the name of a typing rule to complete the typing derivation.
+
+We are using the following abbreviations for type environments:
+\begin{verbatim}
+G1 = [(x,Int)]
+G2 = [(f,Int -> Int)]
+\end{verbatim}
+
+\begin{figure*}[h]
+\advance\leftskip-20cm
+{\small
+\begin{verbatim}
+     (x,Int) in G1                                
+[17a]------------- [17b]-----------
+     G1 |- x::Int       G1 |- 1::Int      (f,Int->Int) in G2
+[17c]------------------------------- [17d]------------------  [17e]--------------
+              G1 |- x+1 :: [17f]          G2 |- f :: Int->Int      G2 |- 2 :: Int
+       [17g]----------------------   [17h]---------------------------------------
+            [] |- \x -> x+1 :: [17i]                 G2 |- f 2 :: [17j]
+       [17k]-----------------------------------------------------------
+                  [] |- let f = \x -> x + 1 in f 2 :: Int
+\end{verbatim}
+}
+\end{figure*}
+
+\begin{parts} 
+  \part[1] 17(a):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+T-Var
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 17(b):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+T-Int
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 17(c):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+T-Add
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 17(d):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+T-Var
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 17(e):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+T-Int
+\end{verbatim}
+  \end{solutionorbox}
+
+\newpage
+
+  \part[1] 17(f):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+Int
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 17(g):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+T-Lam
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 17(h):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+T-App
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 17(i):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+Int -> Int
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 17(j):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+Int
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 17(k):
+  \begin{solutionorbox}[0.5in]
+\begin{verbatim}
+T-Let
+\end{verbatim}
+  \end{solutionorbox}
+\end{parts}
+
+\end{questions}
+
+\newpage
+
+\subsection*{Lambda Calculus Reference}
+
+\begin{verbatim}
+-- Church numerals
+let ZERO  = \f x -> x
+let ONE   = \f x -> f x
+let TWO   = \f x -> f (f x)
+let THREE = \f x -> f (f (f x))
+
+-- Booleans
+let TRUE  = \x y -> x
+let FALSE = \x y -> y
+let ITE   = \b x y -> b x y
+
+-- Pairs
+let PAIR   = \x y -> (\b -> ITE b x y)
+let FST    = \p -> p TRUE
+let SND    = \p -> p FALSE
+
+-- Arithmetic
+let SUC   = \n f x -> f (n f x)
+let ADD   = \n m -> n SUC m
+let MUL   = \n m -> n (ADD m) ZERO
+
+-- The definitions of DECR, SUB, and ISZ are elided
+-- but you can still use them:
+let DECR  = \n ->   -- (decrement n by one)
+let SUB   = \n m -> -- (subtract m from n)
+let ISZ   = \n ->   -- (return TRUE if n == 0 and FALSE otherwise)
+
+-- Note: Since ZERO is the smallest Church numeral,
+-- calls to DECR and SUB bottom out at ZERO.
+-- For example, DECR ZERO evaluates to ZERO,
+-- and SUB TWO THREE evaluates to ZERO.
+
+-- The Y combinator
+let Y = \step -> (\x -> step (x x)) (\x -> step (x x))
+\end{verbatim}
+
+\newpage
+
+\subsection*{Haskell Reference}
+
+\begin{itemize}
+
+\item
+\begin{verbatim}
+map :: (a -> b) -> [a] -> [b]
+map f []     = []
+map f (x:xs) = f x : map f xs
+\end{verbatim}
+
+\item
+\begin{verbatim}
+foldr :: (a -> b -> b) -> b -> [a] -> b
+foldr f b []     = b
+foldr f b (x:xs) = f x (foldr f b xs)
+\end{verbatim}
+
+\item
+\begin{verbatim}
+(:) :: a -> [a] -> [a]
+\end{verbatim}
+The list constructor operator.  Takes an element and a list, and constructs a new list with the specified element as its head and the specified list as its tail.
+\begin{verbatim}
+> 3 : [4, 5]
+[3, 4, 5]
+\end{verbatim}
+
+\item
+\begin{verbatim}
+(+) :: Num a => a -> a -> a
+\end{verbatim}
+Returns the sum of its two arguments, e.g.,
+\begin{verbatim}
+> 3 + 4
+7
+\end{verbatim}
+
+\item
+\begin{verbatim}
+(&&) :: Bool -> Bool -> Bool
+\end{verbatim}
+The logical `and' operation.
+\begin{verbatim}
+> True && False
+False
+> True && True
+True
+\end{verbatim}
+
+\item
+\begin{verbatim}
+(++) :: [a] -> [a] -> [a]
+\end{verbatim}
+Append two lists, e.g.,
+\begin{verbatim}
+> [1,2,3] ++ [4,5]
+[1,2,3,4,5]
+> "apple" ++ "orange"
+"appleorange"
+\end{verbatim}
+
+\item
+\begin{verbatim}
+(==) :: Eq a => a -> a -> Bool
+\end{verbatim}
+Compare arguments for equality, e.g., 
+\begin{verbatim}
+> False == True
+False
+> "apple" == "apple"
+True
+\end{verbatim}
+
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,57 @@
+days: # UTC-7
+  # Week 1
+  - 2026-03-30T14:40:00-7:00 # meeting 0: Intro and course mechanics (all of lecture01-notes.md)
+  - 2026-04-01T14:40:00-7:00 # meeting 1: Lambda calculus (first 1/2 of lecture02-notes.md)
+  - 2026-04-03T14:40:00-7:00 # meeting 2 (last 1/2 of lecture02-notes.md)
+  # Week 2 -- 04-05: Release hw0
+  - 2026-04-06T14:40:00-7:00 # meeting 3 (first 2/3 of lecture03-notes.md)
+  - 2026-04-08T14:40:00-7:00 # meeting 4 (last 1/3 of lecture03-notes.md, first 1/3 of lecture04-notes.md)
+  - 2026-04-10T14:40:00-7:00 # meeting 5 (last 2/3 of lecture04-notes.md)
+  # Week 3 -- 04-12: Release hw1
+  - 2026-04-13T14:40:00-7:00 # meeting 6 (first 2/3 of lecture05-notes.md) -- hw0 topics complete
+  - 2026-04-15T14:40:00-7:00 # meeting 7: Introduction to Haskell (last 1/3 of lecture05, first 1/3 of lecture06-notes.md)
+  - 2026-04-17T14:40:00-7:00 # meeting 8: (last 2/3 of lecture06-notes.md)
+  # 04-18: hw0 due
+  # Week 4 -- 04-19: Release hw2
+  - 2026-04-20T14:40:00-7:00 # meeting 9: Datatypes and recursion (first 2/3 of lecture07-notes.md) -- hw1 topics complete 
+  - 2026-04-22T14:40:00-7:00 # meeting 10 (last 1/3 of lecture07, first 1/3 of lecture08-notes.md) (include hw0 comments-notes.md)
+  - 2026-04-24T14:40:00-7:00 # meeting 11 (last 2/3 of lecture08-notes.md) 
+  # 04-25: hw1 due
+  # Week 5 -- Midterm 1 week
+  - 2026-04-27T14:40:00-7:00 # meeting 12: midterm 1 (lambda calculus, Elsa, redexes, normal form, encoding Booleans and conditionals, encoding numbers, variable scope, free and bound variables, computing the free variables of an expression, the beta rule, capture-avoiding substitution, encoding pairs, non-terminating lambda calculus programs, the Y combinator, recursive lambda calculus programs, working with lists in Haskell, pattern matching, pattern guards, polymorphic types, product types, sum types-notes.md) (plus lecture 12 content?)
+  - 2026-04-29T14:40:00-7:00 # meeting 13 (first 2/3 of lecture09-notes.md) (include hw1 comments)
+  - 2026-05-01T14:40:00-7:00 # meeting 14: Higher-order functions (last 1/3 of lecture09-notes.md, first 1/3 of lecture10-notes.md)
+  # Week 6 -- 05-03: Release hw3
+  - 2026-05-04T14:40:00-7:00 # meeting 15 (last 1/3 of lecture10-notes.md, first 1/3 of lecture11-notes.md) -- hw2 topics complete
+  - 2026-05-06T14:40:00-7:00 # meeting 16: Typeclasses (last 2/3 of lecture11-notes.md)
+  - 2026-05-08T14:40:00-7:00 # meeting 17 (first 2/3 of lecture12-notes.md)
+  # 05-09: hw2 due
+  # Week 7 -- 05-10: Release hw4
+  - 2026-05-11T14:40:00-7:00 # meeting 18: Environments and closures (last 1/3 of lecture12-notes.md, first 1/3 of lecture013-notes.md) -- hw3 topics complete (include hw2 thoughts)
+  - 2026-05-13T14:40:00-7:00 # meeting 19 (last 2/3 of lecture13-notes.md)
+  - 2026-05-15T14:40:00-7:00 # meeting 20 (all of lecture14-notes.md)
+  # 05-16: hw3 due
+  # Week 8 -- Midterm 2 week
+  - 2026-05-18T14:40:00-7:00 # meeting 21: midterm 2 (midterm 1 topics, plus: abstract syntax trees, tuples and pattern matching on them, interpreters, tail recursion, higher-order functions, filter, map, foldr, foldl, type classes, type class constraints, defining our own type classes, environments) (plus lecture 20 content?)
+  - 2026-05-20T14:40:00-7:00 # meeting 22: Types, type inference, and polymorphism (first 1/2 of lecture15-notes.md) (include hw3 thoughts)
+  - 2026-05-22T14:40:00-7:00 # meeting 23: *pause for breath*
+  # Week 9 -- 05-24: Release hw5
+  # No class Monday, 2026-05-25
+  - 2026-05-27T14:40:00-7:00 # meeting 24 (last 1/2 of lecture15-notes.md)
+  - 2026-05-29T14:40:00-7:00 # meeting 25 (first 2/3 of lecture16-notes.md)
+  # 05-30: hw4 due
+  # Week 10
+  - 2026-06-01T14:40:00-7:00 # meeting 26 (last 1/3 of lecture16-notes.md, first 1/3 of lecture17-notes.md) (include hw4 thoughts)
+  - 2026-06-03T14:40:00-7:00 # meeting 27 (last 2/3 of lecture17-notes.md) -- hw5 topics complete
+  - 2026-06-05T14:40:00-7:00 # meeting 28: Ask me anything
+  # 06-06: hw5 due
+
+# Final exam: June 9, 4-7pm. midterms 1 and 2 topics, plus: let-expressions, interpreting function definitions and function applications, more typing rules, unification, polymorphism, static and dynamic scope
+
+holidays:
+  - description: Memorial Day
+    hide_time: true
+    date: 2026-05-25T00:00:00-7:00
+    type: raw_event
+    name: Holiday
+    color: "#e9ffdb"  

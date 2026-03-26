@@ -1,0 +1,13 @@
+<li class="table-row table-row-{{include.event.type}}">
+<div class="col col-1" style="color: #a94442 ;font-weight: bold;" data-label="Event">Exam</div>
+<div class="col col-1-2" style="font-weight: bold" data-label="Date">
+    {{ site.data.meetings.days[include.event.number] | date: site.dateformat }}
+    <br class="date-spliter"/> {{ site.data.meetings.days[include.event.number] | date: "%A" }}
+</div>
+<div class="col col-2" style="font-weight: bold" data-label="Description">
+    {{ include.event.description }}
+</div>
+<div class="col col-4 markdown-content" data-label="Course Material">
+    {{ include.event.content}}
+</div>
+</li>

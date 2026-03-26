@@ -1,0 +1,140 @@
+---
+layout: default
+---
+
+<div class="home">
+
+    <h1>{{ site.course_name }} <span style="font-size: 20px;color: #0006;">/ {{ site.course_semester }} </span></h1>
+
+    <br />
+
+    <h1>Course Description</h1>
+    <p>{{ site.course_description }}</p>
+    
+    {{ content }}
+
+    <h1>Coursework</h1>
+    {% include coursework.html %}
+
+    <h2>Late Policy</h2>
+    {% include late_policy.html %}
+
+    <h2>Academic Integrity Policy</h2>
+    {% include academic_integrity_policy.html %}
+
+    <h1>Diversity and Inclusion</h1>
+
+    We strive to create a learning environment that supports a diversity of
+    thoughts and perspectives, and respects each student's individuality and
+    identity. We make mistakes, though, and if
+    there is a way we can make you feel more included, please let one of the course
+    staff know in any way you feel comfortable.
+
+    We also expect you as a student to honor and respect your classmates and abide by the
+    <a href="https://www.ucsc.edu/about/principles-community.html">UCSC Principles of Community</a>.
+    Building an effective learning environment is only 
+    possible with mutual respect. Each student must feel comfortable 
+    admitting when they don't understand or risking being wrong in public.  
+    Please make an effort to protect this space.
+
+    We do not tolerate intolerance. If you experience any sort of harassment or
+    discrimination, please contact the instructor as soon as possible. If you
+    prefer to speak with someone outside of the course, please see the options below.
+    <ul>
+      <li><a href="https://reporthate.ucsc.edu/">How to report hate or bias</a></li> 
+      <li><a href="https://healthcenter.ucsc.edu/about/report-harassment.html#report">How to report sexual harrassment</a></li> 
+      <li><a href="https://care.ucsc.edu/">CARE</a> (free and confidential support services)</li>
+      <li><a href="https://caps.ucsc.edu/counseling/crisis-assistance.html">Crisis Assistance and Suicide Prevention</a></li>
+    </ul>
+
+    <h1>DRC accommodations</h1>
+    
+    <p>UC Santa Cruz is committed to creating an academic environment that supports
+    its diverse student body. If you are a student with a disability who requires
+    accommodations to achieve equal access in this course, please contact the
+    Disability Resource Center (DRC), and feel free to reach out to me personally as well.
+    I'm eager to discuss ways we can ensure your full participation in the course.</p>
+
+    {% if site.data.previous_offering and site.data.previous_offering.offerings and site.data.previous_offering.offerings.size > 0 %}
+    <h1>Previous Offerings</h1>
+    <ul class="previous-offerings">
+    {% for offer in site.data.previous_offering.offerings %}
+    <li><a href="{{ offer.url }}">{{offer.title}}</a></li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+
+    <br>
+    <div>
+        <div style="width:25%; float: left">
+            <!-- <h2>Instructors</h2> -->
+            <!-- <div class="image--cover-container">
+                <img src="{{site.data.people.instructor.profile_pic | prepend: site.baseurl }}" class="image--cover">
+                <p>{{site.data.people.instructor.name}}</p>
+            </div> -->
+
+            <div class="profile-pic-gallary ">
+                <h2>Instructor</h2>
+                {% for ins in site.data.people.instructors %}
+                <div class="image--cover-container">
+                    <img src="{{ins.profile_pic | prepend: site.baseurl }}" class="image--cover">
+                    {% if ins.webpage %}
+                    <p><a href="{{ ins.webpage }}">{{ins.name}}</a></p>
+                    {% else %}
+                    <p>{{ins.name}}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div style="width:35%; float: left">
+            <div class="profile-pic-gallary ">
+                <h2>Teaching Assistants</h2>
+                {% for ta in site.data.people.teaching_assistants %}
+                <div class="image--cover-container">
+                    {% if ta.profile_pic %}
+                    <img src="{{ta.profile_pic | prepend: site.baseurl }}" class="image--cover">
+                    {% endif %}
+                    {% if ta.webpage %}
+                    <p><a href="{{ ta.webpage }}">{{ta.name}}</a></p>
+                    {% else %}
+                    <p>{{ta.name}}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <h2>Tutors</h2>
+                {% for t in site.data.people.tutors %}
+                <div class="image--cover-container">
+                    {% if t.profile_pic %}
+                    <img src="{{t.profile_pic | prepend: site.baseurl }}" class="image--cover">
+                    {% endif %}
+                    {% if tutor.webpage %}
+                    <p><a href="{{ t.webpage }}">{{t.name}}</a></p>
+                    {% else %}
+                    <p>{{t.name}}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}		
+            </div>
+        </div>
+        <div style="width:35%; float: left">
+            <div class="profile-pic-gallary ">
+                <h2>Readers</h2>
+                {% for r in site.data.people.readers %}
+                <div class="image--cover-container">
+                    {% if r.profile_pic %}
+                    <img src="{{r.profile_pic | prepend: site.baseurl }}" class="image--cover">
+                    {% endif %}
+                    {% if r.webpage %}
+                    <p><a href="{{ r.webpage }}">{{r.name}}</a></p>
+                    {% else %}
+                    <p>{{r.name}}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}		
+            </div>
+        </div>
+    </div>
+</div>

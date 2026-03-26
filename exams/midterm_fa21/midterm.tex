@@ -1,0 +1,666 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Short Sectioned Assignment
+% LaTeX Template
+% Version 1.0 (5/5/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Frits Wenneker (http://www.howtotex.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[paper=letter, fontsize=13pt]{article} % A4 paper and 11pt font size
+
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+%\usepackage{fourier} % Use the Adobe Utopia font for the document - comment this line to return to the LaTeX default
+\usepackage[english]{babel} % English language/hyphenation
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+
+%\usepackage{sectsty} % Allows customizing section commands
+%\allsectionsfont{\centering \normalfont\scshape} % Make all sections centered, the default font and small caps
+  
+
+\usepackage{color}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{inconsolata}
+\usepackage{framed}
+\usepackage{ttquot}
+
+\lstset{language=Haskell}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{myblue}{rgb}{0.2,0.2,0.8}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+%  numbers=left,
+  basicstyle=\ttfamily,
+  showstringspaces=false,
+  backgroundcolor=\color{white},   % choose the background color
+%  breaklines=true,                 % automatic line breaking only at whitespace
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  escapeinside={(*}{*)},          % if you want to add LaTeX within your code
+  keywordstyle=\color{mymauve},       % keyword style
+}
+
+% Add your keywords here, and have this in a separate file
+% and include it in your preamble
+\lstset{emph={%  
+    DECR,EQL,TRUE, FALSE, ITE, NOT, AND, OR, PAIR, FST, SND, ZERO, ONE,% 
+    TWO, THREE, FOUR, FIVE, INC, ADD, MUL, ISZ, GET, APPEND, REVERSE, FIX, EMPTY, S\_GET, CONVERT, LENGTH%
+    },emphstyle={\bfseries}%
+}%
+
+
+\usepackage[margin=1in]{geometry}
+%\usepackage{fancyhdr} % Custom headers and footers
+%\pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
+%\fancyhead{} % No page header - if you want one, create it in the same way as the footers below
+%\fancyfoot[L]{} % Empty left footer
+%\fancyfoot[C]{} % Empty center footer
+%\fancyfoot[R]{\thepage} % Page numbering for right footer
+%\renewcommand{\headrulewidth}{0pt} % Remove header underlines
+%\renewcommand{\footrulewidth}{0pt} % Remove footer underlines
+%\setlength{\headheight}{13.6pt} % Customize the height of the header
+
+
+\numberwithin{equation}{section} % Number equations within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+%\numberwithin{figure}{section} % Number figures within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+%\numberwithin{table}{section} % Number tables within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+
+%\setlength\parindent{0pt} % Removes all indentation from paragraphs - comment this line for an assignment with lots of text
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+\newif\ifshowanswers\showanswerstrue
+
+\title{\vspace{-2em} 	
+\normalfont \normalsize 
+%\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+{\huge CSE 114A, Fall 2021 Midterm} \\ % The assignment title
+\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
+}
+\date{\vspace{-4em}} % Today's date or a custom date
+
+\begin{document}
+
+\maketitle % Print the title
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 1
+%----------------------------------------------------------------------------------------
+
+% TODO : Random list?
+% https://tex.stackexchange.com/questions/96645/random-shuffle-itemize
+\begin{center}
+ {\Large
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Section} & \textbf{Points} & \textbf{Score} \\
+\hline
+Part I     & 58 points  & \\
+\hline
+Part II   &  80 points &   \\
+\hline
+ \textbf{Total} & 138 points &   \\
+\hline
+\end{tabular}
+}
+
+\end{center}
+\large 
+
+
+\paragraph{\textbf{ Instructions} }
+\begin{itemize}
+
+\item \textbf{You have 95 minutes to complete this exam.}
+
+\item This exam is \textbf{closed book}.  You may use one double-sided
+page of notes, but no other materials.
+
+\item Avoid seeing anyone else's work or allowing yours to be seen.
+
+\item Do not communicate with anyone but an exam proctor.
+
+\item To ensure fairness (and the appearance thereof),
+  \textbf{proctors will not answer questions about the content of the exam}. If you are unsure 
+  of how to interpret a problem description, state your interpretation clearly and concisely. 
+  \textit{Reasonable interpretations} will be taken into account by graders.
+
+\end{itemize}
+
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\noindent NAME: \verb|____________________________________________________| \\
+\bigskip\\ 
+\bigskip\\
+CruzID: \verb|_______________________________| @ucsc.edu
+
+\newpage
+\noindent {\Huge \textbf{Part I: Lambda calculus}}
+
+\bigskip
+
+\begin{enumerate} 
+\item Consider the following lambda calculus expression: \\\\
+
+{\Large
+\verb|(\x y z -> x z y) (\a b c -> a b c) (\x y -> y) (\y z -> y) apple|
+}
+\bigskip
+\bigskip
+\begin{enumerate}[label=(\Alph*)]
+\item \textbf{(5 pts)}
+  Recall that the \emph{redex} of a lambda expression is the is a lambda term of the form \verb|(\x -> e1) e2|.
+  Identify a redex in the above expression and write it below.  If there are multiple, you may choose any valid redex.  If
+  there are no redexes, write ``none.''
+
+\ifshowanswers
+\begin{itemize}
+  \item \verb|(\x y z -> x z y) (\a b c -> a b c)|
+\end{itemize}
+\else
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\fi
+
+\item \textbf{(8 pts)} Does the above expression have a normal form?  If so, what is it?
+\begin{enumerate}[label=(\alph*), itemsep=1em]
+\item \verb|apple|
+\item \verb|\c -> c|
+\item \verb|TRUE|
+\item \verb|\x y -> y|                  % correct
+\item Does not have a normal form
+\end{enumerate}
+\end{enumerate}
+
+\newpage
+\item Now consider the following lambda calculus expression: \\\\
+
+{\Large
+\verb|(\x y z -> y x z) (\x -> x x a) (\y z -> z y) (\y -> y y b)|
+}
+
+\begin{enumerate}[label=(\Alph*)]
+\item \textbf{(5 pts)}
+  Which variables are \textbf{bound} in the above expression?
+\begin{enumerate}[label=(\alph*), itemsep=1em]
+\item All occurrences of "a" and "b"
+\item All occurrences of "x", "y" and "z"  % correct
+\item All occurrences of "a", "b", "x", "y" and "z"
+\item The first occurrences of "x", "y" and "z"
+\item All but the first occurrences of "x", "y" and "z"
+\end{enumerate}
+
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+
+\item \textbf{(10 pts)} Which of the following expressions can be obtained from the above expression with one or more beta reductions?
+\begin{enumerate}[label=(\alph*), itemsep=1em]
+\item \verb|(\a -> a (\x -> x x a)) (\y -> y y b)| % wrong, needs an alpha reduction
+\item \verb|(\x -> x x a) (\y -> y y b)|                     % wrong, order swapped
+\item \verb|(\x -> x x a) (\y -> y y b) a b a b a|
+\item \verb|(\x -> x x a) (\x -> x x a) a a a a b| % correct
+\item \verb|(\y -> y y b) (\y -> y y b) b b b b a|
+\end{enumerate}
+
+\end{enumerate}
+
+\newpage
+
+\item \textbf{(20 pts)}
+  Fill in a lambda calculus expression for each blank in the program
+below to define a function \verb|POW| where \verb|(POW x n)| returns 
+$x$ raised to the $n^{th}$ power.  For example \verb|POW TWO THREE =~> EIGHT|.
+You may use any of the functions defined on the Lambda
+Calculus Cheat Sheet on the back page.  Any other helper functions you
+must define yourself.  You must use recursion for full credit.
+
+\begin{verbatim}
+let POW1 = \f x n -> ITE _____(A)_______
+                         _____(B)_______
+                         _____(C)_______
+                      
+let POW = ______(D)_______
+\end{verbatim}
+\begin{enumerate}[label=(\Alph*)]
+   \item 
+     \ifshowanswers 
+      (5pts) \verb|(ISZ n)|  (parens optional).  Minor deduction (.5) for more complicated but correct answer.  Full credit if it is just the negation (i.e., using NOT)
+     \else
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+     \fi
+   \item
+     \ifshowanswers 
+       (5pts) \verb|ONE|  or \verb|n| 
+     \else
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+     \fi
+   \item
+     \ifshowanswers 
+      (5pts) \verb|MULT n (f (DECR x))|.  Full credit  requires correct operation (MULT), correct use of recursive call (f), and correct argument to f (DECR x), roughly equal weight.  Minor deduction (.5) for more complicated answer or other small errors.
+     \else
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+     \fi
+   \item 
+     \ifshowanswers 
+     (5pts) \verb|FIX POW1| . Half credit at least if FIX is applied to PROD1 in some way.
+     \else
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+     \fi
+\end{enumerate}
+
+\newpage
+
+\item For each bound occurrence of a variable in the following lambda terms, 
+draw an arrow pointing to its binder. For each free occurrence, draw a circle around the variable.
+
+\bigskip
+\bigskip
+\bigskip
+
+\begin{enumerate}[label=(\Alph*)]
+\item \textbf{(5 pts)} {\Large
+  \verb|(\x -> \y -> \z -> x (\y -> z (\z -> y z)) y)|
+}
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+
+\item \textbf{(5 pts)} {\Large
+  \verb|(\x y z -> (\a b c -> x y z)) (\x y z -> a b c)|
+}
+\end{enumerate}
+
+\bigskip
+\bigskip
+\bigskip
+
+\newpage
+\noindent {\Huge \textbf{Part II: Haskell}}
+\bigskip
+\bigskip
+\bigskip
+\item \textbf{(5 pts)} What is the type of the following Haskell expression? \\\\
+  \verb|map (\x y -> x + y) [1, 2, 3, 4, 5]|
+  \begin{enumerate}[label=(\alph*), itemsep=1em]
+  \item \verb|Int|
+  \item \verb|[Int]|
+  \item \verb|Int -> [Int]|
+  \item \verb|[Int -> Int]|
+  \item Type error
+  \end{enumerate}
+
+\item \textbf{(5 pts)} What does the following Haskell expression evaluate to? \\\\
+  \verb|foldl (-) 0 [1, 2, 3]|
+  \begin{enumerate}[label=(\alph*), itemsep=1em]
+  \item $0$
+  \item $-2$
+  \item $2$
+  \item $-6$  % correct
+  \item Type error
+  \end{enumerate}
+
+\item \textbf{(5 pts)} What does the following Haskell expression evaluate to? \\\\
+  \verb|foldr (flip (-)) 0 [1, 2, 3]|
+  \begin{enumerate}[label=(\alph*), itemsep=1em]
+  \item $0$
+  \item $-2$
+  \item $2$
+  \item $-6$     % correct
+  \item Type error
+  \end{enumerate}
+
+\newpage
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+For the next questions, consider the data type defined below.
+\begin{lstlisting}
+data Expr = Abs String Expr
+          | App Expr Expr
+          | Var String
+\end{lstlisting}
+
+%\item \textbf{[21pts]} A \texttt{case} expression is \textit{exhaustive} if all possible values are matched
+%by at least one pattern. A pattern is \textit{overlapping} if previous patterns match all values it matches.
+%Assume \texttt{t} has type \texttt{TrickOrTreat} and do the following:
+%\begin{itemize}
+%  \item For each pattern in each \texttt{case}, provide a value that matches on the pattern.
+%  \item If the pattern is overlapped by previous patterns, write ``N/A''.
+%  \item Determine if the \texttt{case} expression is exhaustive and circle \texttt{Exhaustive} or \texttt{Non-exhaustive} as appropriate.
+%  \item For non-exhaustive \texttt{case} expressions, write a value that does not match any of its patterns.
+%\end{itemize}
+
+\item \textbf{(15 pts)} The function "show" converts an "Expr" value to a String in lambda expression syntax. For example:
+  \lstinline{ show (App (Abs "x" (Var "x")) (Var "y")) } returns ``\verb|(\x -> x) y|''. Fill
+  in the blanks to complete the implementation.
+
+\begin{lstlisting}[language=Haskell]
+show :: Expr -> String
+
+show ______(A)_______ = "(\" ++ x ++ " -> " ++ (show e) ++ ")"
+
+show (App e1 e2)      = __________(B)_________ 
+
+show ________________(C)______________________
+\end{lstlisting}
+  \vspace{-6em}
+  
+\begin{enumerate}[label=(\Alph*)]
+   \item 
+     \ifshowanswers 
+      \verb|(Abs x e)| 
+     \else
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+     \fi
+   \item 
+     \ifshowanswers 
+      \verb|(show e1) ++ " " ++ (show e2)| 
+     \else
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+     \fi
+   \item 
+     \ifshowanswers 
+      \verb|(Var x) = x| % half credit for correct pattern / body
+     \else
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+     \fi
+\end{enumerate}
+
+\newpage
+\item \textbf{(10 pts)} Create an "Expr" value that, when passed to "show", returns: \\\\
+  \verb|"(\stp -> (\x -> stp (x x)) (\x -> stp (x x)))"|
+
+     \ifshowanswers 
+     \begin{verbatim}
+     (Abs "stp"
+         (App (Abs "x" (App (Var "stp") (App (Var "x") (Var "x")))) 
+              (Abs "x" (App (Var "stp") (App (Var "x") (Var "x"))))))
+   \end{verbatim}
+     \else
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+     \fi
+
+  
+   \item \textbf{(30 pts)} The "subst" function implements capture-avoiding substitution for "Expr" values. For example,
+  \verb|subst (Abs "a" (Var "b")) "b" (Abs "x" (Var "x"))| returns \verb|(Abs "a" (Abs "x" (Var "x")))|
+   since \verb|(\a -> b)[b:=(\x -> x)]| equals \verb|(\a -> (\x -> x))|.
+
+     The helper function \verb|fv :: Expr -> [String]|
+      returns a list of strings containing the name of each free variable in an "Expr" value.
+     
+     The guard expression "notElem x (fv e2)" returns "True" if the string "x" is \textbf{not} in the list of free variable names of "e2"
+     returned by "(fv e2)", otherwise it returns "False". 
+
+\begin{lstlisting}[language=Haskell]
+  subst :: Expr -> String -> Expr -> Expr
+  subst (Var x)     y e  = ____________(A)______________
+  subst (App e1 e2) y e3 = ____________(B)______________
+  subst (Abs x e1)  y e2 
+    | x == y             = _________________(C)_______________
+    | notElem x (fv e2)  = _________________(D)_______________ 
+\end{lstlisting}
+\vspace{-12em}
+\begin{enumerate}[label=(\Alph*)]
+   \item 
+     \ifshowanswers 
+      \verb|if x == y then e else (Var x)| 
+     \else
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+     \fi
+   \item 
+     \ifshowanswers 
+      \verb|(App (subst e1 y e3) (subst e1 y e3))|
+     \else
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+     \fi
+     \newpage
+   \item 
+     \ifshowanswers 
+      \verb|(Abs x e1)|
+     \else
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+     \fi
+   \item 
+     \ifshowanswers 
+      \verb|(Abs x (subst e1 y e2))|
+     \else
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+     \fi
+\end{enumerate}
+\vspace{12em}
+
+\item \textbf{(10 pts)} Are the equations for "subst" exhaustive? If they are, write ``exhaustive''; if not, write a call to "subst"  with arguments that are not matched by any of "subst"'s equations.
+     \ifshowanswers 
+      \verb|subst (Abs "y" (Var "x")) "x" (Var "y")|
+     \else
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+           \bigskip
+     \fi
+\end{enumerate}
+\newpage
+\[ \]
+\newpage
+\section{Lambda calculus cheat sheet}
+\begin{lstlisting}
+-- Booleans --------------------------------
+let TRUE =\x y -> x
+let FALSE = \x y -> y
+let ITE = \b x y -> b x y
+let NOT = \b x y -> b y x
+let AND = \b1 b2 -> ITE b1 b2 FALSE 
+let OR = \b1 b2 -> ITE b1 TRUE b2
+
+-- Numbers ---------------------------------
+let ZERO = \f x-> x
+let ONE = \f x -> f x 
+let TWO = \f x -> f (f x) 
+let THREE = \f x -> f (f (f x))
+let FOUR = \f x -> f (f (f (f x))
+let FIVE = \f x -> f (f (f (f (f x))
+
+-- Arithmetic ------------------------------
+let INC   = \n f x -> f (n f x)
+let ADD   = \n m -> n INC m 
+let MUL   = \n m -> n (ADD m) ZERO
+let ISZ   = \n ->   -- return TRUE if n == 0 --
+let DECR  = \n ->   -- decrement n by one --  
+let EQL   = \a b -> -- return TRUE if a == b, otherwise FALSE --
+
+-- Recursion -------------------------------
+let FIX = \stp -> (\x -> stp (x x)) (\x -> stp (x x))
+\end{lstlisting}
+\newpage
+\section{Haskell cheat sheet}
+\begin{lstlisting}
+foldr :: (a -> b -> b) -> b -> [a] -> b
+foldr f b []     = b
+foldr f b (x:xs) = f x (foldr f b xs)
+
+foldl :: (b -> a -> b) -> b -> [a] -> b
+foldl f b xs          = helper b xs
+  where
+    helper acc []     = acc
+    helper acc (x:xs) = helper (f acc x) xs
+
+filter :: (a -> Bool) -> [a] -> [a]
+filter pred []    = []
+filter pred (x:xs)
+  | pred x         = x : filter pred xs
+  | otherwise      = filter pred xs
+
+map :: (a -> b) -> [a] -> [b]
+map _ []     = []
+map f (x:xs) = f x : map f xs
+
+flip :: (a -> b -> c) -> b -> a -> c
+flip f x y = f y x
+
+(++) :: [a] -> [a] -> [a]
+(++) :: [a] -> [a] -> [a]
+(++) []     ys = ys
+(++) (x:xs) ys = x : xs ++ ys
+
+even :: (Integral a) => a -> Bool
+(==) :: Eq a => a -> a -> Bool
+max  :: Ord a => a -> a -> a
+(<)  :: Ord a => a -> a -> Bool
+(>)  :: Ord a => a -> a -> Bool
+(>=) :: Ord a => a -> a -> Bool
+(<=) :: Ord a => a -> a -> Bool
+\end{lstlisting}
+
+\end{document}

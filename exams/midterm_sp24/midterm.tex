@@ -1,0 +1,555 @@
+\documentclass[addpoints]{exam}
+\usepackage[utf8]{inputenc}
+
+\usepackage[12pt]{extsizes}
+\usepackage[margin=0.8in]{geometry}
+
+\usepackage{times}
+\usepackage{color}
+\usepackage{graphicx}
+
+\title{CSE114A, Spring 2024: Midterm Exam}
+\author{Instructor: Lindsey Kuper}
+\date{May 9, 2024}
+
+\renewcommand{\thechoice}{\alph{choice}}
+\renewcommand{\choicelabel}{(\thechoice)}
+
+\renewcommand{\thepartno}{\alph{partno}}
+\renewcommand{\partlabel}{\thepartno.}
+
+\setlength\fillinlinelength{2in}
+\setlength\answerclearance{0.3ex}
+
+\CorrectChoiceEmphasis{\color{red}}
+\shadedsolutions
+
+\begin{document}
+
+\maketitle
+
+\begin{coverpages}
+
+\bigskip  
+
+\noindent Student name: \hrulefill
+
+\bigskip
+\bigskip
+
+\noindent CruzID: \hrulefill @ucsc.edu
+
+\bigskip
+\bigskip
+
+\noindent This exam has \numquestions~questions and \numpoints~total points.
+
+\bigskip
+\bigskip
+
+\noindent \textbf{Instructions}
+
+\begin{itemize}
+\item Please write directly on the exam.
+\item For short answer questions, please write your answer in the provided boxes.  You can use space outside of the boxes as scratch space, but we won't see or grade it.
+\item For multiple choice questions, please completely fill in the circle for the correct choice.
+\item \textbf{You have 95 minutes to complete this exam.} You may leave when you are finished.
+\item This exam is \textbf{closed book}.  You may use one double-sided page of notes, but no other materials.
+\item Avoid seeing anyone else's work or allowing yours to be seen.
+\item Please, no talking.  No notes, books, laptops, phones, or other electronic devices. Do not communicate with anyone but an exam proctor.
+\item To ensure fairness (and the appearance thereof),
+  \textbf{proctors will not answer questions about the content of the exam}. If you are unsure 
+  of how to interpret a problem description, state your interpretation clearly and concisely. 
+  \textit{Reasonable interpretations} will be taken into account by graders.
+\item \textbf{We will give partial credit for partially correct answers when it makes sense to do so.} A partially correct answer is better than leaving an answer blank.
+\end{itemize}
+  
+\bigskip
+
+\noindent Good luck!
+
+\newpage
+
+This page is for your use as scratch space. Anything you write here will be ungraded.
+
+\newpage  
+
+\end{coverpages}
+
+\begin{questions}
+
+\subsection*{\textbf{Part 1: Lambda Calculus}}
+
+\question[6] A lambda calculus expression is in \emph{normal form} if it cannot be further reduced.  Evaluate the following lambda calculus expression to normal form using a series of $\beta$-reduction steps (and only $\beta$-reduction steps -- you shouldn't need anything else).  Start each line with \texttt{=b>}, as if you were using Elsa, and do just one $\beta$-reduction step per line.
+
+Note: There may be multiple correct ways to reduce the expression.  A correct solution is any solution that Elsa will accept as correct.
+
+\begin{verbatim}
+(\x y -> y x) (\q r -> q) (\f g h -> f (g h)) (\z -> z)
+\end{verbatim}
+\begin{solutionorbox}[5in]
+Here is one solution (there may be other correct solutions):
+\begin{verbatim}
+(\x y -> y x) (\q r -> q) (\f g h -> f (g h)) (\z -> z)
+=b> (\y -> y (\q r -> q)) (\f g h -> f (g h)) (\z -> z)
+=b> (\f g h -> f (g h)) (\q r -> q) (\z -> z)
+=b> (\g h -> (\q r -> q) (g h)) (\z -> z)
+=b> \h -> (\q r -> q) ((\z -> z) h)
+=b> \h -> (\q r -> q) h
+=b> \h -> (\r -> h)
+\end{verbatim}
+\end{solutionorbox}
+
+\newpage
+
+\question[5]
+
+Here is the \texttt{BOX} function:
+
+\begin{verbatim}
+let BOX = \x -> (\ignored -> x)
+\end{verbatim}
+
+\texttt{BOX} takes an argument \texttt{x}, and returns a \emph{box} containing \texttt{x}.  A \emph{box} is similar to a \emph{pair}, except that it contains only one element.
+
+Define a lambda calculus function \texttt{UNBOX} that takes a box as its argument and returns the contents of the box.  For example, in Elsa:
+
+\begin{verbatim}
+UNBOX (BOX ZERO) =~> ZERO
+UNBOX (BOX TRUE) =~> TRUE
+UNBOX (BOX TWO) =~> TWO
+UNBOX (BOX (UNBOX (BOX TWO))) =~> TWO
+\end{verbatim}
+
+Hint: Think about how the \verb|FST| and \verb|SND| functions access the contents of a pair.  (\verb|FST| and \verb|SND| are defined in the lambda calculus reference at the end of the exam.)  Can you do something similar to access the contents of a box?
+
+\begin{verbatim}
+let UNBOX = 
+\end{verbatim}
+\begin{solutionorbox}[1.5in]
+Here is one correct answer that passes the identity function as an argument to the box (but another argument, such as \texttt{ZERO} or \texttt{TRUE} or \texttt{FALSE}, would also be fine).
+\begin{verbatim}
+let UNBOX = \b -> b (\z -> z)
+\end{verbatim}
+\end{solutionorbox}
+
+\newpage
+
+\question Define a lambda calculus function \texttt{NEST} that takes a Church numeral \texttt{n} as an argument.  If \texttt{n} is \texttt{ZERO}, \texttt{NEST} returns \texttt{ZERO}.  Otherwise, \texttt{NEST n} returns \texttt{n} nested boxes, with the innermost box containing \texttt{ZERO}. For example, in Elsa:
+
+\begin{verbatim}
+NEST ZERO =~> ZERO
+NEST ONE =*> BOX ZERO
+NEST TWO =*> BOX (BOX ZERO)
+NEST THREE =*> BOX (BOX (BOX ZERO))
+\end{verbatim}
+
+(Note: We are using \texttt{=*>} instead of \verb|=~>| in the example calls to \texttt{NEST} above because the expressions can be further reduced.  For example, \texttt{BOX ZERO} can be further reduced to \verb|\b -> ZERO|, and \texttt{BOX (BOX ZERO)} can be further reduced to \verb|\b -> \b -> ZERO|.)
+
+You may assume that \texttt{NEST} is only called with non-negative integers represented as Church numerals.  You may use any of the helper functions defined on the provided lambda calculus reference at the end of the exam. You must use recursion for full credit.
+
+\begin{verbatim}
+let NEST1 = \rec -> \n -> ITE _____(part 3(a))_______
+                              _____(part 3(b))_______
+                              _____(part 3(c))_______
+                      
+let NEST = ______(part 3(d))_______
+\end{verbatim}
+
+\begin{parts} 
+  \part[5] 3(a):
+  \begin{solutionorbox}[\stretch{4}]
+This is where we check a condition to know whether we are in the base case or not.   \texttt{(ISZ n)} is a correct answer, but there are other correct answers.
+  \end{solutionorbox}
+
+  \part[5] 3(b):
+  \begin{solutionorbox}[\stretch{4}]
+This is the base case.  \texttt{ZERO} is a correct answer, but there are other correct answers.
+  \end{solutionorbox}
+
+  \part[5] 3(c):
+  \begin{solutionorbox}[\stretch{4}]
+This is the recursive case.  \texttt{(BOX (rec (DECR n)))} is a correct answer, but there are other correct answers.
+  \end{solutionorbox}
+
+  \part[5] 3(d):
+  \begin{solutionorbox}[\stretch{4}]
+\begin{verbatim}
+Y NEST1
+\end{verbatim}
+  \end{solutionorbox}
+\end{parts}
+
+\newpage
+
+\subsection*{\textbf{Part 2: Haskell}}
+
+The Haskell reference at the end of the exam has information about library functions used in this section.
+
+\question[4] What is the \textbf{type} of the following Haskell expression?
+
+\begin{verbatim}
+\x y -> [x, "pineco", "celebi"]
+\end{verbatim}
+
+\begin{checkboxes}
+  \choice Type error
+  \choice \texttt{[String]}
+  \choice \texttt{a -> a -> [String]}
+  \CorrectChoice \texttt{String -> a -> [String]}
+  \choice \texttt{String -> String -> [String]}
+\end{checkboxes}
+
+\question[4] What is the \textbf{type} of the following Haskell expression?
+
+\begin{verbatim}
+(\x -> if x == 5 then "glaceon" else ("sylveon", "leafeon")) 700
+\end{verbatim}
+
+\begin{checkboxes}
+  \CorrectChoice Type error
+  \choice \texttt{String}
+  \choice \texttt{(String, String)}
+  \choice \texttt{Num a => a -> String}
+  \choice \texttt{Num a => a -> (String, String)}
+\end{checkboxes}
+
+\question[4] What is the \textbf{type} of the following Haskell expression?
+
+\begin{verbatim}
+(\s t u -> if s == "mew" then Just "litten" else u) "mew"
+\end{verbatim}
+
+\begin{checkboxes}
+  \choice Type error
+  \choice \texttt{String -> a -> Maybe String}
+  \CorrectChoice \texttt{a -> Maybe String -> Maybe String}
+  \choice \texttt{String -> a -> String}
+  \choice \texttt{Maybe String -> a -> Maybe String}    
+\end{checkboxes}
+
+\question[4] What is the \textbf{type} of the following Haskell expression?
+
+\begin{verbatim}
+map (\x -> x == 5)
+\end{verbatim}
+
+\begin{checkboxes}
+  \choice Type error
+  \choice \texttt{(Eq a, Num a) => a -> [Bool]}
+  \CorrectChoice \texttt{(Eq a, Num a) => [a] -> [Bool]}
+  \choice \texttt{(Eq a, Num a) => (a -> Bool) -> [Bool]}
+  \choice \texttt{(Eq a, Num a) => [Bool] -> [a]}
+\end{checkboxes}
+
+\newpage
+
+\question[5] What does the following Haskell expression \textbf{evaluate to}?
+
+\begin{verbatim}
+map (\x -> 5) [1, 2, 3, 4, 5]
+\end{verbatim}
+
+\begin{solutionorbox}[1.5in]
+\begin{verbatim}
+[5, 5, 5, 5, 5]
+\end{verbatim}
+\end{solutionorbox}
+
+\question[5] What does the following Haskell expression \textbf{evaluate to}?
+
+\begin{verbatim}
+foldr (++) "gengar" ["eevee", "diglett"]
+\end{verbatim}
+
+\begin{solutionorbox}[1.5in]
+\begin{verbatim}
+"eeveediglettgengar"
+\end{verbatim}
+\end{solutionorbox}
+
+\newpage
+
+\subsection*{\textbf{Part 3: Abstract Syntax Trees and Environments}}
+
+\noindent For all the questions in this section, we will use the following \verb|Expr| data type.  It defines the grammar of abstract syntax trees for SmolHaskell, a language that is a very (\emph{very}) small subset of Haskell.  SmolHaskell has numbers, Booleans, variables, addition expressions, subtraction expressions, and \verb|if|-expressions, represented with the \verb|Expr| \emph{constructors} \verb|ENum|, \verb|EBool|, \verb|EVar|, \verb|EPlus|, \verb|EMinus|, and \verb|EIf|, respectively.
+
+\begin{verbatim}
+data Expr = ENum Int | EBool Bool | EVar String | EPlus Expr Expr
+          | EMinus Expr Expr | EIf Expr Expr Expr
+\end{verbatim}
+
+For example, we can represent the SmolHaskell program
+\begin{verbatim}
+if x then (if False then (3 + 4) else (5 + y)) else z
+\end{verbatim}
+with the \verb |Expr| 
+\begin{verbatim}
+EIf (EVar "x")
+    (EIf (EBool False)
+         (EPlus (ENum 3) (ENum 4))
+         (EPlus (ENum 5) (EVar "y")))
+    (EVar "z")
+\end{verbatim}
+The \emph{size} of an \verb|Expr| is the number of \verb|Expr| constructors that it has.  For instance:\\
+\verb|ENum 5| is size 1,\\
+\verb|EPlus (ENum 3) (ENum 4)| is size 3, and \\
+\verb|EIf (EBool False) (EPlus (ENum 5) (EVar "x")) (ENum 4)| is size 6.
+
+\question
+
+\begin{parts}
+
+\part[12] Define a Haskell function \verb|size| that takes an \verb|Expr| and returns its size as an \verb|Int|.  You can use \verb|(+)|, but no other library functions. The type signature of \verb|size| is provided for you below; fill in the rest of the definition.
+
+\verb|size :: Expr -> Int|
+\begin{solutionorbox}[\stretch{1}]
+\begin{verbatim}
+size (ENum _) = 1
+size (EBool _) = 1
+size (EVar _) = 1
+size (EPlus e1 e2) = 1 + size e1 + size e2
+size (EMinus e1 e2) = 1 + size e1 + size e2
+size (EIf e1 e2 e3) = 1 + size e1 + size e2 + size e3
+\end{verbatim}
+\end{solutionorbox}
+
+\newpage
+
+\part[9] Here is a function that computes the total size of all the \verb|Expr|s in a list:
+
+\begin{verbatim}
+sizeAll :: [Expr] -> Int
+sizeAll []     = 0
+sizeAll (x:xs) = size x + sizeAll xs
+\end{verbatim}
+
+Define a \emph{tail-recursive} Haskell function \verb|sizeAllTR| that has the same behavior as \verb|sizeAll|.  You may define a helper function or use a \verb|where| clause.  You can use \verb|(+)|, but no other library functions.  (It's OK to use \verb|size|, of course.)  The type signature of \verb|sizeAllTR| is provided for you below; fill in the rest of the definition.
+
+\verb|sizeAllTR :: [Expr] -> Int|
+\begin{solutionorbox}[2.6in]
+\begin{verbatim}
+sizeAllTR xs = helper xs 0
+  where helper :: [Expr] -> Int -> Int
+        helper []     acc = acc
+        helper (x:xs) acc = helper xs (acc + size x)
+\end{verbatim}
+(or use a separate helper function)
+\end{solutionorbox}
+
+\part[7] Define a Haskell function \verb|sizeAllFoldr| using \verb|foldr| that has the same behavior as \verb|sizeAll|.  You can use \verb|foldr| and \verb|(+)|, but no other library functions.  (It's OK to use \verb|size|, of course.)  The type signature of \verb|sizeAllFoldr| is provided for you below; fill in the rest of the definition.
+
+Hint: The first argument to \verb|foldr| should be of type \verb|Expr -> Int -> Int|.
+
+\begin{verbatim}
+sizeAllFoldr :: [Expr] -> Int
+\end{verbatim}
+\begin{solutionorbox}[1.6in]
+\begin{verbatim}
+sizeAllFoldr xs = foldr (\x y -> size x + y) 0 xs
+\end{verbatim}
+\end{solutionorbox}
+
+\end{parts}
+
+\newpage
+
+\question[15] Finally, let's write an interpreter for \verb|Expr|s!
+
+Since SmolHaskell supports both numbers and Booleans, our interpreter should be able to return values of either type.  For example, the SmolHaskell program
+
+\verb|if True then False else True|
+
+evaluates to \verb|False|, but the SmolHaskell program
+
+\verb|if True then 3 else (4 + 5)|
+
+evaluates to \verb|3|.  So, we will define a type for \emph{values} that will encompass both numbers and Booleans:
+
+\begin{verbatim}
+data Value = VNum Int | VBool Bool
+\end{verbatim}
+
+And now we can write an interpreter that returns a \verb|Value|.
+
+We also need to deal with \verb|Expr|s that contain \emph{variables}, so our interpreter will need to be an \emph{environment-passing} interpreter, as seen on Assignment 3.  We will represent an environment as a list of pairs of \verb|String|s and \verb|Value|s, using the following type alias:
+
+\begin{verbatim}
+type Env = [(String, Value)]
+\end{verbatim}
+
+So the type signature of our interpreter will be:
+
+\begin{verbatim}
+eval :: Expr -> Env -> Value
+\end{verbatim}
+
+The environment associates variables with values.  If we try to evaluate an expression containing a variable that does not have a binding in the provided environment, our interpreter should raise a run-time exception. \textbf{The code that does this is in the provided helper functions, so if you use the helper functions, you won't need to implement the code that raises the exception yourself.}
+
+If we try to run a program that uses a number where it should use a Boolean, like \verb|if 3 then 5 else 7|, or a program that uses a Boolean where it should use a number, like \verb|3 + False|, our interpreter should raise an run-time exception.  \textbf{Again, the code that does this is in the provided helper functions, so if you use the helper functions, you won't need to implement the code that raises the exception yourself.}
+
+Here are some example calls to \verb|eval|:
+\begin{verbatim}
+> eval (EBool True) []
+VBool True
+> eval (EIf (EBool True) (EBool False) (EBool True)) []
+VBool False
+> eval (EIf (EBool False) (ENum 3) (EVar "x")) [("x", VNum 5)]
+VNum 5
+> eval (EIf (EBool True) (EVar "y") (ENum 3)) [("x", VNum 5)]
+*** Exception: Unbound variable!
+> eval (EIf (ENum 3) (ENum 5) (ENum 7)) []
+*** Exception: Type error
+> eval (EPlus (ENum 3) (EBool False)) []
+*** Exception: Type error
+\end{verbatim}
+
+\newpage
+
+We are now ready to define our interpreter.  The type signature of \verb|eval| and the first line of its definition is given for you below; fill in the rest of the definition.
+
+Hint: Use \verb|(+)|, \verb|(-)|, and the helper functions at the bottom of the page, and you can do this in five lines of code.
+
+\begin{verbatim}
+eval :: Expr -> Env -> Value
+eval (ENum n) env = VNum n
+\end{verbatim}
+\begin{solutionorbox}[4in]
+\begin{verbatim}
+eval (EBool b)      env = VBool b
+eval (EVar s)       env = lookupInEnv s env
+eval (EPlus e1 e2)  env = evalNumOp (+) (eval e1 env) (eval e2 env)
+eval (EMinus e1 e2) env = evalNumOp (-) (eval e1 env) (eval e2 env)
+eval (EIf e1 e2 e3) env = evalIf (eval e1 env) (eval e2 env) (eval e3 env)
+\end{verbatim}
+\end{solutionorbox}
+
+\begin{verbatim}
+evalNumOp :: (Int -> Int -> Int) -> Value -> Value -> Value
+evalNumOp f (VNum n) (VNum m) = VNum (f n m)
+evalNumOp f _        _        = error "Type error"
+
+evalIf :: Value -> Value -> Value -> Value
+evalIf (VBool True)  v1 v2 = v1
+evalIf (VBool False) v1 v2 = v2
+evalIf v             _  _  = error "Type error"
+
+lookupInEnv :: String -> Env -> Value
+lookupInEnv _ []          = error "Unbound variable!"
+lookupInEnv s ((k,v):kvs) = if s == k then v else lookupInEnv s kvs
+\end{verbatim}
+
+\end{questions}
+
+\newpage
+
+\subsection*{Lambda Calculus Reference}
+
+\begin{verbatim}
+-- Church numerals
+let ZERO  = \f x -> x
+let ONE   = \f x -> f x
+let TWO   = \f x -> f (f x)
+let THREE = \f x -> f (f (f x))
+
+-- Booleans
+let TRUE  = \x y -> x
+let FALSE = \x y -> y
+let ITE   = \b x y -> b x y
+
+-- Pairs
+let PAIR   = \x y -> (\b -> ITE b x y)
+let FST    = \p -> p TRUE
+let SND    = \p -> p FALSE
+
+-- Boxes
+let BOX = \x -> (\ignored -> x)
+
+-- Arithmetic
+let SUC   = \n f x -> f (n f x)
+let ADD   = \n m -> n SUC m
+
+-- The definitions of DECR, SUB, and ISZ are elided
+-- but you can still use them:
+let DECR  = \n ->   -- (decrement n by one)
+let SUB   = \n m -> -- (subtract m from n)
+let ISZ   = \n ->   -- (return TRUE if n == 0 and FALSE otherwise)
+
+-- Note: Since ZERO is the smallest Church numeral,
+-- calls to DECR and SUB bottom out at ZERO.
+-- For example, DECR ZERO evaluates to ZERO,
+-- and SUB TWO THREE evaluates to ZERO.
+
+-- The Y combinator
+let Y = \step -> (\x -> step (x x)) (\x -> step (x x))
+\end{verbatim}
+
+\newpage
+
+\subsection*{Haskell Reference}
+
+
+
+\begin{itemize}
+
+\item
+\begin{verbatim}
+map :: (a -> b) -> [a] -> [b]
+map f []     = []
+map f (x:xs) = f x : map f xs
+\end{verbatim}
+
+\item
+\begin{verbatim}
+foldr :: (a -> b -> b) -> b -> [a] -> b
+foldr f b []     = b
+foldr f b (x:xs) = f x (foldr f b xs)
+\end{verbatim}
+
+\item
+\begin{verbatim}
+(+) :: Num a => a -> a -> a
+\end{verbatim}
+Returns the sum of its two arguments, e.g.,
+\begin{verbatim}
+> 3 + 4
+7
+\end{verbatim}
+
+\item
+\begin{verbatim}
+(-) :: Num a => a -> a -> a
+\end{verbatim}
+Returns the difference of its two arguments, e.g.,
+\begin{verbatim}
+> 5 - 4
+1
+\end{verbatim}
+
+\item
+\begin{verbatim}
+(++) :: [a] -> [a] -> [a]
+\end{verbatim}
+Append two lists, e.g.,
+\begin{verbatim}
+> [1,2,3] ++ [4,5]
+[1,2,3,4,5]
+> "apple" ++ "orange"
+"appleorange"
+\end{verbatim}
+
+\item
+\begin{verbatim}
+(==) :: Eq a => a -> a -> Bool
+\end{verbatim}
+Compare arguments for equality, e.g., 
+\begin{verbatim}
+> False == True
+False
+> "apple" == "apple"
+True
+\end{verbatim}
+
+\end{itemize}
+
+\end{document}

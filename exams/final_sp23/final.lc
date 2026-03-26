@@ -1,0 +1,102 @@
+ -- Elsa code for spring 2023 midterm
+
+-- Church numerals
+let ZERO  = \f x -> x
+let ONE   = \f x -> f x
+let TWO   = \f x -> f (f x)
+let THREE = \f x -> f (f (f x))
+let FOUR  = \f x -> f (f (f (f x)))
+let FIVE  = \f x -> f (f (f (f (f x))))
+let SIX   = \f x -> f (f (f (f (f (f x)))))
+let TEN   = \f x -> f (f (f (f (f (f (f (f (f (f x)))))))))
+let FIFTEEN  = \f x -> f (f (f (f (f (f (f (f (f (f (f (f (f (f (f x))))))))))))))
+
+-- Booleans
+let TRUE  = \x y -> x
+let FALSE = \x y -> y
+let ITE   = \b x y -> b x y
+
+-- Pairs
+let PAIR  = \x y b -> ITE b x y
+let FST   = \p     -> p TRUE
+let SND   = \p     -> p FALSE
+
+-- Arithmetic
+let SUC   = \n f x -> f (n f x)
+let ADD   = \n m -> n SUC m
+let SKIP1 = \f p -> PAIR TRUE (ITE (FST p)
+                                   (f (SND p))
+                                   (SND p))
+let DECR  = \n -> SND (n (SKIP1 SUC) (PAIR FALSE ZERO))
+let SUB   = \n m -> m DECR n
+let ISZ   = \n -> n (\z -> FALSE) TRUE
+
+-- The Y combinator
+let Y = \step -> (\x -> step (x x)) (\x -> step (x x))
+
+-- Problem 2
+let LEQ   = \n m -> ISZ (SUB n m)
+
+-- Problem 3
+let TRI1   = \rec -> \n -> ITE (ISZ n)
+                               ZERO
+		               (ADD n (rec (DECR n)))
+let TRI    = Y TRI1
+
+eval problem_1_option_1 :
+(\b f g -> b f g) (\x y -> x) (\z -> z) (\f x -> (\q -> q) x)
+=b> (\f g -> (\x y -> x) f g) (\z -> z) (\f x -> (\q -> q) x)
+=b> (\g -> (\x y -> x) (\z -> z) g) (\f x -> (\q -> q) x)
+=b> (\x y -> x) (\z -> z) (\f x -> (\q -> q) x)
+=b> (\y -> (\z -> z)) (\f x -> (\q -> q) x)
+=b> (\z -> z)
+
+eval problem_1_option_2 :
+(\b f g -> b f g) (\x y -> x) (\z -> z) (\f x -> (\q -> q) x)
+=b> (\b f g -> b f g) (\x y -> x) (\z -> z) (\f x -> x)
+=b> (\f g -> (\x y -> x) f g) (\z -> z) (\f x -> x)
+=b> (\g -> (\x y -> x) (\z -> z) g) (\f x -> x)
+=b> (\x y -> x) (\z -> z) (\f x -> x)
+=b> (\y -> (\z -> z)) (\f x -> x)
+=b> (\z -> z)
+
+eval problem_1_option_3 :
+(\b f g -> b f g) (\x y -> x) (\z -> z) (\f x -> (\q -> q) x)
+=b> (\f g -> (\x y -> x) f g) (\z -> z) (\f x -> (\q -> q) x)
+=b> (\g -> (\x y -> x) (\z -> z) g) (\f x -> (\q -> q) x)
+=b> (\g -> (\x y -> x) (\z -> z) g) (\f x -> x)
+=b> (\x y -> x) (\z -> z) (\f x -> x)
+=b> (\y -> (\z -> z)) (\f x -> x)
+=b> (\z -> z)
+
+eval problem_2 :
+ADD (SND ((\x y b -> ITE b x y) TRUE THREE)) (\f x -> f x)
+=~> FOUR
+
+eval problem_3 :
+ADD (FST ((\x y b -> ITE b x y) FALSE THREE)) (\f x -> f x)
+=~> ONE
+
+eval problem_5_test_1:
+TRI ZERO
+=~> ZERO
+
+eval problem_5_test_2:
+TRI ONE
+=~> ONE
+
+eval problem_5_test_3:
+TRI TWO
+=~> THREE
+
+eval problem_5_test_4:
+TRI THREE
+=~> SIX
+
+eval problem_5_test_5:
+TRI FOUR
+=~> TEN
+
+eval problem_5_test_6:
+TRI FIVE
+=~> FIFTEEN

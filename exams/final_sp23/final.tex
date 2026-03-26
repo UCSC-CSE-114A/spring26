@@ -1,0 +1,794 @@
+\documentclass[addpoints]{exam}
+\usepackage[utf8]{inputenc}
+\usepackage{mathpartir}
+
+\usepackage[12pt]{extsizes}
+\usepackage[margin=1in]{geometry}
+
+\usepackage{times}
+\usepackage{color}
+\usepackage{graphicx}
+
+\title{CSE114A, Spring 2023: Final Exam}
+\author{Instructor: Lindsey Kuper}
+\date{June 13, 2023}
+
+\renewcommand{\thechoice}{\alph{choice}}
+\renewcommand{\choicelabel}{(\thechoice)}
+
+\renewcommand{\thepartno}{\alph{partno}}
+\renewcommand{\partlabel}{\thepartno.}
+
+\setlength\fillinlinelength{2in}
+\setlength\answerclearance{0.3ex}
+
+\CorrectChoiceEmphasis{\color{red}}
+\shadedsolutions
+
+\newcommand{\vc}{\ensuremath{\textit{VC}}}
+
+\begin{document}
+
+\maketitle
+
+\begin{coverpages}
+
+\bigskip  
+
+\noindent Student name: \hrulefill
+
+\bigskip
+\bigskip
+
+\noindent CruzID (the part before the ``@'' in your UCSC email address): \hrulefill
+
+\bigskip
+\bigskip
+
+\noindent This exam has \numquestions~questions and \numpoints~total points.
+
+\bigskip
+\bigskip
+
+\noindent \textbf{Instructions}
+
+\begin{itemize}
+\item Please write directly on the exam.
+\item For short answer questions, please write your answer in the provided boxes.  You can use space outside of the boxes as scratch space, but we won't see or grade it.
+\item For multiple choice questions, please circle the correct choice.
+\item \textbf{You have 180 minutes to complete this exam.} You may leave when you are finished.
+\item This exam is \textbf{closed book}.  You may use one double-sided page of notes, but no other materials.
+\item Avoid seeing anyone else's work or allowing yours to be seen.
+\item Please, no talking.  No notes, books, laptops, phones, or other electronic devices. Do not communicate with anyone but an exam proctor.
+\item To ensure fairness (and the appearance thereof),
+  \textbf{proctors will not answer questions about the content of the exam}. If you are unsure 
+  of how to interpret a question, state your interpretation clearly and concisely. 
+  \textit{Reasonable interpretations} will be taken into account by graders.
+\item \textbf{We will give partial credit for partially correct answers when it makes sense to do so.} A partially correct answer is better than leaving an answer blank.
+\end{itemize}
+  
+\bigskip
+
+\noindent Good luck!
+
+\newpage
+
+This page is for your use as scratch space. Anything you write here will be ungraded.
+
+\newpage  
+
+\end{coverpages}
+
+\begin{questions}
+
+\subsection*{\textbf{Part 1: Lambda Calculus}}
+
+\question[4] A lambda calculus expression is in \emph{normal form} if it cannot be further reduced.  Evaluate the following lambda calculus expression to normal form using a series of $\beta$-reduction steps (and only $\beta$-reduction steps -- you shouldn't need anything else).  Start each line with \texttt{=b>}, as if you were using Elsa, and do one $\beta$-reduction step per line.
+
+Note: There may be multiple correct ways to reduce the expression.  A correct solution is any solution that Elsa will accept as correct.
+
+\begin{verbatim}
+(\b f g -> b f g) (\x y -> x) (\z -> z) (\f x -> (\q -> q) x)
+\end{verbatim}
+  \begin{solutionorbox}[3.5in]
+There are several correct options here.  For example, you could work on the outer redex first:
+\begin{verbatim}
+(\b f g -> b f g) (\x y -> x) (\z -> z) (\f x -> (\q -> q) x)
+=b> (\f g -> (\x y -> x) f g) (\z -> z) (\f x -> (\q -> q) x)
+=b> (\g -> (\x y -> x) (\z -> z) g) (\f x -> (\q -> q) x)
+=b> (\x y -> x) (\z -> z) (\f x -> (\q -> q) x)
+=b> (\y -> (\z -> z)) (\f x -> (\q -> q) x)
+=b> (\z -> z)
+\end{verbatim}
+
+Or you could reduce inside the body of \verb|(\f x -> (\q -> q) x)| first:
+\begin{verbatim}
+(\b f g -> b f g) (\x y -> x) (\z -> z) (\f x -> (\q -> q) x)
+=b> (\b f g -> b f g) (\x y -> x) (\z -> z) (\f x -> x)
+=b> (\f g -> (\x y -> x) f g) (\z -> z) (\f x -> x)
+=b> (\g -> (\x y -> x) (\z -> z) g) (\f x -> x)
+=b> (\x y -> x) (\z -> z) (\f x -> x)
+=b> (\y -> (\z -> z)) (\f x -> x)
+=b> (\z -> z)
+\end{verbatim}
+
+A combination of the above approaches could also work.
+  \end{solutionorbox}
+
+\question[3] Which of the following lambda calculus expressions is in normal form?
+
+  \begin{choices}
+    \choice \verb|(\x -> x x) (\x -> x x)| 
+    \choice \verb|\step -> (\x -> step (x x)) (\x -> step (x x))|
+    \CorrectChoice \verb|\s z -> s z|
+    \choice (a), (b), and (c)
+    \choice (b) and (c)
+    \choice None of the above
+  \end{choices}
+
+\newpage
+
+\begin{verbatim}
+let ZERO  = \f x -> x
+let ONE   = \f x -> f x
+let TWO   = \f x -> f (f x)
+let THREE = \f x -> f (f (f x))
+let FOUR  = \f x -> f (f (f (f x)))
+
+let TRUE  = \x y -> x
+let FALSE = \x y -> y
+let ITE   = \b x y -> b x y
+
+let PAIR  = \x y b -> ITE b x y
+let FST   = \p     -> p TRUE
+let SND   = \p     -> p FALSE
+
+let SUC   = \n f x -> f (n f x)
+let ADD   = \n m -> n SUC m
+
+-- The definitions of DECR, SUB, and ISZ are elided
+-- but you can still use them:
+let DECR  = \n ->   -- (decrement n by one)
+let SUB   = \n m -> -- (subtract m from n)
+let ISZ   = \n ->   -- (return TRUE if n == 0 and FALSE otherwise)
+
+-- The Y combinator
+let Y = \step -> (\x -> step (x x)) (\x -> step (x x))
+\end{verbatim}
+
+\question For this question, the definitions above may be helpful.
+
+\begin{parts}
+  
+\part[3] What does the lambda calculus expression
+
+\verb|ADD (SND ((\x y b -> ITE b x y) TRUE THREE)) (\f x -> f x)|
+
+evaluate to?
+
+  \begin{choices}
+    \choice Syntax error 
+    \choice \texttt{ONE}
+    \choice \texttt{TWO}
+    \choice \texttt{THREE}
+    \CorrectChoice \texttt{FOUR}
+  \end{choices}
+
+\part[3] What does the lambda calculus expression
+
+\verb|ADD (FST ((\x y b -> ITE b x y) FALSE THREE)) (\f x -> f x)|
+
+evaluate to?
+
+  \begin{choices}
+    \choice Syntax error 
+    \CorrectChoice \texttt{ONE}
+    \choice \texttt{TWO}
+    \choice \texttt{THREE}
+    \choice \texttt{FOUR}
+  \end{choices}
+
+\end{parts}
+
+\newpage
+
+\question In the \emph{triangular} number sequence, the zeroth entry is $0$, and the $n$th entry (indexed from 0) is the sum of $n$ and the $(n - 1)$th entry.  Therefore the sequence is $0, 1, 3, 6, 10, 15, \dots$.
+
+(In other words, the zeroth entry is $0$, the first entry is equal to $1 + 0$, the second entry is equal to $2 + 1 + 0$, the third entry is equal to $3 + 2 + 1 + 0$, and so on.)
+
+Fill in the blanks in the program below to define a recursive lambda calculus function \texttt{TRI}, where \texttt{TRI n} returns the $n$th number (indexed from 0) in the above sequence, represented as a Church numeral.  For example:
+
+\begin{verbatim}
+TRI ZERO  =~> ZERO
+TRI ONE   =~> ONE
+TRI TWO   =~> THREE
+TRI THREE =~> \f x -> f (f (f (f (f (f x))))) -- 6
+TRI FOUR  =~> \f x -> f (f (f (f (f (f (f (f (f (f x))))))))) -- 10
+\end{verbatim}
+
+You may assume that \texttt{TRI} is only called with non-negative integers represented as Church numerals.  You may use any of the functions defined on page 2.  Any other helper functions you must define yourself.  You must use recursion for full credit.
+
+\begin{verbatim}
+let TRI1 = \rec -> \n -> ITE _____(part 5(a))_______
+                             _____(part 5(b))_______
+                             _____(part 5(c))_______
+                      
+let TRI = ______(part 5(d))_______
+\end{verbatim}
+
+\begin{parts} 
+  \part[4] 5(a):
+  \begin{solutionorbox}[0.6in]
+This is where we check a condition to know whether we are in the base case or not.  The simplest correct answer here is \texttt{(ISZ n)}.
+  \end{solutionorbox}
+
+  \part[4] 5(b):
+  \begin{solutionorbox}[0.6in]
+This is the base case.  The simplest correct answer here is \texttt{ZERO}.
+  \end{solutionorbox}
+
+  \part[4] 5(c):
+  \begin{solutionorbox}[0.6in]
+This is the recursive case.  The simplest correct answer here is \texttt{(ADD n (rec (DECR n)))}.
+  \end{solutionorbox}
+
+  \part[4] 5(d):
+  \begin{solutionorbox}[0.6in]
+\begin{verbatim}
+Y TRI1
+\end{verbatim}
+  \end{solutionorbox}
+\end{parts}
+
+\newpage
+
+\subsection*{\textbf{Part 2: Haskell}}
+
+\question For each part of this question, write the \emph{type} of the specified Haskell expression.  Your answer should be the same as what GHCi's \texttt{:t} would say, modulo names of type variables.  (For example, if GHCi would say an expression has type \texttt{p1 -> p2}, then answers like \texttt{a -> b} or \texttt{b -> a} would be correct, but \texttt{a -> a} would be incorrect since \texttt{p1} and \texttt{p2} are different type variables.)
+
+\begin{parts}
+  \part[4]
+\begin{verbatim}
+\x y -> [True, False, x]
+\end{verbatim}
+  \begin{solutionorbox}[0.7in]
+\verb|Bool -> a -> [Bool]|
+  \end{solutionorbox}
+
+  \part[4]
+\begin{verbatim}
+map (\x -> if x then "xatu" else "mew") [True, False]
+\end{verbatim}
+  \begin{solutionorbox}[0.7in]
+\verb|[String]|
+  \end{solutionorbox}
+
+  \part[4]
+\begin{verbatim}
+map (\x -> if x then "vaporeon" else "espeon")
+\end{verbatim}
+  \begin{solutionorbox}[0.7in]
+\verb|[Bool] -> [String]|
+  \end{solutionorbox}
+
+  \part[4]  
+\begin{verbatim}
+
+\x -> case x of
+        Just val -> (val, x)
+        Nothing  -> ("cramorant", x)
+\end{verbatim}
+  \begin{solutionorbox}[0.7in]
+\verb|Maybe String -> (String, Maybe String)|
+  \end{solutionorbox}
+  
+  \part[4]
+\begin{verbatim}
+
+\x -> case x of
+        Just val -> val
+        Nothing  -> ["dodrio", "delphox", "dragonite"]
+\end{verbatim}
+  \begin{solutionorbox}[0.7in]
+\verb|Maybe [String] -> [String]|
+  \end{solutionorbox}
+\end{parts}
+
+\newpage
+
+\question[8] For this question, you will implement a Haskell function \verb|foo| that takes three arguments: a default value of type \verb|b|, a function of type \verb|a -> b|, and a value of type \verb|Maybe a|. If the \verb|Maybe a| value is \verb|Nothing|, then \verb|foo| returns the default value. Otherwise, it applies the provided function to the value inside the \verb|Just| and returns the result.
+
+Hint: You can implement \verb|foo| in two lines of code, one for each of the two cases to handle.
+
+\begin{verbatim}
+foo :: b -> (a -> b) -> Maybe a -> b
+\end{verbatim}
+  \begin{solutionorbox}[2in]
+A concise solution is:  
+\begin{verbatim}
+foo n _ Nothing  = n
+foo _ f (Just x) = f x
+\end{verbatim}
+
+Incidentally, this function is part of the Haskell standard library, where it's called \verb|maybe| (not be confused with upper-case \verb|Maybe|)!
+  \end{solutionorbox}
+
+  \question[3] Which of the following expressions does \emph{not} have type \verb|String|?  Hint: If you need them, the type signatures of \verb|map|, \verb|foldl|, and \verb|(++)| are in the Haskell Reference on the last page of the exam.
+
+  \begin{choices}
+    \CorrectChoice \verb|map (\x -> []) "lucario"|
+    \choice \verb|foldl (++) "pikachu" []|
+    \choice \verb|foldl (++) "" []|
+    \choice \verb|foldl (\x y -> x) [] ["ninetales"]|
+    \choice \verb|foldl (\x y -> "aipom") "" [1, 2, 3]|
+    \choice (a) and (e)
+  \end{choices}
+
+  \question[3] Which of the following list comprehensions does \emph{not} have type \verb|[Bool]|?
+
+  \begin{choices}
+    \choice \verb$[ if x == 3 then False else True | x <- [1, 2, 3] ]$
+    \choice \verb$[ (\y -> if y then False else True) x | x <- [True, False] ]$
+    \CorrectChoice \verb$[ if x then False else True | x <- [1, 2, 3] ]$
+    \choice \verb$[ (\y -> if y == 3 then False else True) 3 | x <- [True] ]$
+    \choice (c) and (d)
+  \end{choices}
+
+\newpage
+
+\subsection*{\textbf{Part 3: Abstract Syntax Trees, Interpreters, Environments, and Scope}}
+
+\noindent For the questions in this section, we will use the following \verb|Expr| data type.  It defines the grammar of abstract syntax trees for a little language with numbers, variables, addition expressions, lambda (function definition) expressions, application (function call) expressions, and \verb|let|-expressions.
+
+\begin{verbatim}
+data Expr = ENum Int | EVar Id | EPlus Expr Expr
+          | ELam Id Expr | EApp Expr Expr | ELet Id Expr Expr
+
+type Id = String
+\end{verbatim}
+
+For example, we would represent the expression
+
+\begin{verbatim}
+let f = \x -> x in
+  f (3 + 4)
+\end{verbatim}
+
+with the \verb|Expr|
+
+\begin{verbatim}
+ELet "f" (ELam "x" (EVar "x"))
+         (EApp (EVar "f") (EPlus (ENum 3) (ENum 4)))
+\end{verbatim}
+
+\question Be the parser! Translate the following expressions into their corresponding \texttt{Expr}s.
+
+\begin{parts}
+\part[4]
+\begin{verbatim}
+
+let n = 2 in
+  let m = 3 + n in
+    \x -> m + x
+\end{verbatim}
+\begin{solutionorbox}[1.3in]
+\begin{verbatim}
+ELet "n" (ENum 2)
+         (ELet "m" (EPlus (ENum 3) (EVar "n"))
+                   (ELam "x" (EPlus (EVar "m")
+                                    (EVar "x"))))
+\end{verbatim}
+\end{solutionorbox}
+
+\part[4]
+\begin{verbatim}
+
+(\x -> x) (\z -> (\y -> y z))
+\end{verbatim}
+\begin{solutionorbox}[1.3in]
+\begin{verbatim}
+EApp (ELam "x" (EVar "x"))
+     (ELam "z" (ELam "y" (EApp (EVar "y") (EVar "z"))))
+\end{verbatim}
+\end{solutionorbox}
+\end{parts}
+
+\newpage
+
+\question If we typed in an \verb|Expr| at the GHCi prompt, we'd get an error saying that there is no instance of the \verb|Show| typeclass for the \verb|Expr| type.  Let's fix that by implementing a custom instance of \verb|Show| for \verb|Expr|s.  To do so, we need to implement a function \verb|show| with type signature \verb|Expr -> String|.
+
+Here are some examples of the behavior we should see in GHCi after implementing \verb|show|:
+
+\begin{verbatim}
+ghci> EPlus (ENum 3) (EPlus (ENum 4) (EVar "z"))
+(3 + (4 + z))
+ghci> EApp (EVar "x") (EVar "y")
+(x y)
+ghci> EApp (EApp (EVar "x") (EVar "y")) (EPlus (ENum 3) (EVar "z"))
+((x y) (3 + z))
+ghci> ELet "x" (ENum 3) (EPlus (EVar "x") (ENum 2))
+let x = 3 in (x + 2)
+ghci> ELet "f" (ELam "x" (EVar "x")) (EApp (EVar "f") (ENum 3))
+let f = (\x -> x) in (f 3)
+\end{verbatim}
+
+The implementation of \verb|show| is below, with some blanks for you to fill in. Hint: The \verb|EPlus|, \verb|EApp|, and \verb|ELet| cases are not that different from the provided \verb|ELam| case.
+
+\begin{verbatim}
+instance Show Expr where
+  show :: Expr -> String
+  show (ENum n)        = show n
+  show (EVar s)        = s
+  show (EPlus e1 e2)   = ________(11(a))________
+  show (ELam id body)  = "(\\" ++ id ++ " -> " ++ show body ++ ")"
+  show (EApp e1 e2)    = ________(11(b))________
+  show (ELet id e1 e2) = ________(11(c))________
+\end{verbatim}
+
+\begin{parts} 
+
+  \part[4] 11(a):
+  \begin{solutionorbox}[0.7in]
+\begin{verbatim}
+"(" ++ show e1 ++ " + " ++ show e2 ++ ")"
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[4] 11(b):
+  \begin{solutionorbox}[0.7in]
+\begin{verbatim}
+"(" ++ show e1 ++ " " ++ show e2 ++ ")"
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[4] 11(c):
+  \begin{solutionorbox}[0.7in]
+\begin{verbatim}
+"let " ++ id ++ " = " ++ show e1 ++ " in " ++ show e2
+\end{verbatim}
+  \end{solutionorbox}
+
+\end{parts}
+
+\newpage
+
+\question We will be writing an interpreter for \verb|Expr|s, but first, we need to set up some machinery.  First, we'll define a type of \verb|Value|s that expressions can evaluate to:
+
+\begin{verbatim}
+data Value = VNum Int | VClos Env Id Expr
+\end{verbatim}
+
+We can now define a type of \emph{environments} that associate variable identifiers with values.  We will represent an environment as a list of pairs of \verb|Id| and \verb|Value|:
+
+\begin{verbatim}
+type Env = [(Id, Value)]
+\end{verbatim}
+
+\begin{parts}
+
+\part[4] The Haskell function \verb|lookupInEnv| takes as arguments a variable identifier and an environment, and returns the value that the specified identifer is associated with in the environment.  Fill in the blank below to complete the definition of \verb|lookupInEnv|.
+
+\begin{verbatim}
+lookupInEnv :: Id -> Env -> Value
+lookupInEnv id []           = error "unbound variable"
+lookupInEnv id ((x,val):xs) = ________(11(a))________
+\end{verbatim}
+\begin{solutionorbox}[1in]
+There are a couple of correct ways to write this, but a concise answer is:
+  
+\begin{verbatim}
+if id == x
+  then val
+  else lookupInEnv id xs
+\end{verbatim}
+\end{solutionorbox}
+
+\part[4] Write a Haskell function \verb|extendEnv| that takes as arguments a variable identifier, a value, and an environment, and returns a new environment that extends the old one with a binding for the specified identifier and value.  The type signature is provided for you.  Hint: With the way we are representing environments, this is a one-liner.
+\begin{verbatim}
+extendEnv :: Id -> Value -> Env -> Env
+\end{verbatim}
+\begin{solutionorbox}[1in]
+\begin{verbatim}
+extendEnv id val env = (id, val) : env
+\end{verbatim}
+\end{solutionorbox}
+
+\end{parts}
+
+\question We can now define an interpreter \verb|eval| that takes an environment of type \verb|Env| and an expression of type \verb|Expr| and returns a value of type \verb|Value|.  Fill in the blanks in the following definition of \verb|eval|.
+
+\newpage
+
+\begin{verbatim}
+eval :: Env -> Expr -> Value
+eval env (ENum n)       = VNum n
+eval env (EVar s)       = lookupInEnv s env
+eval env (EPlus e1 e2)  = case (eval env e1, eval env e2) of
+  (VNum n1, VNum n2) -> VNum (n1 + n2)
+  _                  -> error "type error: not a number"
+eval env (ELam id body) = VClos env id body
+eval env (EApp e1 e2)   = case ________(12(a))________ of
+  VClos ce id e -> let argVal      = ________(12(b))________
+                       extendedEnv = ________(12(c))________
+                     in eval extendedEnv e
+  _             -> error "type error: not a function"                      
+eval env (ELet id e1 e2) =
+  let v1          = eval env e1
+      extendedEnv = ________(12(d))________
+    in ________(12(e))________
+\end{verbatim}
+
+\begin{parts} 
+
+  \part[4] 12(a):
+  \begin{solutionorbox}[0.7in]
+\begin{verbatim}
+eval env e1
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[4] 12(b):
+  \begin{solutionorbox}[0.7in]
+\begin{verbatim}
+eval env e2
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[4] 12(c):
+  \begin{solutionorbox}[0.7in]
+\begin{verbatim}
+extendEnv id argVal ce
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[4] 12(d):
+  \begin{solutionorbox}[0.7in]
+\begin{verbatim}
+extendEnv id v1 env
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[4] 12(e):
+  \begin{solutionorbox}[0.7in]
+\begin{verbatim}
+eval extendedEnv e2
+\end{verbatim}
+  \end{solutionorbox}
+
+\end{parts}
+
+\newpage
+
+\question Consider the following Nano program:
+\begin{verbatim}
+let a = 3 in
+  let f = \x y -> x + y + a in
+    let x = 4 in
+      let a = 5 in
+        f x a
+\end{verbatim}
+
+
+%%
+
+\begin{parts}
+\part[3] Under \textbf{static scope}, what would the above program evaluate to?
+
+\begin{choices}
+  \choice error: multiple declarations of a variable
+  \choice error: unbound variable
+  \choice 14
+  \CorrectChoice 12
+  \choice 10
+\end{choices}
+
+\part[3] Under \textbf{dynamic scope}, what would the above program evaluate to?
+
+\begin{choices}
+  \choice error: multiple declarations of a variable
+  \choice error: unbound variable
+  \CorrectChoice 14
+  \choice 12
+  \choice 10  
+\end{choices}
+
+\end{parts}
+
+\newpage
+
+\subsection*{\textbf{Part 4: Types, Unification, and Type Inference}}
+
+\question[3] Which of the following is \emph{a unifier} \\ for the types \texttt{String} and \texttt{a -> b}?
+
+\begin{choices}
+  \choice \texttt{[(a, String), (b, String)]}
+  \choice \texttt{[(a -> b, String)]}
+  \choice \texttt{[(String, a -> b)]}
+  \choice (b) and (c)
+  \CorrectChoice Cannot unify
+\end{choices}
+
+\question[3] Which of the following is \emph{a unifier} \\ for the types \texttt{Int -> Int} and \texttt{a -> b}?
+
+\begin{choices}
+  \choice \texttt{[(Int, a), (Int, b)]}
+  \choice \texttt{[(a, Int), (b, Int)]}
+  \choice \texttt{[(a, Int), (b, Int), (c, String)]}
+  \choice (a), (b), and (c)
+  \CorrectChoice (b) and (c)
+  \choice Cannot unify
+\end{choices}
+
+\question[3] Which of the following is \emph{a unifier} \\ for the types \verb|a -> b| and \verb|(b -> Bool) -> c|?
+
+\begin{choices}
+  \choice \texttt{[(b, c), (a, c -> Bool)]}
+  \choice \texttt{[(a, Bool -> Bool), (b, Bool), (c, Bool -> Bool)]}
+  \choice \texttt{[(a, Bool -> Bool), (b, Bool), (c, Bool)]}
+  \CorrectChoice (a) and (c)
+  \choice Cannot unify
+\end{choices}
+
+\question[3] Which of the following is \emph{the most general unifier} \\ for the types \verb|a -> b| and \verb|Int -> c -> Int|?
+
+\begin{choices}
+  \CorrectChoice \texttt{[(a, Int), (b, c -> Int)]}
+  \choice \texttt{[(a, Int -> c), (b, Int)]}
+  \choice \texttt{[(a, Int), (b, Int -> Int), (c, Int)]}
+  \choice \texttt{[(a, Int), (b, c -> Int), (c, Int)]}
+  \choice Cannot unify
+\end{choices}
+
+\newpage
+
+\question Here are some of the typing rules for the Nano language:
+
+{\small
+\begin{verbatim}
+            G,(x,T1) |- e :: T2                (x,T) in G                
+[T-Lam] --------------------------     [T-Var] -----------
+        G |- (\x -> e) :: T1 -> T2             G |- x :: T
+
+        G |- e1 :: T1 -> T2       G |- e2 :: T1  
+[T-App] ---------------------------------------
+                  G |- (e1 e2) :: T2
+                             
+        G |- e1 :: T1    G,(x,T1) |- e2 :: T2
+[T-Let] -------------------------------------    [T-Int] -------------
+               G |- let x = e1 in e2 :: T2               G |- n :: Int
+\end{verbatim}
+}
+
+Below is a partial typing derivation for the Nano expression \verb|let y = 3 in (\x -> x) y|.  We are using the following abbreviations for type environments:
+\begin{verbatim}
+G1 = [(y,Int)]
+G2 = [(y,Int),(x,Int)]
+\end{verbatim}
+For each blank below, fill in a type or the name of a typing rule to complete the typing derivation.
+\begin{figure*}[h]
+\advance\leftskip-20cm
+{\small
+\begin{verbatim}
+                                    (x,Int) in G2
+                            [_18a_]----------------
+                                   G2 |- x :: _18b_             (y,Int) in G1
+                        [_18c_]------------------------ [_18d_]----------------
+                               G1 |- (\x -> x) :: _18e_        G1 |- y :: _18f_
+[_18g_]---------------- [_18h_]------------------------------------------------
+       [] |- 3 :: _18i_                  G1 |- (\x -> x) y :: _18j_
+[_18k_]--------------------------------------------------------------------
+                      [] |- let y = 3 in (\x -> x) y :: Int
+\end{verbatim}
+}
+\end{figure*}
+
+\begin{parts} 
+  \part[1] 18(a):
+  \begin{solutionorbox}[0.45in]
+\begin{verbatim}
+T-Var
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 18(b):
+  \begin{solutionorbox}[0.45in]
+\begin{verbatim}
+Int
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 18(c):
+  \begin{solutionorbox}[0.45in]
+\begin{verbatim}
+T-Lam
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 18(d):
+  \begin{solutionorbox}[0.45in]
+\begin{verbatim}
+T-Var
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 18(e):
+  \begin{solutionorbox}[0.45in]
+\begin{verbatim}
+Int -> Int
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 18(f):
+  \begin{solutionorbox}[0.45in]
+\begin{verbatim}
+Int
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 18(g):
+  \begin{solutionorbox}[0.45in]
+\begin{verbatim}
+T-Int
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 18(h):
+  \begin{solutionorbox}[0.45in]
+\begin{verbatim}
+T-App
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 18(i):
+  \begin{solutionorbox}[0.45in]
+\begin{verbatim}
+Int
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 18(j):
+  \begin{solutionorbox}[0.45in]
+\begin{verbatim}
+Int
+\end{verbatim}
+  \end{solutionorbox}
+
+  \part[1] 18(k):
+  \begin{solutionorbox}[0.45in]
+\begin{verbatim}
+T-Let
+\end{verbatim}
+  \end{solutionorbox}
+\end{parts}
+
+\end{questions}
+
+\newpage
+
+\subsection*{Haskell Reference}
+
+\begin{itemize}
+\item
+\begin{verbatim}
+map :: (a -> b) -> [a] -> [b]
+\end{verbatim}
+
+\item
+\begin{verbatim}
+foldl :: (b -> a -> b) -> b -> [a] -> b
+\end{verbatim}
+
+\item
+\begin{verbatim}
+(++) :: [a] -> [a] -> [a]
+\end{verbatim}
+Append two lists, e.g.,
+\begin{verbatim}
+> [1,2,3] ++ [4,5]
+[1,2,3,4,5]
+> "apple" ++ "orange"
+"appleorange"
+\end{verbatim}
+\end{itemize}
+
+\end{document}

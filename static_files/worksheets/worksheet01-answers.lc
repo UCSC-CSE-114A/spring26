@@ -1,0 +1,29 @@
+eval problem_2_1 :
+  (\x -> (\y -> x y)) (\q -> q) (\z -> z)
+  =b> (\y -> (\q -> q) y) (\z -> z)
+  =b> (\q -> q) (\z -> z)
+  =b> \z -> z
+
+eval problem_2_1_alt :
+  (\x -> (\y -> x y)) (\q -> q) (\z -> z)
+  =b> (\y -> (\q -> q) y) (\z -> z)
+  =b> (\y -> y) (\z -> z)
+  =b> \z -> z
+
+-- eval problem_2_2 :
+--   \f -> (\x -> f (x x)) (\x -> f (x x))
+--   =b> \f -> f ((\x -> f (x x)) (\x -> f (x x)))
+--   =b> \f -> f (f ((\x -> f (x x)) (\x -> f (x x))))
+-- This expression doesn't seem to be getting closer to a normal form.
+-- Instead, each beta step gives us another application of `f`.
+
+eval part_3_1 : 
+  (\x -> x) (\y -> y) z
+  =b> (\y -> y) z
+  =b> z
+
+eval part_3_2 :
+  (\x y -> y x) (\z -> z) (\q -> (\x y -> q)) 
+  =b> (\y -> y (\z -> z)) (\q -> (\x y -> q))
+  =b> (\q -> (\x y -> q)) (\z -> z)
+  =b> \x y -> (\z -> z)

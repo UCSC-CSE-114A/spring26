@@ -1,0 +1,76 @@
+---
+layout: default
+---
+
+<header class="post-header">
+    <h1 class="post-title">Schedule</h1>
+</header>
+
+{{ content }}
+
+<div class="home" style="font-size: 0.8em;">
+    <ul class="responsive-table" style="margin-left: 0;">
+        <li class="table-header">
+            <div class="col col-1">Event</div>
+            <div class="col col-1-2">Date</div>
+            <div class="col col-2">Description</div>
+            <div class="col col-4">Notes</div>
+        </li>
+        
+        {% assign all_assignment_dues = site.assignments | map: "due_event" %}
+
+        {% assign all_events = "" | split: ',' %}
+        {% assign all_events = all_events | concat: site.events %}
+        {% assign all_events = all_events | concat: site.lectures %}
+        {% for lec in site.lectures %}
+          {% if lec.continued %}
+            {% assign all_events = all_events | concat: lec.continued %}
+          {% endif %}
+        {% endfor %}
+        {% assign all_events = all_events | concat: site.assignments %}
+        {% assign all_events = all_events | concat: all_assignment_dues %}
+        {% assign all_events = all_events | concat: site.data.meetings.holidays %}
+        {% assign all_dated_events_sorted = all_events | where_exp: "devent","devent.date" | sort: 'date' %}
+        {% assign all_numbered_events_sorted = all_events | where_exp: "nevent","nevent.number" | sort: 'number' %}
+
+
+        {% assign all_events_sorted = "" | split:',' %}
+	{% assign number_secs0 = site.data.meetings.days[0] | date: "%s" | plus: 0 %}
+
+        {% for devent in all_dated_events_sorted %}
+	  {% assign date_secs0 = devent.date | date: "%s" | plus: 0 %}
+          {% if date_secs0 < number_secs0 %}
+            {% assign all_events_sorted = all_events_sorted | push: devent %}
+          {% endif %}
+        {% endfor %}
+
+        {% for nevent in all_numbered_events_sorted %}
+          {% if forloop.last == true %}
+            {% assign islast = true %}
+          {% else %}
+       	    {% assign islast = false %}
+          {% endif %}
+          {% assign all_events_sorted = all_events_sorted | push: nevent %}
+	  {% assign number_secs = site.data.meetings.days[nevent.number] | date: "%s" | plus: 0 %}
+          {% assign next_number = nevent.number | plus: 1 %}
+	  {% assign next_number_secs = site.data.meetings.days[next_number] | date: "%s" | plus: 0 %}
+          {% for devent in all_dated_events_sorted %}
+	    {% assign date_secs = devent.date | date: "%s" | plus: 0 %}
+              <!-- nevent_date: {{site.data.meetings.days[nevent.number] }} -->
+              <!-- nevent_date_secs: {{ number_secs }} -->
+              <!-- next_nevent_date: {{site.data.meetings.days[next_number] }} -->
+              <!-- next_nevent_date_secs: {{ next_number_secs }} -->
+              <!-- devent_title: {{ devent.description }} -->
+              <!-- devent_date: {{ devent.date }} -->
+              <!-- devent_date_secs: {{ date_secs }} -->
+            {% if date_secs >= number_secs and date_secs < next_number_secs or islast %}
+              {% assign all_events_sorted = all_events_sorted | push: devent %}
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+        
+        {% for event in all_events_sorted %}
+            {% include schedule_row_{{ event.type }}.html event=event %}
+        {% endfor %}
+    </ul>
+</div>

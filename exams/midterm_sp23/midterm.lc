@@ -1,0 +1,118 @@
+-- Elsa code for spring 2023 midterm
+
+-- Church numerals
+let ZERO  = \f x -> x
+let ONE   = \f x -> f x
+let TWO   = \f x -> f (f x)
+let THREE = \f x -> f (f (f x))
+let FOUR  = \f x -> f (f (f (f x)))
+let FIVE  = \f x -> f (f (f (f (f x))))
+
+-- Booleans
+let TRUE  = \x y -> x
+let FALSE = \x y -> y
+let ITE   = \b x y -> b x y
+
+-- Arithmetic
+let SUC   = \n f x -> f (n f x)
+let ADD   = \n m -> n SUC m
+let SKIP1 = \f p -> PAIR TRUE (ITE (FST p)
+                                   (f (SND p))
+                                   (SND p))
+let DECR  = \n -> SND (n (SKIP1 SUC) (PAIR FALSE ZERO))
+let SUB   = \n m -> m DECR n
+let ISZ   = \n -> n (\z -> FALSE) TRUE
+
+-- The Y combinator
+let Y = \step -> (\x -> step (x x)) (\x -> step (x x))
+
+-- Problem 2
+let LEQ   = \n m -> ISZ (SUB n m)
+
+-- Problem 3
+let FIB1   = \rec -> \n -> ITE (LEQ n ONE)
+                               n
+		               (ADD (rec (DECR n)) (rec (DECR (DECR n))))
+let FIB    = Y FIB1
+
+eval problem_1_option_1 :
+(\f g h -> f g) (\x -> x) (\y -> (\z -> y)) (\q -> q)
+=b> (\g h -> (\x -> x) g) (\y -> (\z -> y)) (\q -> q)
+=b> (\h -> (\x -> x) (\y -> (\z -> y))) (\q -> q)
+=b> (\x -> x) (\y -> (\z -> y))
+=b> (\y -> (\z -> y))
+
+eval problem_1_option_2 :
+(\f g h -> f g) (\x -> x) (\y -> (\z -> y)) (\q -> q)
+=b> (\g h -> (\x -> x) g) (\y -> (\z -> y)) (\q -> q)
+=b> (\h -> (\x -> x) (\y -> (\z -> y))) (\q -> q)
+=b> (\h -> (\y -> (\z -> y))) (\q -> q)
+=b> (\y -> (\z -> y))
+
+eval problem_2_test_1:
+LEQ ZERO ZERO
+=~> TRUE
+
+eval problem_2_test_2:
+LEQ ZERO ONE
+=~> TRUE
+
+eval problem_2_test_3:
+LEQ ONE ONE
+=~> TRUE
+
+eval problem_2_test_4:
+LEQ ZERO TWO
+=~> TRUE
+
+eval problem_2_test_5:
+LEQ TWO TWO
+=~> TRUE
+
+eval problem_2_test_6:
+LEQ THREE TWO
+=~> FALSE
+
+eval problem_2_test_7:
+LEQ TWO THREE
+=~> TRUE
+
+eval problem_2_test_8:
+LEQ ZERO FOUR
+=~> TRUE
+
+eval problem_2_test_9:
+LEQ ONE ZERO
+=~> FALSE
+
+eval problem_2_test_10:
+LEQ FOUR ZERO
+=~> FALSE
+
+eval problem_2_test_11:
+LEQ ONE FOUR
+=~> TRUE
+
+eval problem_3_test_1:
+FIB ZERO
+=~> ZERO
+
+eval problem_3_test_2:
+FIB ONE
+=~> ONE
+
+eval problem_3_test_3:
+FIB TWO
+=~> ONE
+
+eval problem_3_test_4:
+FIB THREE
+=~> TWO
+
+eval problem_3_test_5:
+FIB FOUR
+=~> THREE
+
+eval problem_3_test_6:
+FIB FIVE
+=~> FIVE

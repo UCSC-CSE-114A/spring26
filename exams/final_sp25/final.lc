@@ -1,0 +1,247 @@
+-- Elsa code for spring 2025 final
+
+-- Church numerals
+let ZERO  = \f x -> x
+let ONE   = \f x -> f x
+let TWO   = \f x -> f (f x)
+let THREE = \f x -> f (f (f x))
+let FOUR  = \f x -> f (f (f (f x)))
+let FIVE  = \f x -> f (f (f (f (f x))))
+let SIX   = \f x -> f (f (f (f (f (f x)))))
+
+-- Booleans
+let TRUE  = \x y -> x
+let FALSE = \x y -> y
+let ITE   = \b x y -> b x y
+let AND   = \b1 b2 -> ITE b1 b2 FALSE
+
+-- Pairs
+let PAIR   = \x y -> (\b -> ITE b x y)
+let FST    = \p -> p TRUE
+let SND    = \p -> p FALSE
+
+-- Arithmetic
+let INCR  = \n f x -> f (n f x)
+let ADD   = \n m -> n INCR m
+let MUL   = \n m -> n (ADD m) ZERO
+let SKIP1 = \f p -> PAIR TRUE (ITE (FST p)
+                                   (f (SND p))
+                                   (SND p))
+let DECR  = \n -> SND (n (SKIP1 INCR) (PAIR FALSE ZERO))
+let SUB   = \n m -> m DECR n
+let ISZ   = \n -> n (\z -> FALSE) TRUE
+let EQL   = \n m -> AND (ISZ (SUB n m)) (ISZ (SUB m n))
+
+-- The Y combinator
+let Y = \step -> (\x -> step (x x)) (\x -> step (x x))
+
+-- Problem 2
+let APPLY = \p -> (FST p) (FST (SND p)) (SND (SND p))
+
+-- Problem 3
+let COMBINE1 = \rec -> \op -> \n -> \b -> ITE (ISZ n) b (op n (rec op (DECR n) b))
+let COMBINE = Y COMBINE1
+
+eval question_1_original :
+  (\f -> f ((\g h -> g g) (\y -> f y))) (\z -> z)
+  -- Choose the entire expression as the redex
+  =b> (\z -> z) ((\g h -> g g) (\y -> (\z -> z) y)) -- step 1
+  -- Choose the entire expression as the redex
+  =b> (\g h -> g g) (\y -> (\z -> z) y) -- step 2
+  -- Choose the entire expression as the redex
+  =b> \h -> (\y -> (\z -> z) y) (\y -> (\z -> z) y) -- step 3
+  -- Choose the second `(\z -> z) y` as the redex
+  =b> \h -> (\y -> (\z -> z) y) (\y -> y) -- step 4
+  -- Choose `(\z -> z) y` as the redex
+  -- (the other choice is `(\y -> (\z -> z) y) (\y -> y)`)
+  =b> \h -> (\y -> y) (\y -> y) -- step 5
+  -- `(\y -> y) (\y -> y)` is the only redex at this point
+  =b> \h -> (\y -> y)
+
+eval question_1 :
+  (\f -> f ((\g h -> g g) (\y -> f y))) (\z -> z)
+  -- Choose `(\g h -> g g) (\y -> f y)` as the redex
+  -- (the other choice is the entire expression)
+  =b> (\f -> f (\h -> (\y -> f y) (\y -> f y))) (\z -> z) -- step 1
+  -- Choose `(\y -> f y) (\y -> f y)` as the redex
+  -- (the other choice is the entire expression)
+  =b> (\f -> f (\h -> f (\y -> f y))) (\z -> z) -- step 2
+  -- The entire expression is the only redex at this point
+  =b> (\z -> z) (\h -> (\z -> z) (\y -> (\z -> z) y)) -- step 3
+  -- Choose the entire expression as the redex
+  -- (the other choice is `(\z -> z) y`)
+  =b> \h -> (\z -> z) (\y -> (\z -> z) y) -- step 4
+  -- Choose `(\z -> z) (\y -> (\z -> z) y)` as the redex
+  -- (the other choice is `(\z -> z) y`)
+  =b> \h -> (\y -> (\z -> z) y) -- step 5
+  -- `(\z -> z) y` is the only redex at this point
+  =b> \h -> (\y -> y)
+
+-- An alternative answer, also correct
+eval question_1_alt :
+  (\f -> f ((\g h -> g g) (\y -> f y))) (\z -> z)
+  -- Choose `(\g h -> g g) (\y -> f y)` as the redex
+  =b> (\f -> f (\h -> (\y -> f y) (\y -> f y))) (\z -> z)
+  -- Choose the entire expression as the redex
+  =b> (\z -> z) (\h -> (\y -> (\z -> z) y) (\y -> (\z -> z) y))
+  -- Choose the first `(\y -> (\z -> z) y)` as the redex
+  =b> (\z -> z) (\h -> (\y -> y) (\y -> (\z -> z) y))
+  -- Choose the entire expression as the redex
+  =b> \h -> (\y -> y) (\y -> (\z -> z) y)
+  -- Choose `(\y -> y) (\y -> (\z -> z) y)` as the redex
+  =b> \h -> (\y -> (\z -> z) y)
+  -- `(\z -> z) y` is the only redex at this point
+  =b> \h -> (\y -> y)
+
+{-
+
+APPLY takes a pair as its argument.
+
+The first element of the pair that APPLY takes is an operation that takes two Church numerals and returns a Church numeral. (Some examples include ADD, SUB, and MUL.)'
+The second element of the pair that APPLY takes is itself a pair, where both elements are Church numerals.
+
+APPLY returns the result of applying the specified operation to the specified Church numerals.
+
+Some example calls to APPLY:
+
+APPLY (PAIR ADD (PAIR ZERO ONE)) -- ADD ZERO ONE
+=~> ONE
+
+APPLY (PAIR SUB (PAIR THREE ZERO)) -- SUB THREE ZERO
+=~> THREE
+
+APPLY (PAIR SUB (PAIR ZERO THREE)) -- SUB ZERO THREE
+=~> ZERO
+
+APPLY (PAIR MUL (PAIR TWO TWO)) -- MUL TWO TWO
+=~> FOUR
+
+-}
+
+eval question_2_1 :
+  APPLY (PAIR ADD (PAIR ZERO ONE)) -- ADD ZERO ONE
+  =~> ONE
+
+eval question_2_2 :
+  APPLY (PAIR SUB (PAIR THREE ZERO)) -- SUB THREE ZERO
+  =~> THREE
+
+eval question_2_3 :
+  APPLY (PAIR SUB (PAIR ZERO THREE)) -- SUB ZERO THREE
+  =~> ZERO
+
+eval qustion_2_4 :
+  APPLY (PAIR MUL (PAIR TWO TWO)) -- MUL TWO TWO
+  =~> FOUR
+
+{-
+COMBINE takes three arguments:
+
+- an operation op that takes two Church numerals and returns a Church numeral (e.g., ADD)
+- a starting value n, which is a Church numeral (e.g., TWO)
+- a base value b, which is a Church numeral (e.g., ZERO)
+
+COMBINE works as follows:
+
+COMBINE(op, 0, b) = b
+COMBINE(op, n, b) = op(n, COMBINE(op, n-1, b))
+
+For instance:
+
+COMBINE(*, 2, 1) = 2 * COMBINE(*, 1, 1)
+                 = 2 * (1 * COMBINE(*, 0, 1))
+		 = 2 * (1 * 1)
+		 = 2
+-}
+
+-- COMBINE(+, 0, 0) = 0
+eval question_3_1 :
+  COMBINE ADD ZERO ZERO
+  =~> ZERO
+
+-- COMBINE(+, 2, 0) = 2 + COMBINE(+, 1, 0)
+--                  = 2 + (1 + COMBINE(+, 0, 0))
+--                  = 2 + (1 + 0)
+--                  = 3
+eval question_3_2 :
+  COMBINE ADD TWO ZERO
+  =~> THREE
+
+-- COMBINE(-, 2, 0) = 2 - COMBINE(-, 1, 0)
+--                  = 2 - (1 - COMBINE(-, 0, 0))
+--		    = 2 - (1 - 0)
+--		    = 1
+eval question_3_3 :
+  COMBINE SUB TWO ZERO
+  =~> ONE
+
+-- COMBINE(+, 0, 4) = 4
+eval question_3_4 :
+  COMBINE ADD ZERO FOUR
+  =~> FOUR
+
+-- COMBINE(+, 1, 2) = 1 + COMBINE(+, 0, 2)
+--                  = 1 + 2
+--                  = 3
+eval question_3_5 :
+  COMBINE ADD ONE TWO
+  =~> THREE
+
+-- COMBINE(-, 1, 0) = 1 - COMBINE(-, 0, 0)
+--                  = 1 - 0
+--                  = 1
+eval question_3_6 :
+  COMBINE SUB ONE ZERO
+  =~> ONE
+
+-- COMBINE(-, 3, 0) = 3 - COMBINE(-, 2, 0)
+--                  = 3 - (2 - COMBINE(-, 1, 0))
+--                  = 3 - (2 - (1 - COMBINE(-, 0, 0)))
+--                  = 3 - (2 - (1 - 0))
+--                  = 2
+eval question_3_7 :
+  COMBINE SUB THREE ZERO
+  =~> TWO
+
+-- COMBINE(+, 1, 3) = 1 + COMBINE(+, 0, 3)
+--                  = 1 + 3
+--                  = 4
+eval question_3_8 :
+  COMBINE ADD ONE THREE
+  =~> FOUR
+
+-- COMBINE(*, 1, 0) = 1 * COMBINE(*, 0, 0)
+--                  = 1 * 0
+--                  = 0
+eval question_3_9 :
+  COMBINE MUL ONE ZERO
+  =~> ZERO
+
+-- COMBINE(*, 2, 1) = 2 * COMBINE(*, 1, 1)
+--                  = 2 * (1 * COMBINE(*, 0, 1))
+--                  = 2 * (1 * 1)
+--                  = 2
+eval question_3_10 :
+  COMBINE MUL TWO ONE
+  =~> TWO
+
+-- COMBINE(-, 3, 5) = 3 - COMBINE(-, 2, 5)
+--                  = 3 - (2 - COMBINE(-, 1, 5))
+--                  = 3 - (2 - (1 - COMBINE(-, 0, 5)))
+--                  = 3 - (2 - (1 - 5))
+--                  = ONE
+eval question_3_11 :
+  COMBINE SUB THREE FIVE
+  =~> ONE
+
+eval question_3_12 :
+  COMBINE MUL THREE ONE
+  =~> SIX
+
+eval question_3_13 :
+  COMBINE ADD THREE ZERO
+  =~> SIX
+
+eval question_3_14:
+  COMBINE MUL ZERO TWO
+  =~> TWO

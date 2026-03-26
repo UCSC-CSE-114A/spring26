@@ -1,0 +1,44 @@
+policies:
+  - We evaluate students on the basis of class participation, section participation, homework assignments, two midterm exams, and a final exam.
+  - <strong>Assignment and exam regrades must be requested within one week of receiving the graded assignment or exam.</strong> A valid regrade request should include a specific reason for the regrade. We try very hard to assign partial credit fairly and consistently, so unless an actual mistake occurred, your regrade request may be declined to ensure fairness to all students.
+
+rubric:
+ - name:         Achievements
+   description:  Contribute to the course environment in small but meaningful ways and get credit for it. Details on Canvas.
+   weight:       2%   
+ - name:         Class participation
+   description:  In-person and interactive participation via mini-worksheets that you'll complete during lectures.
+   weight:       5%  
+ - name:         Section participation
+   description:  Attend sections and complete worksheets each week.
+   weight:       10%
+ - name:         Homework assignments
+   description:  There will be six programming assignments, mostly in Haskell. 
+                 The first two are individual assignments, but the remaining assignments may be worked on in groups of at most <strong>two</strong>.
+   weight:       18%
+ - name:         Midterm exam 1
+   description:  Will be held during lecture (see schedule). Closed book, but you may use a double-sided “cheat sheet.”
+   weight:       20%
+ - name:         Midterm exam 2
+   description:  Will be held during lecture (see schedule). Closed book, but you may use a double-sided “cheat sheet.”
+   weight:       20%   
+ - name:         Final exam
+   description:  "Held on <strong>Tuesday, June 9, 4:00-7:00p.</strong>. Closed book, but you may use a double-sided “cheat sheet.”"
+   weight:       25%
+
+grading:
+  - description: "For your overall grade, after determining a percentage using the weights above, I use the following grading scheme. It's pretty standard, except that I don't give C- grades and the range for C goes down to 70%.  Additionally, for anyone who is within .5% of getting a higher letter grade when rounded up, my policy is to give the higher letter grade.  For example, for someone who has 82.5%, I round up to 83.0% and give that person a B rather than a B-.  Aside from that standard rounding policy, I don't entertain requests for grade changes.
+               <table class=\"rubric\" style=\"margin-left:auto;margin-right:auto; padding: 1px; border-bottom: 1px solid; border-spacing: 1px;\">
+               <tr> <th> Percentage</th><th>Letter grade</th></tr>
+               <tr> <td> 97%-100%</td><td>A+</td></tr>
+               <tr> <td> 93-96.99%</td><td>A</td></tr>
+               <tr> <td> 90-92.99%</td><td>A-</td></tr>
+               <tr> <td> 87-89.99%</td><td>B+</td></tr>
+               <tr> <td> 83-86.99%</td><td>B</td></tr>
+               <tr> <td> 80-82.99%</td><td>B-</td></tr>
+               <tr> <td> 77-79.99%</td><td>C+</td></tr>
+               <tr> <td> 70-76.99%</td><td>C</td></tr>
+               <tr> <td> 60-69.99%</td><td>D</td></tr>
+               <tr> <td> 0-59.99%</td><td>F</td></tr>
+               </table>
+               "

@@ -1,0 +1,83 @@
+-- Elsa code for spring 2024 final
+
+-- Church numerals
+let ZERO  = \f x -> x
+let ONE   = \f x -> f x
+let TWO   = \f x -> f (f x)
+let THREE = \f x -> f (f (f x))
+let SIX   = \f x -> f (f (f (f (f (f x)))))
+
+-- Booleans
+let TRUE  = \x y -> x
+let FALSE = \x y -> y
+let ITE   = \b x y -> b x y
+
+-- Pairs
+let PAIR   = \x y -> (\b -> ITE b x y)
+let FST    = \p -> p TRUE
+let SND    = \p -> p FALSE
+
+-- Triples
+let TRIPLE = \x y z -> PAIR x (PAIR y z) -- provided
+let TFST = \t -> t TRUE -- provided
+--let TSND = \t -> (t FALSE) TRUE -- solution to 2
+--let TTHD = \t -> (t FALSE) FALSE -- solution to 2
+
+let TSND = \t -> FST (SND t) -- alternate solution to 2
+let TTHD = \t -> SND (SND t) -- alternate solution to 2
+
+-- Arithmetic
+let SUC   = \n f x -> f (n f x)
+let ADD = \n m -> n SUC m
+let MUL = \n m -> n (ADD m) ZERO
+let SKIP1 = \f p -> PAIR TRUE (ITE (FST p)
+                                   (f (SND p))
+                                   (SND p))
+let DECR  = \n -> SND (n (SKIP1 SUC) (PAIR FALSE ZERO))
+let SUB   = \n m -> m DECR n
+let ISZ   = \n -> n (\z -> FALSE) TRUE
+
+-- The Y combinator
+let Y = \step -> (\x -> step (x x)) (\x -> step (x x))
+
+-- solutions to 3
+let FACT1 = \rec -> \n -> ITE (ISZ (DECR n)) ONE (MUL n (rec (DECR n)))
+let FACT = Y FACT1
+
+-- Problem 1
+eval problem_1 :
+    (\f -> f (\y -> y)) (\x -> x x) (\x -> x x)
+    =b> ((\x -> x x) (\y -> y)) (\x -> x x)
+    =b> ((\y -> y) (\y -> y)) (\x -> x x)
+    =b> (\y -> y) (\x -> x x)
+    =b> (\x -> x x)
+
+-- Problem 2
+eval problem_2_test_1 :
+TFST (TRIPLE ONE TWO THREE)
+=~> ONE
+
+eval problem_2_test_2 :
+TSND (TRIPLE ONE TWO THREE)
+=~> TWO
+
+eval problem_2_test_3 :
+TTHD (TRIPLE THREE TWO ONE)
+=~> ONE
+
+eval problem_2_test_4 :
+TTHD (TFST (TRIPLE (TRIPLE FALSE FALSE TRUE) FALSE FALSE))
+=~> TRUE
+
+eval problem_3_test_1 :
+FACT ONE
+=~> ONE
+
+eval problem_3_test_2 :
+FACT TWO
+=~> TWO
+
+eval problem_3_test_3 :
+FACT THREE
+=~> SIX
+

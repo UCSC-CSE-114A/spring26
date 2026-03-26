@@ -1,0 +1,23 @@
+{{ site.data.coursework.description }}
+<ul>
+    {% for p in site.data.coursework.policies %}
+    <li>{{ p }}</li>
+    {% endfor %}
+</ul>
+
+<p>Your grade has the following components:</p>
+
+<table class="rubric">
+<tr> <th> Component </th> <th> Weight </th> </tr>
+{% for p in site.data.coursework.rubric %}
+<tr>
+  <td><b>{{ p.name }}</b> <p>{{ p.description }}</p></td>
+  <td>{{ p.weight }}</p></td>
+</tr>
+{% endfor %}
+</table>
+
+<h2>Grading scheme</h2>
+{% for p in site.data.coursework.grading %}
+<p>{{ p.description }}</p>
+{% endfor %}

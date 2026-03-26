@@ -1,0 +1,68 @@
+/****************************************
+ * Tables
+ ****************************************/
+/*
+	The following rules control the appearance of tables, which are used only
+	for tabular data. To create the appearance of alternating stripes of 
+	background colors on rows of data, use the .row1 and .row2 classes on 
+	<tr> elements.
+	
+	For a detailed example of how to mark up a table, see the 
+	one-column or two-column template.
+*/
+table, tr, th, td {
+	margin: 0px;
+	padding: 0px;
+	border: 0px none;
+	border-spacing: 0px;
+	}
+	
+.rubric table thead th {
+	text-transform: uppercase;
+	}
+	
+.rubric table {
+	margin: 15px 0px;
+	border-bottom: 1px solid #e7e7e7;
+	caption-side: bottom;
+	}
+	
+.rubric th {
+	padding: 0px 15px 5px 15px;
+	font-weight: normal;
+	text-align: left;
+	color: #888;
+	}
+	
+.rubric td, tbody th {
+	padding: 10px 15px;
+	border-top: 1px solid #e7e7e7;
+	font-size: 1.1em;
+	line-height: 1.5em;
+	vertical-align: top;
+	}
+	
+.rubric tbody th {
+	font-weight: bold;
+	color: #222;
+	text-align: left;
+	}
+	
+.row1, .row1 td, .row1 th {
+	background: #fff;
+	} 
+	
+.row2, .row2 td, .row2 th {
+	background: #fafaf7;
+	}
+	
+.rubric tfoot td {
+	font-weight: bold;
+	}
+
+.rubric caption {
+	margin: 0 0 15px 0;
+	text-align: left;
+	color: #888;
+	font-size: 1.1em;
+	}

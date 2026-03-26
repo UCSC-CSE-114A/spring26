@@ -1,0 +1,45 @@
+# Site settings
+course_name: "CSE 114A: Foundations of Programming Languages"
+course_description: "Problem solving emphasizing recursion, data abstraction, and higher-order functions. Introduction to types and type checking, modular programming, and reasoning about program correctness."
+
+course_semester: "Spring 2026"
+
+baseurl: "/spring25" # the subpath of your site, e.g. /blog/
+url: "http://ucsc-cse-114a.github.io/" # the base hostname & protocol for your site
+
+schoolname: "UC Santa Cruz, Baskin School of Engineering"
+schoolurl: "https://engineering.ucsc.edu"
+
+### Do not change the following unless you know what you are doing ###
+
+timezone: America/Los_Angeles
+# Build settings
+markdown: kramdown
+
+# Other options
+permalink: blog/:year/:month/:title
+excerpt_separator: "<!--more-->"
+
+include: ['_images', '_css']
+exclude: ['develop', 'exams']
+
+dateformat: "%m/%d/%Y"
+
+future: true
+collections:
+    events:
+        output: true
+    lectures:
+        output: true
+    assignments:
+        output: true
+    announcements:
+        output: false
+
+
+defaults:
+  - scope:
+      path: ""
+      type: "assignments"
+    values:
+      layout: "assignment"
