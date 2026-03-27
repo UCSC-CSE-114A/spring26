@@ -1,4 +1,7 @@
 instructors:
+  - name: Owen Arden
+    profile_pic: /_images/pp/cyber-slug.jpg
+    webpage: https://owenarden.github.io/home/
   - name: Lindsey Kuper
     profile_pic: /_images/pp/lindsey_kuper.jpg
     webpage: https://users.soe.ucsc.edu/~lkuper/
