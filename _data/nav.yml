@@ -11,10 +11,6 @@ items:
   name: Lectures
   icon_class: fas fa-book-reader
 
-- url: https://canvas.ucsc.edu/courses/92879/assignments
-  name: Assignments
-  icon_class: fas fa-user-graduate
-  
 - url: /materials/
   name: Materials
   icon_class: fas fa-book
