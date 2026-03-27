@@ -16,7 +16,7 @@ days: # UTC-7
   - 2026-04-22T14:40:00-7:00 # meeting 10 (last 1/3 of lecture07, first 1/3 of lecture08-notes.md) (include hw0 comments-notes.md)
   - 2026-04-24T14:40:00-7:00 # meeting 11 (last 2/3 of lecture08-notes.md) 
   # Week 5 -- Midterm 1 week
-  - 2026-04-27T14:40:00-7:00 # meeting 12: midterm 1 (lambda calculus, Elsa, redexes, normal form, encoding Booleans and conditionals, encoding numbers, variable scope, free and bound variables, computing the free variables of an expression, the beta rule, capture-avoiding substitution, encoding pairs, non-terminating lambda calculus programs, the Y combinator, recursive lambda calculus programs, working with lists in Haskell, pattern matching, pattern guards, polymorphic types, product types, sum types-notes.md) (plus lecture 12 content?)
+  - 2026-04-27T14:40:00-7:00 # meeting 12: midterm 1 (lambda calculus, Elsa, redexes, normal form, encoding Booleans and conditionals, encoding numbers, variable scope, free and bound variables, computing the free variables of an expression, the beta rule, capture-avoiding substitution, encoding pairs, non-terminating lambda calculus programs, the Y combinator, recursive lambda calculus programs, working with lists in Haskell, pattern matching, pattern guards, polymorphic types, product types, sum types) (plus lecture 12 content?)
   - 2026-04-29T14:40:00-7:00 # meeting 13 (first 2/3 of lecture09-notes.md) (include hw1 comments)
   - 2026-05-01T14:40:00-7:00 # meeting 14: Higher-order functions (last 1/3 of lecture09-notes.md, first 1/3 of lecture10-notes.md)
   # Week 6 -- 05-03: Release hw3; 05-09: hw2 due
