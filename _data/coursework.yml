@@ -5,10 +5,10 @@ policies:
 rubric:
  - name:         Achievements
    description:  Contribute to the course environment in small but meaningful ways and get credit for it. Details on Canvas.
-   weight:       2%   
+   weight:       1%   
  - name:         Class participation
    description:  In-person and interactive participation via mini-worksheets that you'll complete during lectures.
-   weight:       5%  
+   weight:       6%  
  - name:         Section participation
    description:  Attend sections and complete worksheets each week.
    weight:       10%
