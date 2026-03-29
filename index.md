@@ -27,7 +27,7 @@ Contact course staff if you need an invitation to Zulip.
 - Section 02D, Tuesday 5:20pm-6:25pm in [Stevens Academic Building 151](https://maps.ucsc.edu/?ASSETNUM=7143)
 - Section 02E, Wednesday 12:00pm-1:05pm in [Baskin Engineering 372](https://maps.ucsc.edu/?ASSETNUM=7194)
 
-**Owen's "office" hours**: Fridays, 3:40pm-3:45pm, at the Classroom Unit picnic tables
+**Owen's "office" hours**: Fridays, 2:45pm-3:45pm, at the Classroom Unit picnic tables
 
 Owen's course announcements and discussions happen on the Ed Discussion forum.
 
