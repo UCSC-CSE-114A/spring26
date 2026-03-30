@@ -23,11 +23,11 @@ rubric:
    description:  Will be held during lecture (see schedule). Closed book, but you may use a double-sided “cheat sheet.”
    weight:       20%   
  - name:         Final exam
-   description:  "Held on <strong>Tuesday, June 9, 4:00-7:00p.</strong>. Closed book, but you may use a double-sided “cheat sheet.”"
+   description:  "Held during finals week (see <a href="https://registrar.ucsc.edu/calendars-resources/academic-calendar/final-exam-calendar/">final exam calendar</a>). Closed book, but you may use a double-sided “cheat sheet.”"
    weight:       25%
 
 grading:
-  - description: "For your overall grade, after determining a percentage using the weights above, I use the following grading scheme. It's pretty standard, except that I don't give C- grades and the range for C goes down to 70%.  Additionally, for anyone who is within .5% of getting a higher letter grade when rounded up, my policy is to give the higher letter grade.  For example, for someone who has 82.5%, I round up to 83.0% and give that person a B rather than a B-.  Aside from that standard rounding policy, I don't entertain requests for grade changes.
+  - description: "For your overall grade, after determining a percentage using the weights above, we use the following grading scheme. It's pretty standard, except that we don't give C- grades and the range for C goes down to 70%.  Additionally, for anyone who is within .5% of getting a higher letter grade when rounded up, our policy is to give the higher letter grade.  For example, for someone who has 82.5%, we round up to 83.0% and give that person a B rather than a B-.  Aside from that standard rounding policy, we don't entertain requests for grade changes.
                <table class=\"rubric\" style=\"margin-left:auto;margin-right:auto; padding: 1px; border-bottom: 1px solid; border-spacing: 1px;\">
                <tr> <th> Percentage</th><th>Letter grade</th></tr>
                <tr> <td> 97%-100%</td><td>A+</td></tr>
