@@ -23,7 +23,7 @@ rubric:
    description:  Will be held during lecture (see schedule). Closed book, but you may use a double-sided “cheat sheet.”
    weight:       20%   
  - name:         Final exam
-   description:  "Held during finals week (see <a href="https://registrar.ucsc.edu/calendars-resources/academic-calendar/final-exam-calendar/">final exam calendar</a>). Closed book, but you may use a double-sided “cheat sheet.”"
+   description:  "Held during finals week (see <a href='https://registrar.ucsc.edu/calendars-resources/academic-calendar/final-exam-calendar/'>final exam calendar</a>). Closed book, but you may use a double-sided “cheat sheet.”"
    weight:       25%
 
 grading:
