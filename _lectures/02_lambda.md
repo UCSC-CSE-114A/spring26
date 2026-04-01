@@ -2,6 +2,11 @@
 title: Lambda calculus
 type: lecture
 number: 1
+links:
+    - url: /static_files/slides/lambda.pdf
+      name: "Owen's slides"
+    - url: /static_files/slides/lambda.pdf
+      name: "Owen's slides (handout version)"
 continued:
   - type: lecture
     number: 2
