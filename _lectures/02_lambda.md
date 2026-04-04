@@ -8,7 +8,9 @@ links:
     - url: /static_files/slides/lambda.pdf
       name: "Owen's slides (handout version)"
     - url: /static_files/notes/Lecture02.pdf
-      name: "Lindsey's lecture 2 live notes"	  
+      name: "Lindsey's lecture 2 live notes"
+    - url: /static_files/notes/Lecture03.pdf
+      name: "Lindsey's lecture 3 live notes"
 continued:
   - type: lecture
     number: 2
