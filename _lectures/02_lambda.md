@@ -11,7 +11,7 @@ links:
       name: "Lindsey's lecture 2 live notes"
     - url: /static_files/notes/Lecture03.pdf
       name: "Lindsey's lecture 3 live notes"
-    - url: /static_files/lecture_code/Lecture04.lc
+    - url: /static_files/lecture-code/Lecture04.lc
       name: "Lindsey's lecture 4 live code"
 continued:
   - type: lecture
