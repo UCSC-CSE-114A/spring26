@@ -1,0 +1,101 @@
+-- Welcome to CSE114A lecture 4!
+
+{--
+Agenda:
+
+- A bit of review of last time's stuff...
+  but now as *actual running code!*
+- How to encode things we want
+  in lambda calculus:
+  - Booleans
+  - Boolean operations
+  - Conditionals
+  - Numbers
+
+--}
+
+let ID = \x -> x
+-- One traditional and very common way to define Booleans and conditionals
+-- is the following:
+let TRUE = \x y -> x
+let FALSE = \x y -> y -- shorthand for \x -> (\y -> y)
+let ITE = \cond br1 br2 -> (cond br1) br2 -- "ITE" stands for "if ... then ... else"
+
+-- Numbers!
+-- Church numerals (named after Alonzo Church)
+let ZERO = \f x -> x
+let ONE = \f x -> f x
+let TWO = \f x -> f (f x)
+let THREE = \f x -> f (f (f x))
+
+
+{--
+if <condition> then <branch 1> else <branch 2>
+
+p q r -- shorthand for (p q) r
+--}
+
+eval example_1 :
+  (\x -> x) (\y -> y)
+  =b> \y -> y
+
+eval example_2 : 
+  (\x -> (\y -> x)) yuki
+  =b> \y -> yuki
+
+eval example_3 :
+  ID ID
+  =d> (\x -> x) ID
+  =b> ID
+
+eval example_4 :
+  (\x y -> (\z -> z) x) yuki islay
+  =b> (\y -> (\z -> z) yuki) islay
+  =b> (\z -> z) yuki
+  =b> yuki
+
+eval example_5 :
+  (\x y -> (\z -> z) x) yuki islay
+  =b> (\x y -> x) yuki islay
+  =b> (\y -> yuki) islay
+  =b> yuki
+
+-- "if True then islay else yuki"
+-- ought to evaluate to "islay"
+eval ite_test1 :
+  ITE TRUE islay yuki
+  =~> islay
+-- If you're not sure why this steps to `islay`,
+-- consider stepping through this on your own,
+-- expanding out the definitions of `ITE` and `TRUE`.
+
+eval ite_test2 :
+  ITE FALSE jellybean moxie
+  =~> moxie
+
+{--
+ If you have an expression where you
+ can take a beta step in more than one
+ place, it doesn't matter where you take
+ it.
+
+ If the expression has a normal form,
+ then that normal form is unique,
+ and you'll reach it eventually,
+ no matter what path you take!
+
+ That's the Church-Rosser theorem :) 
+--}
+
+
+-- Quiz question 1:
+-- What happens if we take a =b> step
+-- on the outer redex in this expression?
+-- (\y -> (\z -> z) yuki) islay
+-- Answer:
+-- (\z -> z) yuki
+
+-- Quiz question 2:
+-- Is there more than one redex in
+-- this expression?
+-- (\x y -> x) yuki islay
