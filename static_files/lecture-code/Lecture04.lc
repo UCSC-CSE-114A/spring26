@@ -99,3 +99,5 @@ eval ite_test2 :
 -- Is there more than one redex in
 -- this expression?
 -- (\x y -> x) yuki islay
+-- Answer:
+-- No, just one: `(\x y -> x) yuki` is the only redex.
