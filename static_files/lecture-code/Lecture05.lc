@@ -1,0 +1,159 @@
+-- Welcome to CSE114A lecture 5!
+
+{--
+Agenda:
+
+- More encoding stuff in lambda calculus:
+  - Operations on numbers (incrementing, adding, ...)
+  - Pairs
+- Variable scope
+- Free and bound variables
+- Next time: Computing the set of free variables in an expression
+- Next time: Revisiting the beta rule
+
+--}
+
+-- Numbers!
+-- Church numerals (named after Alonzo Church)
+let ZERO = \f x -> x
+let ONE = \f x -> f x
+let TWO = \f x -> f (f x)
+let THREE = \f x -> f (f (f x))
+let FOUR = \f x -> f (f (f (f x)))
+let FIVE = \f x -> f (f (f (f (f x))))
+
+{--
+
+How could we write a program that increments a number?
+
+If you have
+
+\f x -> x
+
+How could you write a function that takes that, and returns
+
+\f x -> f x
+
+Let's try to write it!
+
+--}
+let INCR = \n -> (\f x -> f (n f x))
+-- Take m and increment it n times, giving us n + m
+let ADD = \n m -> n INCR m
+
+{--
+Why does this definition of ADD work?
+
+`n INCR m` will apply `n` to the arguments `INCR` and `m`,
+and `n` is a machine for applying its first argument `n` times 
+to its second argument!
+
+So, `THREE INCR TWO` will give us
+INCR (INCR (INCR TWO)),
+which is FIVE!
+--}
+
+{-- 
+
+Pairs!
+
+A pair is a two-element tuple.
+
+What do you want to be able to do with a pair?
+What's the API?  (That is, what kinds of things can you do with pairs?)
+
+- FST: Access the first element of a pair
+- SND: Access the second element of a pair
+- PAIR: Create a pair
+
+Quiz question 1:
+How many arguments should the FST, SND, and PAIR functions each take?
+
+
+--}
+
+let TRUE = \x y -> x
+let FALSE = \x y -> y -- shorthand for \x -> (\y -> y)
+let ITE = \cond br1 br2 -> (cond br1) br2 -- "ITE" stands for "if ... then ... else"
+
+{--
+A sweet hack:
+We can actually use Booleans and conditionals to implement pairs!
+
+The reason this works is that both Booleans and pairs are in some sense
+about choosing between two options.
+--}
+
+-- If b evaluates to TRUE,
+-- we need to return x.
+-- If b evaluates to FALSE,
+-- we need to return y.
+let PAIR = \x y -> (\b -> ITE b x y) -- Create a pair (x, y)
+let FST = \p -> p TRUE -- Given a pair p = (x, y), get back x
+let SND = \p -> p FALSE -- Given a pair p = (x, y), get back y
+
+eval pair_example_1 :
+  FST (PAIR pepper ringo) 
+  =~> pepper
+
+eval pair_example_2 :
+  SND (PAIR jellybean moxie)
+  =~> moxie
+
+eval pair_example_3 :
+  SND (SND (PAIR (PAIR rainbow sprinkles) (PAIR ringo pepper))) -- ((rainbow, sprinkles), (ringo, pepper))
+  =~> pepper
+
+eval incr_example :
+  INCR ZERO
+  =d> (\n -> (\f x -> f (n f x))) ZERO
+  =b> \f x -> f (ZERO f x)
+  =d> \f x -> f ((\f x -> x) f x)
+  =b> \f x -> f ((\x -> x) x)
+  =b> \f x -> f x -- This is ONE! :)
+  =d> ONE
+
+eval incr_example_2 :
+  INCR THREE
+  =~> FOUR
+
+eval add_two_one :
+  ADD TWO ONE
+  =d> (\n m -> n INCR m) TWO ONE
+  =b> (\m -> TWO INCR m) ONE
+  =b> TWO INCR ONE
+  =d> (\f x -> f (f x)) INCR ONE
+  =b> (\x -> INCR (INCR x)) ONE
+  =b> INCR (INCR ONE)
+  =~> THREE
+
+eval add_two_three :
+  ADD TWO THREE
+  =~> FIVE
+
+
+{--
+Variable scope
+
+A *binding* is an association of a name to some entity
+
+The *scope* of a binding in a program (any program!)
+is the part of the program where the name can be used to refer to the entity.
+
+\x -> e -- inside e, x is in scope
+
+We say that any occurrence of x in e
+is bound by the binder \x.
+
+An occurrence of a variable x is a *free occurrence* if is not
+a bound occurrence.
+
+Quiz question 2:
+
+Are there free occurrences of x in the following expressions?
+
+(a) x y -- Yep!
+(b) \x -> x -- Nope!
+(c) \x -> (\y -> x) -- Nope!
+
+--}

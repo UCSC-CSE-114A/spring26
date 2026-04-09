@@ -13,6 +13,8 @@ links:
       name: "Lindsey's lecture 3 live notes"
     - url: /static_files/lecture-code/Lecture04.lc
       name: "Lindsey's lecture 4 live code"
+    - url: /static_files/lecture-code/Lecture05.lc
+      name: "Lindsey's lecture 5 live code"
 continued:
   - type: lecture
     number: 2
