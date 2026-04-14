@@ -12,9 +12,9 @@ title: CSE 114A Foundations of Programming Languages
 - Section 01C, with Gan: Tuesdays, 11:40am-12:45pm, [Kresge College 3301](https://classrooms.ucsc.edu/krs3301/)
 - Section 01D, with Jonathan: Tuesdays, 7:10-8:15pm, [Stevenson College 151](https://classrooms.ucsc.edu/stv151/)
 - Section 01E, with Jack: Wednesdays, noon-1:05pm, [Humanities 2 350](https://classrooms.ucsc.edu/hum350/)
-- Section 01F, with Gan/Jonathan: Wednesdays, 7:10-8:15pm, [Merrill College 132](https://classrooms.ucsc.edu/mer132/)
+- Section 01F, with Jonathan: Wednesdays, 7:10-8:15pm, [Merrill College 132](https://classrooms.ucsc.edu/mer132/)
 
-**Lindsey's "office" hours**: TBD <!-- Fridays, 3:50-5:20pm, at the Oakes picnic tables --> 
+**Lindsey's office hours**: Fridays, 1:15-2:15pm, in E2-349B
 
 Lindsey's course announcements and discussions happen on the 
 [CSE114A Zulip organization](https://ucsc-cse114a.zulipchat.com/). 
