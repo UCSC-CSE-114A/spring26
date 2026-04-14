@@ -1,0 +1,187 @@
+-- CSE114A lecture 7
+
+-- Some dependencies we've discussed before
+let TRUE = \x y -> x
+let FALSE = \x y -> y -- shorthand for \x -> (\y -> y)
+let ITE = \cond br1 br2 -> (cond br1) br2 -- "ITE" stands for "if ... then ... else"
+let ZERO = \f x -> x
+let ONE = \f x -> f x
+let TWO = \f x -> f (f x)
+let THREE = \f x -> f (f (f x))
+let FOUR = \f x -> f (f (f (f x)))
+let FIVE = \f x -> f (f (f (f (f x))))
+let SIX = \f x -> f (f (f (f (f (f x)))))
+let PAIR = \x y -> (\b -> ITE b x y) -- Create a pair (x, y)
+let FST = \p -> p TRUE -- Given a pair p = (x, y), get back x
+let SND = \p -> p FALSE -- Given a pair p = (x, y), get back y
+
+{--
+Agenda:
+
+- Decrementing numbers
+- Non-termination of lambda calc programs
+- The Y combinator
+- Writing recursive programs with lambda calculus
+
+--}
+
+let INCR = \n -> (\f x -> f (n f x))
+let ADD = \n m -> n INCR m
+
+{--
+
+In general, for any Church numeral `n`,
+
+`n f x` means "start with x, then apply f to it n times".
+It's almost like calling `f` in a loop that runs for `n` iterations!
+
+This is how ADD works.
+
+But what about decrementing?
+
+To implement `DECR`, our strategy will be:
+- start from ZERO and increment it one less than `n` times.
+
+Here's a cool trick:
+Use a PAIR to keep track of *two* numbers:
+- The number we had on the previous time through the "loop".
+- The number we have on the current time through the "loop".
+- Then, after `n` times through the loop, the thing we want
+  will be in the *first* element of that pair!
+--}
+
+let STARTINGPAIR = PAIR ZERO ZERO
+
+{--
+Now we need a function such that,
+if you give it a pair of numbers (m, n),
+it'll return the pair (n, n+1).
+
+We'll call this function UPDATEPAIR.
+Quiz question 1: Implement UPDATEPAIR!
+--}
+
+let UPDATEPAIR = \p -> PAIR (SND p) (INCR (SND p))
+
+{--
+
+Now that we have STARTINGPAIR and UPDATEPAIR,
+what does this do (where `n` is a Church numeral)?
+
+n UPDATEPAIR STARTINGPAIR
+
+This applies UPDATEPAIR to STARTINGPAIR, n times.
+
+So, if n is THREE...
+
+PAIR ZERO ZERO -- this is STARTINGPAIR
+PAIR ZERO ONE -- this is after one iteration
+PAIR ONE TWO -- this is after two iterations
+PAIR TWO THREE -- this is after three iterations; we're done
+
+The thing sitting in the first element of the pair after three iterations
+is exactly what we want DECR THREE to evaluate to!
+
+So now we can implement DECR
+by calling `n UPDATEPAIR STARTINGPAIR`
+and then just getting the first element out of the resulting pair.
+
+Quiz question 2: implement DECR!
+You can use UPDATEPAIR, STARTINGPAIR, and operations on pairs.
+--}
+
+let DECR = \n -> FST (n UPDATEPAIR STARTINGPAIR) -- returns one less than n
+
+{--
+Non-termination!
+--}
+
+let OMEGA = (\x -> x x) (\x -> x x)
+
+let Y = \f -> (\x -> f (x x)) (\x -> f (x x))
+
+{--
+This is the famous Y combinator!
+
+We can use it to accomplish recursion in lambda calculus.
+
+If we want to apply some function repeatedly,
+an unspecified number of times,
+we can pass it as an argument to the Y combinator!
+
+Let's look at how we might use this power.
+
+Let's try writing a recursive program!
+
+The triangular number T(n) is the sum of all the natural numbers up to n.
+
+T(0) = 0
+T(1) = 0 + 1 = 1
+T(2) = 0 + 1 + 2 = 3
+T(3) = 0 + 1 + 2 + 3 = 6
+...
+
+T(0) = 0 -- base case
+T(n) = n + T(n-1) -- inductive case
+
+--}
+
+-- Take a Church numeral n, return T(n)
+-- Strategy: If n is ZERO, return ZERO;
+-- otherwise return n + T(n-1)
+
+-- The code we *wish* we could write:
+-- let TRI = \n -> ITE (ISZ n)
+--                     ZERO
+--                     (ADD n (TRI (DECR n)))
+
+-- Instead of calling TRI in the definition of TRI,
+-- pass in an extra first argument that we can call instead.
+-- Name it whatever you want; I'll name it `rec`.
+let TRI1 = \rec -> \n -> ITE (ISZ n)
+                         ZERO
+                         (ADD n (rec (DECR n)))
+
+-- Now we have to pass `TRI1` to some function that will call `TRI1`
+-- with *itself* as an argument.
+-- It turns out that the Y combinator is exactly such a function!
+let TRI = Y TRI1
+
+eval test_tri_1 :
+    TRI ZERO
+    =~> ZERO
+
+eval test_tri_2 :
+    TRI TWO
+    =~> THREE
+
+eval test_tri_3 :
+    TRI THREE
+    =~> SIX
+
+
+-- eval test_y :
+--     Y
+--     =d> \f -> (\x -> f (x x)) (\x -> f (x x))
+--     =b> \f -> f ((\x -> f (x x)) (\x -> f (x x)))
+--     =b> \f -> f (f ((\x -> f (x x)) (\x -> f (x x))))
+--     =b> \f -> f (f (f ((\x -> f (x x)) (\x -> f (x x)))))
+
+
+-- eval test_omega :
+--   OMEGA
+--   =d> (\x -> x x) (\x -> x x)
+--   =b> (\x -> x x) (\x -> x x)
+
+
+eval test_updatepair :
+    UPDATEPAIR STARTINGPAIR 
+    =~> \b -> b ZERO ONE -- PAIR ZERO ONE
+
+eval test_updatepair_2 :
+    UPDATEPAIR (PAIR THREE FOUR)
+    =~> \b -> b FOUR FIVE -- PAIR FOUR FIVE
+
+eval test_decr : 
+    DECR THREE
+    =~> TWO
