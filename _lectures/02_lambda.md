@@ -5,7 +5,7 @@ number: 1
 links:
     - url: /static_files/slides/lambda.pdf
       name: "Owen's slides"
-    - url: /static_files/slides/lambda.pdf
+    - url: /static_files/slides/lambda-haskell.pdf
       name: "Owen's slides (handout version)"
     - url: /static_files/notes/Lecture02.pdf
       name: "Lindsey's lecture 2 live notes"
