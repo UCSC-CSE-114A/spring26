@@ -69,3 +69,15 @@
   <p>Benji</p>
   <img src="doggos/benji.png" alt="Benji" width="600" />
 </div>
+
+## Who is cuter?
+
+<div style="float: left;">
+  <p>Rosie (Myles's)</p>
+  <img src="doggos/rosie_myles.png" alt="Rosie (Myles's)" width="600" />
+</div>
+
+<div style="float: right;">
+  <p>Rosie (Sam's)</p>
+  <img src="doggos/rosie_sam.png" alt="Rosie (Sam's)" width="600" />
+</div>
