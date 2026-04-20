@@ -81,3 +81,15 @@
   <p>Rosie (Sam's)</p>
   <img src="doggos/rosie_sam.png" alt="Rosie (Sam's)" width="600" />
 </div>
+
+## Who is cuter?
+
+<div style="float: left;">
+  <p>Miko</p>
+  <img src="doggos/miko.png" alt="Miko" width="600" />
+</div>
+
+<div style="float: right;">
+  <p>Bronson</p>
+  <img src="doggos/bronson.png" alt="Bronson" width="600" />
+</div>
