@@ -93,3 +93,16 @@
   <p>Bronson</p>
   <img src="doggos/bronson.png" alt="Bronson" width="600" />
 </div>
+
+## Who is cuter?
+
+<div style="float: left;">
+  <p>Tatsumaki (Tatsu)</p>
+  <img src="doggos/tatsumaki.png" alt="Tatsumaki" width="600" />
+</div>
+
+<div style="float: right;">
+  <p>Ahreum (pronounced ah-rum)</p>
+  <img src="doggos/ahreum.png" alt="Ahreum" width="600" />
+</div>
+
