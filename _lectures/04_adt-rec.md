@@ -3,8 +3,12 @@ title: Datatypes and recursion
 type: lecture
 number: 9
 links:
-  - url: /static_files/lecture-code/Lecture10.hs
-    name: "Lindsey's Lecture 10 live code"	
+   - url: /static_files/slides/adt-rec.pdf
+     name: "Owen's slides"
+   - url: /static_files/slides/adt-rec-handout.pdf
+     name: "Owen's slides (handout version)"
+   - url: /static_files/lecture-code/Lecture10.hs
+     name: "Lindsey's Lecture 10 live code"	
 continued:
   - type: lecture
     number: 10
