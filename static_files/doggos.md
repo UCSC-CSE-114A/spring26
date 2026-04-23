@@ -106,3 +106,15 @@
   <img src="doggos/ahreum.png" alt="Ahreum" width="600" />
 </div>
 
+## Who is cuter?
+
+<div style="float: left;">
+  <p>Bonnie</p>
+  <img src="doggos/bonnie.png" alt="Bonnie" width="600" />
+</div>
+
+<div style="float: right;">
+  <p>Isaac</p>
+  <img src="doggos/isaac.png" alt="Isaac" width="600" />
+</div>
+
