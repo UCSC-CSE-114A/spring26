@@ -8,9 +8,9 @@ links:
    - url: /static_files/slides/haskell-handout.pdf
      name: "Owen's slides (handout version)"
    - url: /static_files/lecture-code/Lecture08.hs
-     name: "Lindsey's Lecture 8 live code"
+     name: "Lindsey's lecture 8 live code"
    - url: /static_files/lecture-code/Lecture09.hs
-     name: "Lindsey's Lecture 9 live code"	
+     name: "Lindsey's lecture 9 live code"	
 continued:
   - type: lecture
     number: 8
