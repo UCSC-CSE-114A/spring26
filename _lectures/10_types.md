@@ -2,6 +2,11 @@
 type: lecture
 number: 22
 title: Types, type inference, and polymorphism
+links:
+   - url: /static_files/slides/env.pdf
+     name: "Owen's slides"
+   - url: /static_files/slides/env-handout.pdf
+     name: "Owen's slides (handout version)"
 continued:
   - type: lecture
     number: 23
