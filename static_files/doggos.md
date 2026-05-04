@@ -143,3 +143,15 @@
   <img src="doggos/coco.png" alt="Coco" width="600" />
 </div>
 
+## Who is cuter?
+
+<div style="float: left;">
+  <p>(Ghandarva's) Pepper</p>
+  <img src="doggos/pepper.png" alt="(Ghandarva's) Pepper" width="600" />
+</div>
+
+<div style="float: right;">
+  <p>Booboo</p>
+  <img src="doggos/booboo.png" alt="Booboo" width="600" />
+</div>
+
