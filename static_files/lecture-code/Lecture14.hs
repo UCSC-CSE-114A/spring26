@@ -29,7 +29,7 @@ Higher-order functions are functions that either
 data ThisMightExist a = NopeThisDoesntExist | YesThisExists a
     deriving Show
 
--- Quiz question 1: How to implement the base case of `find`?
+-- Quiz question 1: What should the base case of `find` return?
 -- find predicate [] = (...fill this part in for quiz question 1...)
 find :: (a -> Bool) -> [a] -> ThisMightExist a
 find predicate []     = NopeThisDoesntExist
@@ -114,6 +114,6 @@ divisibleBy3' = myMap (\x -> x `mod` 3 == 0)
 -- Take a list of predicates, apply them all to the string "yuki",
 -- and return a list of the results
 
--- Quiz question 3: How to implement `applyAllToYuki`?
+-- Quiz question 3: Write `applyAllToYuki` in terms of `myMap`.
 applyAllToYuki :: [String -> Bool] -> [Bool]
 applyAllToYuki = myMap (\f -> f "yuki")
