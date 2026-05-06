@@ -155,3 +155,15 @@
   <img src="doggos/booboo.png" alt="Booboo" width="600" />
 </div>
 
+## Who is cuter?
+
+<div style="float: left;">
+  <p>(Ammaar's) Rocky</p>
+  <img src="doggos/rocky_ammaar.png" alt="(Ammaar's) Rocky" width="600" />
+</div>
+
+<div style="float: right;">
+  <p>(Brian's) Rocky</p>
+  <img src="doggos/rocky_brian.png" alt="(Brian's) Rocky" width="600" />
+</div>
+
