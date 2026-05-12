@@ -31,7 +31,7 @@ The value of a let-expression
 `let <var> = <expr> in <body>`
 should be
 - Whatever the value of <body> is...
-- ...in an environment in which `<var>` in bound to to the value of `<expr>`
+- ...in an environment in which <var> is bound to the value of <expr>
 
 To evaluate a let-expression, then, we'll have to:
 - figure out what <var> should be bound to, by evaluating <expr>
