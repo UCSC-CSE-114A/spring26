@@ -7,6 +7,8 @@ links:
      name: "Owen's slides"
    - url: /static_files/slides/env-handout.pdf
      name: "Owen's slides (handout version)"
+   - url: /static_files/lecture-code/Lecture18.hs
+     name "Lindsey's lecture 18 live code"
 continued:
   - type: lecture
     number: 19
