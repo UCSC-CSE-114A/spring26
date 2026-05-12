@@ -167,3 +167,16 @@
   <img src="doggos/rocky_brian.png" alt="(Brian's) Rocky" width="600" />
 </div>
 
+
+## Who is cuter?
+
+<div style="float: left;">
+  <p>Molly</p>
+  <img src="doggos/molly.png" alt="Molly" width="600" />
+</div>
+
+<div style="float: right;">
+  <p>Freckles</p>
+  <img src="doggos/freckles.png" alt="Freckles" width="600" />
+</div>
+
