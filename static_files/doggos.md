@@ -121,19 +121,6 @@
 ## Who is cuter?
 
 <div style="float: left;">
-  <p>Bonnie</p>
-  <img src="doggos/bonnie.png" alt="Bonnie" width="600" />
-</div>
-
-<div style="float: right;">
-  <p>Isaac</p>
-  <img src="doggos/isaac.png" alt="Isaac" width="600" />
-</div>
-
-
-## Who is cuter?
-
-<div style="float: left;">
   <p>Casper</p>
   <img src="doggos/casper.png" alt="Casper" width="600" />
 </div>
@@ -179,4 +166,29 @@
   <p>Freckles</p>
   <img src="doggos/freckles.png" alt="Freckles" width="600" />
 </div>
+
+## Who is cuter?
+
+<div style="float: left;">
+  <p>Shane</p>
+  <img src="doggos/shane.png" alt="Shane" width="600" />
+</div>
+
+<div style="float: right;">
+  <p>Bowser</p>
+  <img src="doggos/bowser.png" alt="Bowser" width="600" />
+</div>
+
+## Who is cuter?
+
+<div style="float: left;">
+  <p>Tai</p>
+  <img src="doggos/tai.png" alt="Tai" width="600" />
+</div>
+
+<div style="float: right;">
+  <p>Sprinkles</p>
+  <img src="doggos/sprinkles.png" alt="Sprinkles" width="600" />
+</div>
+
 
