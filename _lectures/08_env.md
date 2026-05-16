@@ -11,6 +11,8 @@ links:
      name: "Lindsey's lecture 18 live code"
    - url: /static_files/lecture-code/Lecture19.hs
      name: "Lindsey's lecture 19 live code"	 
+   - url: /static_files/lecture-code/Lecture20.hs
+     name: "Lindsey's lecture 20 live code"	 	 
 continued:
   - type: lecture
     number: 19
