@@ -191,4 +191,28 @@
   <img src="doggos/sprinkles.png" alt="Sprinkles" width="600" />
 </div>
 
+## Who is cuter? ROUND 2!
+
+<div style="float: left;">
+  <p>Yuki</p>
+  <img src="doggos/yuki.png" alt="Yuki" width="600" />
+</div>
+
+<div style="float: right;">
+  <p>Jellybean</p>
+  <img src="doggos/jellybean.png" alt="Jellybean" width="600" />
+</div>
+
+## Who is cuter? ROUND 2!
+
+<div style="float: left;">
+  <p>Ringo</p>
+  <img src="doggos/ringo.png" alt="Ringo" width="600" />
+</div>
+
+<div style="float: right;">
+  <p>Sheba</p>
+  <img src="doggos/sheba.png" alt="Sheba" width="600" />
+</div>
+
 
