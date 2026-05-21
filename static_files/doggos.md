@@ -215,4 +215,28 @@
   <img src="doggos/sheba.png" alt="Sheba" width="600" />
 </div>
 
+## Who is cuter? ROUND 2!
+
+<div style="float: left;">
+  <p>Seven</p>
+  <img src="doggos/seven.png" alt="Seven" width="600" />
+</div>
+
+<div style="float: right;">
+  <p>Dusty</p>
+  <img src="doggos/dusty.png" alt="Dusty" width="600" />
+</div>
+
+## Who is cuter? ROUND 2!
+
+<div style="float: left;">
+  <p>Rosie (Myles's)</p>
+  <img src="doggos/rosie_myles.png" alt="Rosie (Myles's)" width="600" />
+</div>
+
+<div style="float: right;">
+  <p>Miko</p>
+  <img src="doggos/miko.png" alt="Miko" width="600" />
+</div>
+
 
