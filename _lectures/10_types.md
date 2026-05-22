@@ -12,8 +12,7 @@ links:
    - url: /static_files/notes/Lecture22.pdf
      name: "Lindsey's lecture 22 live notes"
    - url: /static_files/lecture-code/Lecture22.hs
-     name: "Lindsey's lecture 22 live code"	 
-	 
+     name: "Lindsey's lecture 22 live code"
 continued:
   - type: lecture
     number: 23
