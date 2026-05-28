@@ -122,7 +122,7 @@ eval (Lam s expr) env = VFunc s expr env
 eval (App expr1 expr2) env = case (eval expr1 env, eval expr2 env) of
   (VInt _, _) -> error "you tried to apply a number like it was a function."
   (VStr _, _) -> error "you tried to apply a string like it was a function."
-  (VFunc s bodyExpr savedEnv, argVal) -> eval bodyExpr ((s,argVal):env) -- Quiz question 2: What env do I put here?
+  (VFunc s bodyExpr savedEnv, argVal) -> eval bodyExpr ((s,argVal):savedEnv) -- Quiz question 2: What env do I put here?
 
 {--
 Our recipe for evaluating function calls:
