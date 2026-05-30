@@ -14,7 +14,10 @@ links:
    - url: /static_files/lecture-code/Lecture22.hs
      name: "Lindsey's lecture 22 live code"
    - url: /static_files/notes/Lecture23.pdf
-     name: "Lindsey's lecture 23 live notes"	 
+     name: "Lindsey's lecture 23 live notes"
+   - url: /static_files/lecture-code/Lecture24.hs
+     name: "Lindsey's lecture 24 live “code” (actually just comments)"	 	 
+	 
 continued:
   - type: lecture
     number: 23
