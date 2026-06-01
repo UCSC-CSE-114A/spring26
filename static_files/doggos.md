@@ -239,4 +239,78 @@
   <img src="doggos/miko.png" alt="Miko" width="600" />
 </div>
 
+## Who is cuter? ROUND 2!
+
+<div style="float: left;">
+  <p>Tatsumaki (Tatsu)</p>
+  <img src="doggos/tatsumaki.png" alt="Tatsumaki" width="600" />
+</div>
+
+<div style="float: right;">
+  <p>Bonnie</p>
+  <img src="doggos/bonnie.png" alt="Bonnie" width="600" />
+</div>
+
+## Who is cuter? ROUND 2!
+
+<div style="float: left;">
+  <p>Coco</p>
+  <img src="doggos/coco.png" alt="Coco" width="600" />
+</div>
+
+<div style="float: right;">
+  <p>Booboo</p>
+  <img src="doggos/booboo.png" alt="Booboo" width="600" />
+</div>
+
+## Who is cuter? ROUND 2!
+
+<div style="float: left;">
+  <p>(Ammaar's) Rocky</p>
+  <img src="doggos/rocky_ammaar.png" alt="(Ammaar's) Rocky" width="600" />
+</div>
+
+<div style="float: right;">
+  <p>Freckles</p>
+  <img src="doggos/freckles.png" alt="Freckles" width="600" />
+</div>
+
+## Who is cuter? ROUND 2!
+
+<div style="float: left;">
+  <p>Shane</p>
+  <img src="doggos/shane.png" alt="Shane" width="600" />
+</div>
+
+<div style="float: right;">
+  <p>Tai</p>
+  <img src="doggos/tai.png" alt="Tai" width="600" />
+</div>
+
+
+## Who is cuter? ROUND 3 MATCHUPS!
+
+<div style="float: left;">
+  <p>Yuki vs. Sheba</p>
+  <img src="doggos/yuki.png" alt="Yuki" width="140" />
+  <img src="doggos/sheba.png" alt="Sheba" width="140" />
+</div>
+
+<div style="float: left;">
+  <p>Dusty vs. Miko</p>
+  <img src="doggos/dusty.png" alt="Dusty" width="140" />
+  <img src="doggos/miko.png" alt="Miko" width="140" />
+</div>
+
+<div style="float: left;">
+  <p>Bonnie vs. Booboo</p>
+  <img src="doggos/bonnie.png" alt="Bonnie" width="140" />
+  <img src="doggos/booboo.png" alt="Booboo" width="140" />
+</div>
+
+<div style="float: left;">
+  <p>Freckles vs. Shane</p>
+  <img src="doggos/freckles.png" alt="Freckles" width="140" />
+  <img src="doggos/shane.png" alt="Shane" width="140" />
+</div>
 

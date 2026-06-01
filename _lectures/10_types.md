@@ -23,6 +23,9 @@ links:
      name: "Leilani's lecture 23 live notes"
    - url: /static_files/notes/Lecture24_lgilpin.pdf
      name: "Leilani's lecture 24 live notes"	 
+   - url: /static_files/lecture-code/Lecture24.hs
+     name: "Lindsey's lecture 24 live \"code\" (actually just comments)"
+
 continued:
   - type: lecture
     number: 23
