@@ -25,7 +25,12 @@ links:
      name: "Leilani's lecture 24 live notes"	 
    - url: /static_files/lecture-code/Lecture24.hs
      name: "Lindsey's lecture 24 live \"code\" (actually just comments)"
-
+   - url: /static_files/lecture-code/Lecture25.hs
+     name: "Lindsey's lecture 25 live code"
+   - url: /static_files/lecture-code/TypeInfProvided.hs
+     name: "Supporting code for Lindsey's lecture 25: TypeInfProvided.hs"
+   - url: /static_files/lecture-code/TypeInfHW.hs
+     name: "Supporting code for Lindsey's lecture 25: TypeInfHW.hs"	 
 continued:
   - type: lecture
     number: 23
@@ -49,4 +54,3 @@ continued:
     sublecture: true
 released: true
 ---
-
