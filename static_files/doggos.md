@@ -314,3 +314,17 @@
   <img src="doggos/shane.png" alt="Shane" width="140" />
 </div>
 
+## Who is cuter? THE FINAL FOUR!
+
+<div style="float: left;">
+  <p>Booboo vs. Freckles</p>
+  <img src="doggos/booboo.png" alt="Booboo" width="300" />
+  <img src="doggos/freckles.png" alt="Freckles" width="300" />
+</div>
+
+<div style="float: right;">
+  <p>Sheba vs. Miko</p>
+  <img src="doggos/sheba.png" alt="Sheba" width="300" />
+  <img src="doggos/miko.png" alt="Miko" width="300" />
+</div>
+
