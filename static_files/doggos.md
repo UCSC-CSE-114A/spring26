@@ -328,3 +328,15 @@
   <img src="doggos/miko.png" alt="Miko" width="300" />
 </div>
 
+## Who is the cutest dog in CSE114A? THE CHAMPIONSHIP MATCH!
+
+<div style="float: left;">
+  <p>Booboo</p>
+  <img src="doggos/booboo.png" alt="Booboo" width="600" />
+</div>
+
+<div style="float: right;">
+  <p>Miko</p>
+  <img src="doggos/miko.png" alt="Miko" width="600" />
+</div>
+
