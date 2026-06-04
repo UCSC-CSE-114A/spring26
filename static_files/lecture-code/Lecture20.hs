@@ -114,7 +114,6 @@ eval (IfZero condition thenExpr elseExpr) env = case eval condition env of
   (VInt 0) -> eval thenExpr env
   (VInt _) -> eval elseExpr env
   _ -> error "you tried to call `if` on a function or a string, you joker"
-
 eval (Let s expr bodyExpr) env = let val = eval expr env in
                                    eval bodyExpr ((s, val):env)
 -- Quiz question 1: what goes on the right side of this equation?
@@ -153,8 +152,8 @@ example =
 {--
 Quiz question 2:
 
-What would this evaluate to under dynamic scope and under static scope?
-(Answer: 9 and 10)
+What would this evaluate to under static scope and under dynamic scope?
+(Answer: 9 and 10, respectively)
 
 let x = 4 in
   let f = \y -> y + x in
